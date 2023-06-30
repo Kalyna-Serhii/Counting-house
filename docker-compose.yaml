@@ -1,0 +1,21 @@
+version: '3.5'
+
+# 6100 - auth
+# 6101 - db_auth
+# 6200 - data
+# 6201 - db_data
+
+services:
+  db_auth:
+    container_name: db_auth
+    ports:
+      - '5432:5432'
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=root
+    image: postgres:15.3-alpine3.17
+    volumes:
+      - ./init-scripts:/docker-entrypoint-initdb.d
+      - db_auth_vol:/var/lib/postgresql/data/
+volumes:
+  db_auth_vol: {}
