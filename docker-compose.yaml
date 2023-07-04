@@ -6,8 +6,8 @@ version: '3.5'
 # 6201 - db_data
 
 services:
-  db_auth:
-    container_name: db_auth
+  db_house:
+    container_name: db_house
     ports:
       - '5432:5432'
     environment:
@@ -16,6 +16,6 @@ services:
     image: postgres:15.3-alpine3.17
     volumes:
       - ./init-scripts:/docker-entrypoint-initdb.d
-      - db_auth_vol:/var/lib/postgresql/data/
+      - db_house_vol:/var/lib/postgresql/data/
 volumes:
-  db_auth_vol: {}
+  db_house_vol: {}

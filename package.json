@@ -17,5 +17,8 @@
     "pg": "^8.11.1",
     "swagger-ui-express": "^4.6.3",
     "yamljs": "^0.3.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.22"
   }
 }
