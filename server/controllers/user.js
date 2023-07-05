@@ -1,11 +1,16 @@
 const db = require('../db')
 class UserController {
     async createUser(req, res) {
-        const {name, surname, phone, password, email, floor, room, role} = req.body
-        const newUser = await db.query(`INSERT INTO users
+        try {
+            const { name, surname, phone, password, email, floor, room, role} = req.body
+            const newUser = await db.query(`INSERT INTO users
         (name, surname, phone, password, email, floor, room, role) values ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *`,
-            [name, surname, phone, password, email, floor, room, role])
-        res.json(newUser.rows[0])
+                [name, surname, phone, password, email, floor, room, role])
+            res.json(newUser.rows[0])
+        } catch (error) {
+            console.log('что-то пошло не так', error.message);
+        }
+
     }
 
     async getUsers(req, res) {
@@ -34,4 +39,4 @@ class UserController {
     }
 }
 
-module.exports = new UserController()
+module.exports = new UserController();
