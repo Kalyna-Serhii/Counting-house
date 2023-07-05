@@ -1,7 +1,6 @@
 const db = require('../db')
 class UserController {
     async createUser(req, res) {
-        console.log(req);
         try {
             const { name, surname, phone, password, email, floor, room, role} = req.body
             const newUser = await db.query(`INSERT INTO users
