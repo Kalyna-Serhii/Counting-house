@@ -1,0 +1,190 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "API",
+    "version": "1.0.0",
+    "description": "Description of my API"
+  },
+  "paths": {
+    "/api/users": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Get a list of users",
+        "description": "Returns a list of all users",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "examples": {
+              "application/json": {
+                "data": [
+                  {
+                    "id": 1,
+                    "name": "John",
+                    "surname": "Doe",
+                    "phone": "+380123456789",
+                    "password": "********",
+                    "email": "john.doe@example.com",
+                    "floor": 1,
+                    "room": 1,
+                    "role": "admin",
+                    "avatar": null
+                  },
+                  {
+                    "id": 2,
+                    "name": "Jane",
+                    "surname": "Smith",
+                    "phone": "+380987654321",
+                    "password": "***********",
+                    "email": "jane.smith@example.com",
+                    "floor": 5,
+                    "room": 35,
+                    "role": "user",
+                    "avatar": null
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/user/{id}": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Get a user by user`s id",
+        "description": "Returns a user by user`s id",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "examples": {
+              "application/json": {
+                "data": [
+                  {
+                    "id": 1,
+                    "name": "John",
+                    "surname": "Doe",
+                    "phone": "+380123456789",
+                    "password": "********",
+                    "email": "john.doe@example.com",
+                    "floor": 1,
+                    "room": 1,
+                    "role": "admin",
+                    "avatar": null
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/user": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Create a new user",
+        "description": "Creates a new user with the provided information",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "User object",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "surname": {
+                  "type": "string"
+                },
+                "phone": {
+                  "type": "string"
+                },
+                "password": {
+                  "type": "string"
+                },
+                "email": {
+                  "type": "string",
+                  "format": "email"
+                },
+                "floor": {
+                  "type": "integer"
+                },
+                "room": {
+                  "type": "integer"
+                },
+                "role": {
+                  "type": "string"
+                },
+                "avatar": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "name",
+                "surname",
+                "phone",
+                "password",
+                "floor",
+                "room"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "examples": {
+              "application/json": {
+                "data": [
+                  {
+                    "id": 1,
+                    "name": "John",
+                    "surname": "Doe",
+                    "phone": "+380123456789",
+                    "password": "********",
+                    "email": "john.doe@example.com",
+                    "floor": 1,
+                    "room": 1,
+                    "role": "admin",
+                    "avatar": null
+                  }
+                ]
+              }
+            }
+          }
+        }
+        }
+      }
+    },
+    "responses": {
+      "200": {
+        "description": "Successful response",
+        "examples": {
+          "application/json": {
+            "data": [
+              {
+                "id": 1,
+                "name": "John",
+                "surname": "Doe",
+                "phone": "+380123456789",
+                "password": "********",
+                "email": "john.doe@example.com",
+                "floor": 1,
+                "room": 1,
+                "role": "admin",
+                "avatar": null
+              }
+            ]
+          }
+        }
+      }
+    }
+}

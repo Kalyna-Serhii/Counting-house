@@ -1,8 +1,7 @@
-const express = require('express');
+const express = require('express')
 const cors = require('cors')
-const YAML = require('yamljs')
 const swaggerUI = require('swagger-ui-express')
-const swaggerDocument = YAML.load('swagger/api.yaml')
+const swaggerDocument = require('./swagger/api.json')
 
 const app = express()
 const corsOptions = {
