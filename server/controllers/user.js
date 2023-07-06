@@ -10,7 +10,6 @@ class UserController {
         } catch (error) {
             console.log('что-то пошло не так', error.message);
         }
-
     }
 
     async getUsers(req, res) {
