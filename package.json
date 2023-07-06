@@ -1,14 +1,17 @@
 {
   "name": "counting-house",
   "workspaces": [
-    "server"
+    "server",
+    "client"
   ],
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "setup": "npm install && npm run setup:server",
+    "setup": "npm install && npm run setup:server && npm run setup:client",
     "setup:server": "cd server && npm install",
-    "start:server": "npm run dev --workspace=server"
+    "setup:client": "cd client && npm install",
+    "start:server": "npm run dev --workspace=server",
+    "start:client": "npm run start --workspace=client"
   },
   "keywords": [],
   "author": "",
