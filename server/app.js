@@ -1,7 +1,13 @@
 const express = require('express')
 const cors = require('cors')
 const swaggerUI = require('swagger-ui-express')
-const swaggerDocument = require('./swagger/api.json')
+// const swaggerAutogen = require('./swagger/swagger')
+// const swaggerDocument = require('./swagger/api.json')
+const swaggerDocument = require('./swagger/swagger_output.json')
+const userRouter = require('./routes/user')
+// let swaggerDocument = {};
+// const generateSwagger = require('./swagger/swagger');
+// generateSwagger();
 
 const app = express()
 const corsOptions = {
@@ -11,11 +17,10 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
-const userRouter = require('./routes/user')
+// swaggerAutogen
 
 const host = '127.0.0.1'
 const port = 3000
-
 
 app.use(express.json())
 app.use('/api', userRouter)
