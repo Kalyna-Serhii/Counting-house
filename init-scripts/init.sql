@@ -1,6 +1,12 @@
--- init.sql
-CREATE TABLE IF NOT EXISTS db_auth (
+CREATE TABLE IF NOT EXISTS users(
     id SERIAL PRIMARY KEY,
-    username VARCHAR(50) NOT NULL,
-    password VARCHAR(50) NOT NULL
+    name VARCHAR(255),
+    surname VARCHAR(255),
+    phone VARCHAR(255),
+    password VARCHAR(255),
+    email VARCHAR(255),
+    floor INTEGER,
+    room INTEGER,
+    role VARCHAR(255),
+    avatar BYTEA
 );
