@@ -1,11 +1,11 @@
-const Pool = require('pg').Pool
+const Pool = require('pg').Pool;
 const pool = new Pool({
-    user: 'admin',
-    password: 'root',
-    host: 'localhost',
-    port: 5432,
-    database: 'postgres'
-})
+  user: 'admin',
+  password: 'root',
+  host: 'localhost',
+  port: 5432,
+  database: 'postgres',
+});
 
 pool.connect(err => {
     if(err) {
@@ -13,4 +13,4 @@ pool.connect(err => {
     }
 })
 
-module.exports = pool
+module.exports = pool;

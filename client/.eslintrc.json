@@ -10,9 +10,21 @@
     "ecmaVersion": "latest"
   },
   "extends": [
-    "eslint:recommended"
+    "eslint:recommended",
+    "plugin:prettier/recommended"
+  ],
+  "plugins": [
+    "prettier"
   ],
   "rules": {
+    "import/extensions": "off",
+    "import/prefer-default-export": "off",
+    "prettier/prettier": "error",
+    "semi": "error",
+    "class-methods-use-this": "off",
+    "no-use-before-define": ["error", {
+      "functions": false
+    }]
     // Дополнительные правила здесь
   }
 }
