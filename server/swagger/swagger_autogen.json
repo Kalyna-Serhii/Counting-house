@@ -1,0 +1,406 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "API",
+    "description": "API for Counting-house"
+  },
+  "host": "localhost:3000",
+  "basePath": "/",
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/users": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Get a list of users",
+        "description": "Returns a list of all users",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "example": "array"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            },
+            "examples": {
+              "application/json": [
+                {
+                  "id": 5,
+                  "name": "John",
+                  "surname": "Doe",
+                  "phone": "+380123456789",
+                  "password": "123456789",
+                  "email": "john.doe@example.com",
+                  "floor": 5,
+                  "room": 34,
+                  "role": "admin",
+                  "avatar": ""
+                },
+                {
+                  "id": 6,
+                  "name": "Jane",
+                  "surname": "Smith",
+                  "phone": "+380987654321",
+                  "password": "123456789",
+                  "email": "jane.smith@example.com",
+                  "floor": 2,
+                  "room": 10,
+                  "role": "user",
+                  "avatar": ""
+                }
+              ]
+            }
+          }
+        }
+      }
+    },
+    "/user": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Create a new user",
+        "description": "Creates a new user with the provided information",
+        "parameters": [
+          {
+            "name": "obj",
+            "in": "body",
+            "description": "User object",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "example": "John"
+                },
+                "surname": {
+                  "type": "string",
+                  "example": "Doe"
+                },
+                "phone": {
+                  "type": "string",
+                  "example": "+380123456789"
+                },
+                "password": {
+                  "type": "string",
+                  "example": "123456789"
+                },
+                "email": {
+                  "type": "string",
+                  "example": "john.doe@example.com"
+                },
+                "floor": {
+                  "type": "number",
+                  "example": 5
+                },
+                "room": {
+                  "type": "number",
+                  "example": 34
+                },
+                "role": {
+                  "type": "string",
+                  "example": "admin"
+                },
+                "avatar": {
+                  "type": "string",
+                  "example": ""
+                }
+              },
+              "required": [
+                "name",
+                "surname",
+                "phone",
+                "password",
+                "floor",
+                "room"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "number",
+                  "example": 5
+                },
+                "name": {
+                  "type": "string",
+                  "example": "John"
+                },
+                "surname": {
+                  "type": "string",
+                  "example": "Doe"
+                },
+                "phone": {
+                  "type": "string",
+                  "example": "+380123456789"
+                },
+                "password": {
+                  "type": "string",
+                  "example": "123456789"
+                },
+                "email": {
+                  "type": "string",
+                  "example": "john.doe@example.com"
+                },
+                "floor": {
+                  "type": "number",
+                  "example": 5
+                },
+                "room": {
+                  "type": "number",
+                  "example": 34
+                },
+                "role": {
+                  "type": "string",
+                  "example": "admin"
+                },
+                "avatar": {
+                  "type": "string",
+                  "example": ""
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/{id}": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Get a user",
+        "description": "Returns a user by user id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "User id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "number",
+                  "example": 5
+                },
+                "name": {
+                  "type": "string",
+                  "example": "John"
+                },
+                "surname": {
+                  "type": "string",
+                  "example": "Doe"
+                },
+                "phone": {
+                  "type": "string",
+                  "example": "+380123456789"
+                },
+                "password": {
+                  "type": "string",
+                  "example": "123456789"
+                },
+                "email": {
+                  "type": "string",
+                  "example": "john.doe@example.com"
+                },
+                "floor": {
+                  "type": "number",
+                  "example": 5
+                },
+                "room": {
+                  "type": "number",
+                  "example": 34
+                },
+                "role": {
+                  "type": "string",
+                  "example": "admin"
+                },
+                "avatar": {
+                  "type": "string",
+                  "example": ""
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Update a user",
+        "description": "Updates a user by user id with the provided information",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "obj",
+            "in": "body",
+            "description": "User object",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "number",
+                  "example": 5
+                },
+                "name": {
+                  "type": "string",
+                  "example": "John"
+                },
+                "surname": {
+                  "type": "string",
+                  "example": "Doe"
+                },
+                "phone": {
+                  "type": "string",
+                  "example": "+380123456789"
+                },
+                "password": {
+                  "type": "string",
+                  "example": "123456789"
+                },
+                "email": {
+                  "type": "string",
+                  "example": "john.doe@example.com"
+                },
+                "floor": {
+                  "type": "number",
+                  "example": 5
+                },
+                "room": {
+                  "type": "number",
+                  "example": 34
+                },
+                "role": {
+                  "type": "string",
+                  "example": "admin"
+                },
+                "avatar": {
+                  "type": "string",
+                  "example": ""
+                }
+              },
+              "required": [
+                "id",
+                "name",
+                "surname",
+                "phone",
+                "password",
+                "floor",
+                "room"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "number",
+                  "example": 5
+                },
+                "name": {
+                  "type": "string",
+                  "example": "Jane"
+                },
+                "surname": {
+                  "type": "string",
+                  "example": "Smith"
+                },
+                "phone": {
+                  "type": "string",
+                  "example": "+380987654321"
+                },
+                "password": {
+                  "type": "string",
+                  "example": "123456789"
+                },
+                "email": {
+                  "type": "string",
+                  "example": "jane.smith@example.com"
+                },
+                "floor": {
+                  "type": "number",
+                  "example": 2
+                },
+                "room": {
+                  "type": "number",
+                  "example": 10
+                },
+                "role": {
+                  "type": "string",
+                  "example": "user"
+                },
+                "avatar": {
+                  "type": "string",
+                  "example": ""
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Delete a user",
+        "description": "Deletes a user by user id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "User id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    }
+  }
+}

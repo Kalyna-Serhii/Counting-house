@@ -1,6 +1,6 @@
 const generateSwagger = require('swagger-autogen')();
-const outputFile = './swagger_autogen.json';
-const endpointsFiles = ['../routes/user.js'];
+const outputFile = './swagger/swagger_autogen.json';
+const endpointsFiles = ['./routes/user.js'];
 
 const doc = {
     info: {
@@ -13,12 +13,13 @@ const doc = {
     schemes: ['http'],
 };
 
-generateSwagger(outputFile, endpointsFiles, doc)
-    .then(() => {
-        require('../app');
-    })
-    .catch((err) => {
-        console.error(err);
-    });
 
-// module.exports = generateSwagger
+generateSwagger(outputFile, endpointsFiles, doc)
+    // .then(() => {
+    //     require('../app');
+    // })
+    // .catch((err) => {
+    //     console.error(err);
+    // });
+
+module.exports = generateSwagger;
