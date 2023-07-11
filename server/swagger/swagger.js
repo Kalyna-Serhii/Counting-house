@@ -17,5 +17,3 @@ swagger_autogen(outputFile, endpointsFiles, doc)
     .then(() => {
         require('../app');
     })
-
-module.exports = swagger_autogen;
