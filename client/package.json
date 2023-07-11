@@ -4,6 +4,7 @@
   "description": "",
   "devDependencies": {
     "css-loader": "^6.8.1",
+    "eslint": "^8.44.0",
     "html-loader": "^4.2.0",
     "html-webpack-plugin": "^5.5.3",
     "style-loader": "^3.3.3",
