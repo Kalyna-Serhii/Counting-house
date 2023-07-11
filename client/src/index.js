@@ -6,7 +6,7 @@ async function getUsers() {
     return await response.json();
 }
 
-document.addEventListener("DOMContentLoaded", async function(event) {
+document.addEventListener("DOMContentLoaded", async function() {
     const usersList = document.querySelector('#users');
     const users = await getUsers();
     const createUserItem = () => {
