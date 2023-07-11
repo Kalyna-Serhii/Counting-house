@@ -39,6 +39,7 @@
                   "id": 5,
                   "name": "John",
                   "surname": "Doe",
+                  "gender": "man",
                   "phone": "+380123456789",
                   "password": "123456789",
                   "email": "john.doe@example.com",
@@ -51,6 +52,7 @@
                   "id": 6,
                   "name": "Jane",
                   "surname": "Smith",
+                  "gender": "woman",
                   "phone": "+380987654321",
                   "password": "123456789",
                   "email": "jane.smith@example.com",
@@ -88,6 +90,10 @@
                   "type": "string",
                   "example": "Doe"
                 },
+                "gender": {
+                  "type": "string",
+                  "example": "man"
+                },
                 "phone": {
                   "type": "string",
                   "example": "+380123456789"
@@ -120,6 +126,7 @@
               "required": [
                 "name",
                 "surname",
+                "gender",
                 "phone",
                 "password",
                 "floor",
@@ -145,6 +152,10 @@
                 "surname": {
                   "type": "string",
                   "example": "Doe"
+                },
+                "gender": {
+                  "type": "string",
+                  "example": "man"
                 },
                 "phone": {
                   "type": "string",
@@ -217,6 +228,10 @@
                   "type": "string",
                   "example": "Doe"
                 },
+                "gender": {
+                  "type": "string",
+                  "example": "man"
+                },
                 "phone": {
                   "type": "string",
                   "example": "+380123456789"
@@ -285,6 +300,10 @@
                   "type": "string",
                   "example": "Doe"
                 },
+                "gender": {
+                  "type": "string",
+                  "example": "man"
+                },
                 "phone": {
                   "type": "string",
                   "example": "+380123456789"
@@ -318,6 +337,7 @@
                 "id",
                 "name",
                 "surname",
+                "gender",
                 "phone",
                 "password",
                 "floor",
@@ -343,6 +363,10 @@
                 "surname": {
                   "type": "string",
                   "example": "Smith"
+                },
+                "gender": {
+                  "type": "string",
+                  "example": "man"
                 },
                 "phone": {
                   "type": "string",
