@@ -63,8 +63,8 @@ const userValidation = (data) => {
       'number.min': 'Квартира не може бути менше за 1',
       'number.max': 'Квартира не може бути більше за 98',
     }),
-    role: joi.string().valid('osbb', 'admin').allow('').messages({
-      'any.only': 'Роль має бути одним із допустимих значень: osbb, admin',
+    role: joi.string().valid('moderator', 'admin').allow('').messages({
+      'any.only': 'Роль має бути одним із допустимих значень: moderator, admin',
     }),
     avatar: joi.string().allow('').max(255),
   });

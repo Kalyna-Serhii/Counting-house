@@ -1,5 +1,5 @@
 CREATE TYPE user_gender AS ENUM ('man', 'woman');
-CREATE TYPE user_role AS ENUM ('user', 'osbb', 'admin');
+CREATE TYPE user_role AS ENUM ('user', 'moderator', 'admin');
 CREATE TABLE IF NOT EXISTS users(
     id SERIAL PRIMARY KEY,
     name VARCHAR(15),
