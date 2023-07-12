@@ -43,16 +43,10 @@ const userValidation = (data) => {
       }),
     repeatPassword: joi
       .string()
-      .min(8)
-      .max(255)
-      .pattern(/^(?=.*[a-zA-Z])[ -~]{8,255}$/)
+      .valid(joi.ref('password'))
       .required()
       .messages({
-        'string.empty': "Пароль є обов'язковим",
-        'string.min': 'Пароль має містити щонайменше 8 символів',
-        'string.max': 'Пароль має містити не більше 255 символів',
-        'string.pattern.base':
-          'Пароль має містити щонайменше одну літеру латинського алфавіту',
+        'any.only': 'Паролі не співпадають',
       }),
     email: joi.string().min(5).max(50).allow('').email().messages({
       'string.min': 'Електронна пошта має містити не менше 5 символів',

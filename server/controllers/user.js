@@ -58,16 +58,12 @@ class UserController {
         gender,
         phone,
         password,
-        repeatPassword,
         email,
         floor,
         room,
         role,
         avatar,
       } = req.body;
-      if (password !== repeatPassword) {
-        return res.status(400).json('Паролі не співпадають');
-      }
       if (!role) {
         role = 'user';
       }
@@ -170,16 +166,12 @@ class UserController {
         gender,
         phone,
         password,
-        repeatPassword,
         email,
         floor,
         room,
         role,
         avatar,
       } = req.body;
-      if (password !== repeatPassword) {
-        return res.status(400).json('Паролі не співпадають');
-      }
       if (!role) {
         role = 'user';
       }
