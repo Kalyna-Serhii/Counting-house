@@ -4,6 +4,7 @@ class UserController {
   async getUsers(req, res) {
     const users = await db.query('SELECT * FROM users');
     res.json(users.rows);
+
     // #swagger.tags = ['Users']
     // #swagger.summary = 'Get a list of users'
     // #swagger.description = 'Returns a list of all users'
@@ -19,7 +20,7 @@ class UserController {
                     name: 'John',
                     surname: 'Doe',
                     gender: 'man',
-                    phone: '+380123456789',
+                    phone: '0123456789',
                     password: '123456789',
                     email: 'john.doe@example.com',
                     floor: 5,
@@ -32,7 +33,7 @@ class UserController {
                     name: 'Jane',
                     surname: 'Smith',
                     gender: 'woman',
-                    phone: '+380987654321',
+                    phone: '0987654321',
                     password: '123456789',
                     email: 'jane.smith@example.com',
                     floor: 2,
@@ -64,6 +65,9 @@ class UserController {
         role,
         avatar,
       } = req.body;
+      if (!gender) {
+        gender = 'man';
+      }
       if (!role) {
         role = 'user';
       }
@@ -97,8 +101,8 @@ class UserController {
                schema: {
                     $name: 'John',
                     surname: 'Doe',
-                    $gender: 'man',
-                    $phone: '+380123456789',
+                    gender: 'man',
+                    $phone: '0123456789',
                     $password: '123456789',
                     $repeatPassword: '123456789',
                     email: 'john.doe@example.com',
@@ -115,7 +119,7 @@ class UserController {
                 name: 'John',
                 surname: 'Doe',
                 gender: 'man',
-                phone: '+380123456789',
+                phone: '0123456789',
                 password: '123456789',
                 email: 'john.doe@example.com',
                 floor: 5,
@@ -130,6 +134,7 @@ class UserController {
     const id = req.params.id;
     const user = await db.query('SELECT * FROM users WHERE id = $1', [id]);
     res.json(user.rows[0]);
+
     // #swagger.tags = ['Users']
     // #swagger.summary = 'Get a user'
     // #swagger.description = 'Returns a user by user id'
@@ -141,7 +146,7 @@ class UserController {
                 name: 'John',
                 surname: 'Doe',
                 gender: 'man',
-                phone: '+380123456789',
+                phone: '0123456789',
                 password: '123456789',
                 email: 'john.doe@example.com',
                 floor: 5,
@@ -172,6 +177,9 @@ class UserController {
         role,
         avatar,
       } = req.body;
+      if (!gender) {
+        gender = 'man';
+      }
       if (!role) {
         role = 'user';
       }
@@ -207,8 +215,8 @@ class UserController {
                     $id: 5,
                     $name: 'John',
                     surname: 'Doe',
-                    $gender: 'man',
-                    $phone: '+380123456789',
+                    gender: 'man',
+                    $phone: '0123456789',
                     $password: '123456789',
                     $repeatPassword: '123456789',
                     email: 'john.doe@example.com',
@@ -225,7 +233,7 @@ class UserController {
                 name: 'Jane',
                 surname: 'Smith',
                 gender: 'man',
-                phone: '+380987654321',
+                phone: '0987654321',
                 password: '123456789',
                 email: 'jane.smith@example.com',
                 floor: 2,

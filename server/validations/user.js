@@ -15,9 +15,9 @@ const userValidation = (data) => {
       'string.min': 'Прізвище має містити не менше 2 символів',
       'string.max': 'Прізвище має містити не більше 15 символів',
     }),
-    gender: joi.string().valid('man', 'woman').required().messages({
-      'string.empty': "Гендер є обов'язковим",
-      'any.only': 'Гендер має бути одним із допустимих значень: man, woman',
+    gender: joi.string().valid('man', 'woman').valid('').messages({
+      'any.only':
+        'Гендер має бути одним із допустимих значень: man, woman, або порожній',
     }),
     phone: joi
       .string()
@@ -32,7 +32,7 @@ const userValidation = (data) => {
       .string()
       .min(8)
       .max(255)
-      .pattern(/^(?=.*[a-zA-Z])[ -~]{8,255}$/)
+      .pattern(/^(?=.*[a-zA-Z])[ -~]{6,255}$/)
       .required()
       .messages({
         'string.empty': "Пароль є обов'язковим",
@@ -64,7 +64,8 @@ const userValidation = (data) => {
       'number.max': 'Квартира не може бути більше за 98',
     }),
     role: joi.string().valid('moderator', 'admin').allow('').messages({
-      'any.only': 'Роль має бути одним із допустимих значень: moderator, admin',
+      'any.only':
+        'Роль має бути одним із допустимих значень: moderator, admin, або порожній',
     }),
     avatar: joi.string().allow('').max(255),
   });
