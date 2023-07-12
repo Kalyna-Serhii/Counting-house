@@ -4,18 +4,17 @@
   "description": "",
   "main": "app.js",
   "dependencies": {
+    "cors": "^2.8.5",
     "express": "^4.18.2",
     "install": "^0.13.0",
-    "pg": "^8.11.1",
-    "swagger-ui-express": "^4.6.3",
-    "yamljs": "^0.3.0",
-    "cors": "^2.8.5"
+    "pg": "^8.11.1"
   },
   "devDependencies": {
-    "nodemon": "^2.0.22"
+    "nodemon": "^2.0.22",
+    "swagger-ui-express": "^4.6.3"
   },
   "scripts": {
-    "dev": "nodemon app.js",
+    "dev": "nodemon swagger/swagger.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -27,5 +26,6 @@
   "bugs": {
     "url": "https://github.com/Kalyna-Serhii/Counting-house/issues"
   },
-  "homepage": "https://github.com/Kalyna-Serhii/Counting-house#readme"
+  "homepage": "https://github.com/Kalyna-Serhii/Counting-house#readme",
+  "nodemonConfig": { "ignore": ["swagger_autogen.json"] }
 }

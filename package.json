@@ -10,14 +10,15 @@
     "setup": "npm install && npm run setup:server && npm run setup:client",
     "setup:server": "cd server && npm install",
     "setup:client": "cd client && npm install",
-    "start:server": "npm run dev --workspace=server",
     "start:client": "npm run start --workspace=client",
-    "lint:server": "eslint './server/**/*.{js,ts}'",
-    "lint:client": "eslint './client/src/**/*.{js,ts}'",
-    "format:client": "prettier --write './client/src/**/*.{js,ts}'",
-    "format:server": "prettier --write './server/**/*.{js,ts}'",
-    "eslint": "npm run format:client && npm run format:server && eslint:client && eslint:server"
-
+    "start:server": "npm run dev --workspace=server",
+    "lint:client": "eslint \"./client/src/**/*.{js,ts}\"",
+    "lint:server": "eslint \"./server/**/*.{js,ts}\"",
+    "lint": "eslint \"./client/src/**/*.{js,ts}\" && eslint \"./server/**/*.{js,ts}\"",
+    "format:client": "prettier --write \"./client/src/**/*.{js,ts}\"",
+    "format:server": "prettier --write \"./server/**/*.{js,ts}\"",
+    "formated": "npm run format:client && npm run format:server && eslint:client && eslint:server",
+    "prepare": "husky install"
   },
   "keywords": [],
   "author": "",
@@ -27,7 +28,15 @@
   },
   "devDependencies": {
     "concurrently": "^6.0.0",
-    "eslint-plugin-prettier": "^4.2.1",
-    "prettier": "^3.0.0"
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-plugin-prettier": "^5.0.0-alpha.2",
+    "husky": "^8.0.3",
+    "prettier": "^3.0.0",
+    "swagger-autogen": "^2.23.4"
+  },
+  "nodemonConfig": {
+    "ignore": [
+      "swagger_autogen.json"
+    ]
   }
 }

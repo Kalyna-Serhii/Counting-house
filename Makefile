@@ -11,7 +11,7 @@ psa:
 down:
 	docker-compose down --remove-orphans
 cli:
-	docker exec -it db_house psql -U postgres
+	docker exec -it db_house psql -U admin
 
 
 #run:
