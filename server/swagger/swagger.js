@@ -3,17 +3,17 @@ const outputFile = './swagger_autogen.json';
 const endpointsFiles = ['../routes/user'];
 
 const doc = {
-    info: {
-        version: '1.0.0',
-        title: 'API',
-        description: 'API for Counting-house',
-    }
+  info: {
+    version: '1.0.0',
+    title: 'API',
+    description: 'API for Counting-house',
+  },
 };
 
 swagger_autogen(outputFile, endpointsFiles, doc)
-    .then(() => {
-        require('../app');
-    })
-    .catch(() => {
-        console.log('При создании swagger документации получился Lil Peep')
-    })
+  .then(() => {
+    require('../app');
+  })
+  .catch(() => {
+    console.log('При создании swagger документации получился Lil Peep');
+  });

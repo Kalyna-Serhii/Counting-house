@@ -7,10 +7,10 @@ const pool = new Pool({
   database: 'postgres',
 });
 
-pool.connect(err => {
-    if(err) {
-        console.error(err)
-    }
-})
+pool.connect((err) => {
+  if (err) {
+    console.error(err);
+  }
+});
 
 module.exports = pool;
