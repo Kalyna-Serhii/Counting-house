@@ -102,6 +102,10 @@
                   "type": "string",
                   "example": "123456789"
                 },
+                "repeatPassword": {
+                  "type": "string",
+                  "example": "123456789"
+                },
                 "email": {
                   "type": "string",
                   "example": "john.doe@example.com"
@@ -125,10 +129,10 @@
               },
               "required": [
                 "name",
-                "surname",
                 "gender",
                 "phone",
                 "password",
+                "repeatPassword",
                 "floor",
                 "room"
               ]
@@ -190,6 +194,9 @@
                 "name": "main"
               }
             }
+          },
+          "400": {
+            "description": "Bad Request"
           }
         }
       }
@@ -312,6 +319,10 @@
                   "type": "string",
                   "example": "123456789"
                 },
+                "repeatPassword": {
+                  "type": "string",
+                  "example": "123456789"
+                },
                 "email": {
                   "type": "string",
                   "example": "john.doe@example.com"
@@ -336,10 +347,10 @@
               "required": [
                 "id",
                 "name",
-                "surname",
                 "gender",
                 "phone",
                 "password",
+                "repeatPassword",
                 "floor",
                 "room"
               ]
@@ -401,6 +412,9 @@
                 "name": "main"
               }
             }
+          },
+          "400": {
+            "description": "Bad Request"
           }
         }
       },

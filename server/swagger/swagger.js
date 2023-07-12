@@ -10,10 +10,6 @@ const doc = {
   },
 };
 
-swagger_autogen(outputFile, endpointsFiles, doc)
-  .then(() => {
-    require('../app');
-  })
-  .catch(() => {
-    console.log('При создании swagger документации получился Lil Peep');
-  });
+swagger_autogen(outputFile, endpointsFiles, doc).then(() => {
+  require('../app');
+});
