@@ -1,8 +1,17 @@
 const db = require('../db');
+const userValidation = require('../validations/user');
+const bcrypt = require('bcrypt');
 class UserController {
   async getUsers(req, res) {
-    const users = await db.query('SELECT * FROM users');
-    res.json(users.rows);
+    try {
+      const users = await db.query('SELECT * FROM users');
+      res.json(users.rows);
+    } catch (error) {
+      return res
+        .status(500)
+        .json('Не вдалось виконати запит, спробуйте пізніше');
+    }
+
     // #swagger.tags = ['Users']
     // #swagger.summary = 'Get a list of users'
     // #swagger.description = 'Returns a list of all users'
@@ -18,7 +27,7 @@ class UserController {
                     name: 'John',
                     surname: 'Doe',
                     gender: 'man',
-                    phone: '+380123456789',
+                    phone: '0123456789',
                     password: '123456789',
                     email: 'john.doe@example.com',
                     floor: 5,
@@ -31,7 +40,7 @@ class UserController {
                     name: 'Jane',
                     surname: 'Smith',
                     gender: 'woman',
-                    phone: '+380987654321',
+                    phone: '0987654321',
                     password: '123456789',
                     email: 'jane.smith@example.com',
                     floor: 2,
@@ -45,8 +54,13 @@ class UserController {
   }
 
   async createUser(req, res) {
+    const { error } = userValidation(req.body);
+    if (error) {
+      const errorMessage = error.details[0].message;
+      return res.status(400).json({ error: errorMessage });
+    }
     try {
-      const {
+      let {
         name,
         surname,
         gender,
@@ -58,6 +72,29 @@ class UserController {
         role,
         avatar,
       } = req.body;
+      password = await bcrypt.hash(password, 3);
+      const phoneAlreadyExists = await db.query(
+        'SELECT * FROM users WHERE phone = $1',
+        [phone]
+      );
+      if (phoneAlreadyExists.rows[0]) {
+        return res
+          .status(409)
+          .json('Користувач з таким номером телефону вже існує');
+      }
+      const emailAlreadyExists = await db.query(
+        'SELECT * FROM users WHERE email = $1',
+        [email]
+      );
+      if (emailAlreadyExists.rows[0]) {
+        return res.status(409).json('Користувач з таким email вже існує');
+      }
+      if (!gender) {
+        gender = 'man';
+      }
+      if (!role) {
+        role = 'user';
+      }
       const newUser = await db.query(
         `INSERT INTO users
         (name, surname, gender, phone, password, email, floor, room, role, avatar) values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *`,
@@ -76,11 +113,11 @@ class UserController {
       );
       res.json(newUser.rows[0]);
     } catch (error) {
-      console.log(
-        'При создании пользователя получился Lil Peep',
-        error.message
-      );
+      return res
+        .status(500)
+        .json('Не вдалось виконати запит, спробуйте пізніше');
     }
+
     // #swagger.tags = ['Users']
     // #swagger.summary = 'Create a new user'
     // #swagger.description = 'Creates a new user with the provided information'
@@ -89,10 +126,11 @@ class UserController {
                description: 'User object',
                schema: {
                     $name: 'John',
-                    $surname: 'Doe',
-                    $gender: 'man',
-                    $phone: '+380123456789',
+                    surname: 'Doe',
+                    gender: 'man',
+                    $phone: '0123456789',
                     $password: '123456789',
+                    $repeatPassword: '123456789',
                     email: 'john.doe@example.com',
                     $floor: 5,
                     $room: 34,
@@ -107,8 +145,8 @@ class UserController {
                 name: 'John',
                 surname: 'Doe',
                 gender: 'man',
-                phone: '+380123456789',
-                password: '123456789',
+                phone: '0123456789',
+                password: '$2b$04$g4415yNFT4BGk8aoxufQpuNYX5byukyoJjdzJvGuMnSTf4r2p6lga',
                 email: 'john.doe@example.com',
                 floor: 5,
                 room: 34,
@@ -119,9 +157,20 @@ class UserController {
   }
 
   async getUserById(req, res) {
-    const id = req.params.id;
-    const user = await db.query('SELECT * FROM users WHERE id = $1', [id]);
-    res.json(user.rows[0]);
+    try {
+      const id = req.params.id;
+      const user = await db.query('SELECT * FROM users WHERE id = $1', [id]);
+      if (!user.rows[0]) {
+        return res.status(400).json('Такого користувача не існує');
+      } else {
+        res.json(user.rows[0]);
+      }
+    } catch (error) {
+      return res
+        .status(500)
+        .json('Не вдалось виконати запит, спробуйте пізніше');
+    }
+
     // #swagger.tags = ['Users']
     // #swagger.summary = 'Get a user'
     // #swagger.description = 'Returns a user by user id'
@@ -133,7 +182,7 @@ class UserController {
                 name: 'John',
                 surname: 'Doe',
                 gender: 'man',
-                phone: '+380123456789',
+                phone: '0123456789',
                 password: '123456789',
                 email: 'john.doe@example.com',
                 floor: 5,
@@ -145,23 +194,13 @@ class UserController {
   }
 
   async updateUser(req, res) {
-    const {
-      id,
-      name,
-      surname,
-      gender,
-      phone,
-      password,
-      email,
-      floor,
-      room,
-      role,
-      avatar,
-    } = req.body;
-    const user = await db.query(
-      'UPDATE users set name = $2, surname = $3, gender=$4, phone = $5, password = $6,' +
-        'email = $7, floor = $8, room = $9, role = $10, avatar = $11 WHERE id = $1 RETURNING *',
-      [
+    const { error } = userValidation(req.body);
+    if (error) {
+      const errorMessage = error.details[0].message;
+      return res.status(400).json({ error: errorMessage });
+    }
+    try {
+      let {
         id,
         name,
         surname,
@@ -173,9 +212,62 @@ class UserController {
         room,
         role,
         avatar,
-      ]
-    );
-    res.json(user.rows[0]);
+      } = req.body;
+      password = await bcrypt.hash(password, 3);
+      const phoneAlreadyExists = await db.query(
+        'SELECT * FROM users WHERE phone = $1',
+        [phone]
+      );
+      if (phoneAlreadyExists.rows[0]) {
+        if (phoneAlreadyExists.rows[0].id != id) {
+          return res
+            .status(409)
+            .json('Користувач з таким номером телефону вже існує');
+        }
+      }
+      const emailAlreadyExists = await db.query(
+        'SELECT * FROM users WHERE email = $1',
+        [email]
+      );
+      if (emailAlreadyExists.rows[0]) {
+        if (emailAlreadyExists.rows[0].id != id) {
+          return res.status(409).json('Користувач з таким email вже існує');
+        }
+      }
+      if (!gender) {
+        gender = 'man';
+      }
+      if (!role) {
+        role = 'user';
+      }
+      const user = await db.query(
+        'UPDATE users set name = $2, surname = $3, gender=$4, phone = $5, password = $6,' +
+          'email = $7, floor = $8, room = $9, role = $10, avatar = $11 WHERE id = $1 RETURNING *',
+        [
+          id,
+          name,
+          surname,
+          gender,
+          phone,
+          password,
+          email,
+          floor,
+          room,
+          role,
+          avatar,
+        ]
+      );
+      if (!user.rows[0]) {
+        return res.status(400).json('Такого користувача не існує');
+      } else {
+        res.json(user.rows[0]);
+      }
+    } catch (error) {
+      return res
+        .status(500)
+        .json('Не вдалось виконати запит, спробуйте пізніше');
+    }
+
     // #swagger.tags = ['Users']
     // #swagger.summary = 'Update a user'
     // #swagger.description = 'Updates a user by user id with the provided information'
@@ -185,10 +277,11 @@ class UserController {
                 schema: {
                     $id: 5,
                     $name: 'John',
-                    $surname: 'Doe',
-                    $gender: 'man',
-                    $phone: '+380123456789',
+                    surname: 'Doe',
+                    gender: 'man',
+                    $phone: '0123456789',
                     $password: '123456789',
+                    $repeatPassword: '123456789',
                     email: 'john.doe@example.com',
                     $floor: 5,
                     $room: 34,
@@ -203,8 +296,8 @@ class UserController {
                 name: 'Jane',
                 surname: 'Smith',
                 gender: 'man',
-                phone: '+380987654321',
-                password: '123456789',
+                phone: '0987654321',
+                password: '$2b$04$g4415yNFT4BGk8aoxufQpuNYX5byukyoJjdzJvGuMnSTf4r2p6lga',
                 email: 'jane.smith@example.com',
                 floor: 2,
                 room: 10,
@@ -215,9 +308,16 @@ class UserController {
   }
 
   async deleteUser(req, res) {
-    const id = req.params.id;
-    const user = await db.query('DELETE FROM users WHERE id = $1', [id]);
-    res.json(user.rows[0]);
+    try {
+      const id = req.params.id;
+      await db.query('DELETE FROM users WHERE id = $1', [id]);
+      return res.status(200).json('Видалено');
+    } catch (error) {
+      return res
+        .status(500)
+        .json('Не вдалось виконати запит, спробуйте пізніше');
+    }
+
     // #swagger.tags = ['Users']
     // #swagger.summary = 'Delete a user'
     // #swagger.description = 'Deletes a user by user id'

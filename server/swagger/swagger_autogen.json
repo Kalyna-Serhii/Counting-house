@@ -40,7 +40,7 @@
                   "name": "John",
                   "surname": "Doe",
                   "gender": "man",
-                  "phone": "+380123456789",
+                  "phone": "0123456789",
                   "password": "123456789",
                   "email": "john.doe@example.com",
                   "floor": 5,
@@ -53,7 +53,7 @@
                   "name": "Jane",
                   "surname": "Smith",
                   "gender": "woman",
-                  "phone": "+380987654321",
+                  "phone": "0987654321",
                   "password": "123456789",
                   "email": "jane.smith@example.com",
                   "floor": 2,
@@ -63,6 +63,9 @@
                 }
               ]
             }
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }
@@ -96,9 +99,13 @@
                 },
                 "phone": {
                   "type": "string",
-                  "example": "+380123456789"
+                  "example": "0123456789"
                 },
                 "password": {
+                  "type": "string",
+                  "example": "123456789"
+                },
+                "repeatPassword": {
                   "type": "string",
                   "example": "123456789"
                 },
@@ -125,10 +132,9 @@
               },
               "required": [
                 "name",
-                "surname",
-                "gender",
                 "phone",
                 "password",
+                "repeatPassword",
                 "floor",
                 "room"
               ]
@@ -159,11 +165,11 @@
                 },
                 "phone": {
                   "type": "string",
-                  "example": "+380123456789"
+                  "example": "0123456789"
                 },
                 "password": {
                   "type": "string",
-                  "example": "123456789"
+                  "example": "$2b$04$g4415yNFT4BGk8aoxufQpuNYX5byukyoJjdzJvGuMnSTf4r2p6lga"
                 },
                 "email": {
                   "type": "string",
@@ -190,6 +196,15 @@
                 "name": "main"
               }
             }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "409": {
+            "description": "Conflict"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }
@@ -234,7 +249,7 @@
                 },
                 "phone": {
                   "type": "string",
-                  "example": "+380123456789"
+                  "example": "0123456789"
                 },
                 "password": {
                   "type": "string",
@@ -265,6 +280,12 @@
                 "name": "main"
               }
             }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       },
@@ -306,9 +327,13 @@
                 },
                 "phone": {
                   "type": "string",
-                  "example": "+380123456789"
+                  "example": "0123456789"
                 },
                 "password": {
+                  "type": "string",
+                  "example": "123456789"
+                },
+                "repeatPassword": {
                   "type": "string",
                   "example": "123456789"
                 },
@@ -336,10 +361,9 @@
               "required": [
                 "id",
                 "name",
-                "surname",
-                "gender",
                 "phone",
                 "password",
+                "repeatPassword",
                 "floor",
                 "room"
               ]
@@ -370,11 +394,11 @@
                 },
                 "phone": {
                   "type": "string",
-                  "example": "+380987654321"
+                  "example": "0987654321"
                 },
                 "password": {
                   "type": "string",
-                  "example": "123456789"
+                  "example": "$2b$04$g4415yNFT4BGk8aoxufQpuNYX5byukyoJjdzJvGuMnSTf4r2p6lga"
                 },
                 "email": {
                   "type": "string",
@@ -401,6 +425,15 @@
                 "name": "main"
               }
             }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "409": {
+            "description": "Conflict"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       },
@@ -422,6 +455,9 @@
         "responses": {
           "200": {
             "description": "Successful response"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }

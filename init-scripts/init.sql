@@ -1,12 +1,12 @@
 CREATE TYPE user_gender AS ENUM ('man', 'woman');
-CREATE TYPE user_role AS ENUM ('user', 'osbb', 'admin');
+CREATE TYPE user_role AS ENUM ('user', 'moderator', 'admin');
 CREATE TABLE IF NOT EXISTS users(
     id SERIAL PRIMARY KEY,
     name VARCHAR(15),
     surname VARCHAR(15),
     gender user_gender,
-    phone VARCHAR(15),
-    password VARCHAR(255),
+    phone VARCHAR(13),
+    password VARCHAR(60),
     email VARCHAR(50),
     floor INTEGER,
     room INTEGER,
