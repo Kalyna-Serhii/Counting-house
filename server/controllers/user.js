@@ -1,5 +1,6 @@
 const db = require('../db');
 const userValidation = require('../validations/user');
+const bcrypt = require('bcrypt');
 class UserController {
   async getUsers(req, res) {
     try {
@@ -71,6 +72,7 @@ class UserController {
         role,
         avatar,
       } = req.body;
+      password = await bcrypt.hash(password, 3);
       const phoneAlreadyExists = await db.query(
         'SELECT * FROM users WHERE phone = $1',
         [phone]
@@ -144,7 +146,7 @@ class UserController {
                 surname: 'Doe',
                 gender: 'man',
                 phone: '0123456789',
-                password: '123456789',
+                password: '$2b$04$g4415yNFT4BGk8aoxufQpuNYX5byukyoJjdzJvGuMnSTf4r2p6lga',
                 email: 'john.doe@example.com',
                 floor: 5,
                 room: 34,
@@ -211,6 +213,7 @@ class UserController {
         role,
         avatar,
       } = req.body;
+      password = await bcrypt.hash(password, 3);
       const phoneAlreadyExists = await db.query(
         'SELECT * FROM users WHERE phone = $1',
         [phone]
@@ -294,7 +297,7 @@ class UserController {
                 surname: 'Smith',
                 gender: 'man',
                 phone: '0987654321',
-                password: '123456789',
+                password: '$2b$04$g4415yNFT4BGk8aoxufQpuNYX5byukyoJjdzJvGuMnSTf4r2p6lga',
                 email: 'jane.smith@example.com',
                 floor: 2,
                 room: 10,

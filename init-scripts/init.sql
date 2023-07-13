@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS users(
     name VARCHAR(15),
     surname VARCHAR(15),
     gender user_gender,
-    phone VARCHAR(12),
+    phone VARCHAR(13),
     password VARCHAR(60),
     email VARCHAR(50),
     floor INTEGER,
