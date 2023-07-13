@@ -21,12 +21,12 @@ const userValidation = (data) => {
     }),
     phone: joi
       .string()
-      .pattern(/^0\d{9}$/)
+      .pattern(/^0\d{12}$/)
       .required()
       .messages({
         'string.empty': "Номер телефону є обов'язковим",
         'string.pattern.base':
-          'Номер телефону має відповідати патерну 0xx-xxx-xx-xx (без коду країни та інших символів))',
+          'Номер телефону має відповідати патерну (+38)0xx-xxx-xx-xx (без коду країни та інших символів))',
       }),
     password: joi
       .string()
