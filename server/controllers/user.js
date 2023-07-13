@@ -2,8 +2,14 @@ const db = require('../db');
 const userValidation = require('../validations/user');
 class UserController {
   async getUsers(req, res) {
-    const users = await db.query('SELECT * FROM users');
-    res.json(users.rows);
+    try {
+      const users = await db.query('SELECT * FROM users');
+      res.json(users.rows);
+    } catch (error) {
+      return res
+        .status(500)
+        .json('Не вдалось виконати запит, спробуйте пізніше');
+    }
 
     // #swagger.tags = ['Users']
     // #swagger.summary = 'Get a list of users'
@@ -89,7 +95,9 @@ class UserController {
       );
       res.json(newUser.rows[0]);
     } catch (error) {
-      return res.status(400).json({ error: error.message });
+      return res
+        .status(500)
+        .json('Не вдалось виконати запит, спробуйте пізніше');
     }
 
     // #swagger.tags = ['Users']
@@ -131,9 +139,19 @@ class UserController {
   }
 
   async getUserById(req, res) {
-    const id = req.params.id;
-    const user = await db.query('SELECT * FROM users WHERE id = $1', [id]);
-    res.json(user.rows[0]);
+    try {
+      const id = req.params.id;
+      const user = await db.query('SELECT * FROM users WHERE id = $1', [id]);
+      if (!user.rows[0]) {
+        return res.status(400).json('Такого користувача не існує');
+      } else {
+        res.json(user.rows[0]);
+      }
+    } catch (error) {
+      return res
+        .status(500)
+        .json('Не вдалось виконати запит, спробуйте пізніше');
+    }
 
     // #swagger.tags = ['Users']
     // #swagger.summary = 'Get a user'
@@ -200,9 +218,15 @@ class UserController {
           avatar,
         ]
       );
-      res.json(user.rows[0]);
+      if (!user.rows[0]) {
+        return res.status(400).json('Такого користувача не існує');
+      } else {
+        res.json(user.rows[0]);
+      }
     } catch (error) {
-      console.log(error.message);
+      return res
+        .status(500)
+        .json('Не вдалось виконати запит, спробуйте пізніше');
     }
 
     // #swagger.tags = ['Users']
@@ -245,9 +269,16 @@ class UserController {
   }
 
   async deleteUser(req, res) {
-    const id = req.params.id;
-    const user = await db.query('DELETE FROM users WHERE id = $1', [id]);
-    res.json(user.rows[0]);
+    try {
+      const id = req.params.id;
+      await db.query('DELETE FROM users WHERE id = $1', [id]);
+      return res.status(200).json('Видалено');
+    } catch (error) {
+      return res
+        .status(500)
+        .json('Не вдалось виконати запит, спробуйте пізніше');
+    }
+
     // #swagger.tags = ['Users']
     // #swagger.summary = 'Delete a user'
     // #swagger.description = 'Deletes a user by user id'
