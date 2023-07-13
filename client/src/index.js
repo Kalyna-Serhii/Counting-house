@@ -1,9 +1,15 @@
 import './style.css';
 
 async function getUsers() {
-  const response = await fetch('http://127.0.0.1:3000/api/users');
-  console.log('response', await response);
-  return await response.json();
+  try {
+    const response = await fetch('http://127.0.0.1:3000/api/users');
+    console.log('response', await response);
+    return await response.json();
+  } catch (error) {
+    console.dir(error)
+    throw new Error('wtf')
+  }
+
 }
 
 document.addEventListener('DOMContentLoaded', async function () {
