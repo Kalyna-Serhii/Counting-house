@@ -58,10 +58,10 @@ const userValidation = (data) => {
       'number.min': 'Поверх не може бути менше за 1',
       'number.max': 'Поверх не може бути більше за 9',
     }),
-    room: joi.number().min(1).max(98).required().messages({
+    room: joi.number().min(1).max(99).required().messages({
       'number.empty': "Квартира є обов'язковою",
       'number.min': 'Квартира не може бути менше за 1',
-      'number.max': 'Квартира не може бути більше за 98',
+      'number.max': 'Квартира не може бути більше за 99',
     }),
     role: joi.string().valid('moderator', 'admin').allow('').messages({
       'any.only':
