@@ -71,6 +71,22 @@ class UserController {
         role,
         avatar,
       } = req.body;
+      const phoneAlreadyExists = await db.query(
+        'SELECT * FROM users WHERE phone = $1',
+        [phone]
+      );
+      if (phoneAlreadyExists.rows[0]) {
+        return res
+          .status(409)
+          .json('Користувач з таким номером телефону вже існує');
+      }
+      const emailAlreadyExists = await db.query(
+        'SELECT * FROM users WHERE email = $1',
+        [email]
+      );
+      if (emailAlreadyExists.rows[0]) {
+        return res.status(409).json('Користувач з таким email вже існує');
+      }
       if (!gender) {
         gender = 'man';
       }
@@ -195,6 +211,26 @@ class UserController {
         role,
         avatar,
       } = req.body;
+      const phoneAlreadyExists = await db.query(
+        'SELECT * FROM users WHERE phone = $1',
+        [phone]
+      );
+      if (phoneAlreadyExists.rows[0]) {
+        if (phoneAlreadyExists.rows[0].id != id) {
+          return res
+            .status(409)
+            .json('Користувач з таким номером телефону вже існує');
+        }
+      }
+      const emailAlreadyExists = await db.query(
+        'SELECT * FROM users WHERE email = $1',
+        [email]
+      );
+      if (emailAlreadyExists.rows[0]) {
+        if (emailAlreadyExists.rows[0].id != id) {
+          return res.status(409).json('Користувач з таким email вже існує');
+        }
+      }
       if (!gender) {
         gender = 'man';
       }
