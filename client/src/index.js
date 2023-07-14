@@ -6,22 +6,59 @@ async function getUsers() {
     console.log('response', await response);
     return await response.json();
   } catch (error) {
-    console.dir(error)
-    throw new Error('wtf')
+    console.dir(error);
+    throw new Error('wtf');
   }
-
 }
 
 document.addEventListener('DOMContentLoaded', async function () {
-  const usersList = document.querySelector('#users');
-  const users = await getUsers();
-  const createUserItem = () => {
-    users.forEach((user) => {
-      const li = document.createElement('li');
-      li.textContent = `name: ${user.name}`;
-      usersList.appendChild(li);
-    });
-  };
-  createUserItem();
-  console.log(users);
+  const usersListElement = document.querySelector('#users');
+  if (usersListElement) {
+    const users = await getUsers();
+    const createUserItemElement = () => {
+      users.forEach((user) => {
+        const tr = document.createElement('tr');
+
+        const name = document.createElement('td');
+        name.textContent = user.name;
+        tr.appendChild(name);
+
+        const surname = document.createElement('td');
+        surname.textContent = user.surname;
+        tr.appendChild(surname);
+
+        const gender = document.createElement('td');
+        gender.textContent = user.gender;
+        tr.appendChild(gender);
+
+        const phone = document.createElement('td');
+        phone.textContent = user.phone;
+        tr.appendChild(phone);
+
+        const email = document.createElement('td');
+        email.textContent = user.email;
+        tr.appendChild(email);
+
+        const floor = document.createElement('td');
+        floor.textContent = user.floor;
+        tr.appendChild(floor);
+
+        const room = document.createElement('td');
+        room.textContent = user.room;
+        tr.appendChild(room);
+
+        const role = document.createElement('td');
+        role.textContent = user.role;
+        tr.appendChild(role);
+
+        const avatar = document.createElement('td');
+        avatar.textContent = user.avatar;
+        tr.appendChild(avatar);
+
+        usersListElement.appendChild(tr);
+      });
+    };
+    createUserItemElement();
+    console.log(users);
+  }
 });
