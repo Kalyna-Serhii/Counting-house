@@ -1,50 +1,68 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Мешканці</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <div class="app">
-    <header>
-
-    </header>
-    <main>
-      <div class="container">
-        <h1>Мешканці</h1>
-        <table class="table" id="users">
-          <thead>
-          <tr>
-            <th scope="col">Id</th>
-            <th scope="col">Ім'я</th>
-            <th scope="col">Прізвище</th>
-            <th scope="col">Гендер</th>
-            <th scope="col">Телефон</th>
-            <th scope="col">Пошта</th>
-            <th scope="col">Поверх</th>
-            <th scope="col">Квартира</th>
-            <th scope="col">Роль</th>
-            <th scope="col">Аватар</th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr></tr>
-          </tbody>
-        </table>
-      </div>
-    </main>
-    <footer>
-      <div class="container">
-        <p>&copy; 2023 Counting-house. All rights reserved.</p>
-      </div>
-    </footer>
-
-  </div>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-  <script src="index.js"></script>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Мешканці</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body>
+    <div class="app">
+      <header></header>
+      <main>
+        <div class="container">
+          <h1>Мешканці</h1>
+          <table class="table" id="users">
+            <thead>
+              <tr>
+                <th scope="col">Id</th>
+                <th scope="col">Ім'я</th>
+                <th scope="col">Прізвище</th>
+                <th scope="col">Гендер</th>
+                <th scope="col">Телефон</th>
+                <th scope="col">Пошта</th>
+                <th scope="col">Поверх</th>
+                <th scope="col">Квартира</th>
+                <th scope="col">Роль</th>
+                <th scope="col">Аватар</th>
+              </tr>
+            </thead>
+            <tbody>
+            <template id="userRow">
+              <tr>
+                <td class="record"></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+            </template>
+            </tbody>
+          </table>
+        </div>
+      </main>
+      <footer>
+        <div class="container">
+          <p>&copy; 2023 Counting-house. All rights reserved.</p>
+        </div>
+      </footer>
+    </div>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+      crossorigin="anonymous"
+    ></script>
+    <script type="module" src="index.js"></script>
+  </body>
 </html>
