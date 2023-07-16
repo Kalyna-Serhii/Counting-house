@@ -26,5 +26,6 @@
   "bugs": {
     "url": "https://github.com/Kalyna-Serhii/Counting-house/issues"
   },
-  "homepage": "https://github.com/Kalyna-Serhii/Counting-house#readme"
+  "homepage": "https://github.com/Kalyna-Serhii/Counting-house#readme",
+  "proxy": "http://127.0.0.1:3000"
 }

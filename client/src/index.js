@@ -24,25 +24,52 @@ document.addEventListener('DOMContentLoaded', async function () {
       for (const user of users) {
         if ('content' in document.createElement('template')) {
           const clone = template.content.cloneNode(true);
+          const tr = clone.querySelectorAll('tr');
           const td = clone.querySelectorAll('td');
           const userValues = Object.values(user);
 
+          // TODO
+          console.log('tr', ...tr)
+
+          /**
+           * Удалить
+           */
           for (let i = 0; i < td.length; i++) {
             const input = document.createElement('input');
-            input.setAttribute('type', 'text');
-            input.setAttribute('readonly', '');
-            input.value = i >= 5 ? userValues[i + 1] : userValues[i];
-            td[i].textContent = '';
-            td[i].appendChild(input);
 
-            const editButton = document.createElement('button');
+            if (i < td.length - 3) {
+              input.setAttribute('type', 'text');
+              input.setAttribute('readonly', '');
+              input.value = i >= 5 ? userValues[i + 1] : userValues[i];
+              td[i].appendChild(input);
+            }
+
+            /**
+             * Создаем кнопку редактировать
+             */
+            if (i === 10) {
+              const editButton = document.createElement('button');
+              editButton.textContent = 'Редактировать';
+              td[i].appendChild(editButton);
+            }
+            /**
+             * Создаем кнопку удалить
+             */
+            if (i === 11) {
+              const editButton = document.createElement('button');
+              editButton.textContent = 'Удалить';
+              td[i].appendChild(editButton);
+            }
+
+
+            /*const editButton = document.createElement('button');
             editButton.textContent = 'Редактировать';
             td[i].appendChild(editButton);
 
             editButton.addEventListener('click', function () {
               input.removeAttribute('readonly');
               input.focus();
-            });
+            });*/
           }
           tbody.appendChild(clone);
         }
