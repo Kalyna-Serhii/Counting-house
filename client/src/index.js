@@ -21,15 +21,16 @@ document.addEventListener('DOMContentLoaded', async function () {
     const users = await getUsers();
 
     const createUserItemElement = () => {
+      let UserRow = 0;
       for (const user of users) {
         if ('content' in document.createElement('template')) {
           const clone = template.content.cloneNode(true);
-          const tr = clone.querySelectorAll('tr');
+          // const tr = clone.querySelectorAll('tr');
           const td = clone.querySelectorAll('td');
           const userValues = Object.values(user);
 
           // TODO
-          console.log('tr', ...tr)
+          // console.log('tr', ...tr);
 
           /**
            * Удалить
@@ -41,6 +42,7 @@ document.addEventListener('DOMContentLoaded', async function () {
               input.setAttribute('type', 'text');
               input.setAttribute('readonly', '');
               input.value = i >= 5 ? userValues[i + 1] : userValues[i];
+              input.className = UserRow;
               td[i].appendChild(input);
             }
 
@@ -50,29 +52,51 @@ document.addEventListener('DOMContentLoaded', async function () {
             if (i === 10) {
               const editButton = document.createElement('button');
               editButton.textContent = 'Редактировать';
+              editButton.className = UserRow;
               td[i].appendChild(editButton);
+
+              let inputs = document.getElementsByClassName(UserRow);
+              let isEditing = false; // Флаг для отслеживания состояния редактирования
+
+              editButton.addEventListener('click', function () {
+                if (isEditing) {
+                  for (let elem = 0; elem < inputs.length; elem++) {
+                    inputs[elem].readOnly = true;
+                  }
+                  editButton.textContent = 'Редактировать';
+                } else {
+                  for (let elem = 0; elem < inputs.length; elem++) {
+                    inputs[elem].readOnly = false;
+                  }
+                  editButton.textContent = 'Готово';
+                }
+                isEditing = !isEditing;
+              });
             }
             /**
              * Создаем кнопку удалить
              */
             if (i === 11) {
-              const editButton = document.createElement('button');
-              editButton.textContent = 'Удалить';
-              td[i].appendChild(editButton);
+              const deleteButton = document.createElement('button');
+              deleteButton.textContent = 'Удалить';
+              deleteButton.className = UserRow;
+              td[i].appendChild(deleteButton);
+              deleteButton.addEventListener('click', function () {
+                fetch(`${URL}/user/${user.id}`, {
+                  method: 'DELETE',
+                })
+                  .then(function () {
+                    location.reload();
+                  })
+                  .catch(function (error) {
+                    console.log('Произошла ошибка:', error);
+                  });
+              });
             }
-
-
-            /*const editButton = document.createElement('button');
-            editButton.textContent = 'Редактировать';
-            td[i].appendChild(editButton);
-
-            editButton.addEventListener('click', function () {
-              input.removeAttribute('readonly');
-              input.focus();
-            });*/
           }
           tbody.appendChild(clone);
         }
+        UserRow++;
       }
     };
     createUserItemElement();
