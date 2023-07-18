@@ -1,6 +1,6 @@
 const joi = require('joi');
 
-const userValidation = (data) => {
+const CreateUserValidation = (data) => {
   const schema = joi.object({
     id: joi.number().min(1).messages({
       'number.empty': "ID є обов'язковим",
@@ -72,4 +72,65 @@ const userValidation = (data) => {
   return schema.validate(data);
 };
 
-module.exports = userValidation;
+const UpdateUserValidation = (data) => {
+  const schema = joi.object({
+    id: joi.number().min(1).messages({
+      'number.empty': "ID є обов'язковим",
+      'number.min': 'ID не може бути менше за 1',
+    }),
+    name: joi.string().min(2).max(15).messages({
+      'string.min': "Ім'я має містити не менше 2 символів",
+      'string.max': "Ім'я має містити не більше 15 символів",
+    }),
+    surname: joi.string().min(2).max(15).messages({
+      'string.min': 'Прізвище має містити не менше 2 символів',
+      'string.max': 'Прізвище має містити не більше 15 символів',
+    }),
+    gender: joi.string().valid('man', 'woman', '').messages({
+      'any.only':
+        'Гендер має бути одним із допустимих значень: man, woman, або порожній',
+    }),
+    phone: joi
+      .string()
+      .pattern(/^\+380\d{9}$/)
+      .messages({
+        'string.pattern.base':
+          'Номер телефону має відповідати патерну (+38)0xx-xxx-xx-xx)',
+      }),
+    password: joi
+      .string()
+      .min(6)
+      .max(72)
+      .pattern(/^(?=.*[a-zA-Z]).{6,72}$/)
+      .messages({
+        'string.min': 'Пароль має містити щонайменше 6 символів',
+        'string.max': 'Пароль має містити не більше 72 символів',
+        'string.pattern.base':
+          'Пароль має містити щонайменше одну літеру латинського алфавіту',
+      }),
+    repeatPassword: joi.string().valid(joi.ref('password')).messages({
+      'any.only': 'Паролі не співпадають',
+    }),
+    email: joi.string().min(5).max(50).allow('').email().messages({
+      'string.min': 'Електронна пошта має містити не менше 5 символів',
+      'string.max': 'Електронна пошта має містити не більше 50 символів',
+      'string.email': 'Електронна пошта має бути коректною',
+    }),
+    floor: joi.number().min(1).max(9).messages({
+      'number.min': 'Поверх не може бути менше за 1',
+      'number.max': 'Поверх не може бути більше за 9',
+    }),
+    room: joi.number().min(1).max(99).messages({
+      'number.min': 'Квартира не може бути менше за 1',
+      'number.max': 'Квартира не може бути більше за 99',
+    }),
+    role: joi.string().valid('user', 'moderator', 'admin').allow('').messages({
+      'any.only':
+        'Роль має бути одним із допустимих значень: user, moderator, admin',
+    }),
+    avatar: joi.string().allow('').max(255),
+  });
+  return schema.validate(data);
+};
+
+module.exports = [CreateUserValidation, UpdateUserValidation];
