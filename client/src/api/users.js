@@ -5,14 +5,21 @@ export const users = {
     try {
       return await fetchInstance.get('/users');
     } catch (error) {
-      throw new Error('Не удалось получить пользователей')
+      throw new Error('Не удалось получить пользователей');
+    }
+  },
+  async patch(userId, body) {
+    try {
+      return await fetchInstance.patch(`/user/${userId}`, body);
+    } catch (error) {
+      throw new Error('Не удалось обновить данные пользователя');
     }
   },
   async delete(userId) {
     try {
-      return await fetchInstance.delete(`/user/${userId}`)
+      return await fetchInstance.delete(`/user/${userId}`);
     } catch (error) {
-      throw new Error('Не удалось удалить пользователя')
+      throw new Error('Не удалось удалить пользователя');
     }
-  }
+  },
 };

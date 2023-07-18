@@ -4,6 +4,7 @@ class fetchClient {
   }
 
   async request(url, options = {}) {
+    console.log(options);
     const response = await fetch(`${this.baseURL}${url}`, options);
     if (!response.ok) {
       throw new Error(`Request failed with status ${response.status}`);
@@ -16,9 +17,21 @@ class fetchClient {
   }
 
   async post(url, body, options = {}) {
-    return this.request(url, { method: 'POST', body: JSON.stringify(body), ...options });
+    return this.request(url, {
+      method: 'POST',
+      body: JSON.stringify(body),
+      ...options,
+    });
   }
 
+  async patch(url, body, options = {}) {
+    console.log(JSON.stringify(body));
+    return this.request(url, {
+      method: 'PATCH',
+      body: JSON.stringify(body),
+      ...options,
+    });
+  }
 
   async delete(url, options = {}) {
     return this.request(url, { method: 'DELETE', ...options });
@@ -27,4 +40,4 @@ class fetchClient {
 
 const fetchInstance = new fetchClient('http://127.0.0.1:3000/api');
 
-export  { fetchInstance };
+export { fetchInstance };
