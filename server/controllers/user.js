@@ -75,7 +75,11 @@ class UserController {
         role,
         avatar,
       } = req.body;
-      password = await bcrypt.hash(password, 3);
+      if (phone.startsWith('0')) {
+        phone = '+38' + phone;
+      } else if (phone.startsWith('380')) {
+        phone = '+' + phone;
+      }
       const phoneAlreadyExists = await db.query(
         'SELECT * FROM users WHERE phone = $1',
         [phone]
@@ -92,6 +96,7 @@ class UserController {
       if (emailAlreadyExists.rows[0]) {
         return res.status(409).json('Користувач з таким email вже існує');
       }
+      password = await bcrypt.hash(password, 3);
       if (!gender) {
         gender = 'man';
       }
@@ -216,7 +221,32 @@ class UserController {
         role,
         avatar,
       } = req.body;
-
+      if (phone.startsWith('380')) {
+        phone = '+' + phone;
+      }
+      if (phone.startsWith('0')) {
+        phone = '+38' + phone;
+      }
+      const phoneAlreadyExists = await db.query(
+        'SELECT * FROM users WHERE phone = $1',
+        [phone]
+      );
+      if (phoneAlreadyExists.rows[0]) {
+        if (phoneAlreadyExists.rows[0].id != id) {
+          return res
+            .status(409)
+            .json('Користувач з таким номером телефону вже існує');
+        }
+      }
+      const emailAlreadyExists = await db.query(
+        'SELECT * FROM users WHERE email = $1',
+        [email]
+      );
+      if (emailAlreadyExists.rows[0]) {
+        if (emailAlreadyExists.rows[0].id != id) {
+          return res.status(409).json('Користувач з таким email вже існує');
+        }
+      }
       let updateFields = {};
       if (name) {
         updateFields.name = name;
@@ -247,26 +277,6 @@ class UserController {
       }
       if (avatar) {
         updateFields.avatar = avatar;
-      }
-      const phoneAlreadyExists = await db.query(
-        'SELECT * FROM users WHERE phone = $1',
-        [phone]
-      );
-      if (phoneAlreadyExists.rows[0]) {
-        if (phoneAlreadyExists.rows[0].id != id) {
-          return res
-            .status(409)
-            .json('Користувач з таким номером телефону вже існує');
-        }
-      }
-      const emailAlreadyExists = await db.query(
-        'SELECT * FROM users WHERE email = $1',
-        [email]
-      );
-      if (emailAlreadyExists.rows[0]) {
-        if (emailAlreadyExists.rows[0].id != id) {
-          return res.status(409).json('Користувач з таким email вже існує');
-        }
       }
       if (Object.keys(updateFields).length === 0) {
         return res.status(400).json('Не вказано жодного поля для оновлення');
