@@ -21,12 +21,11 @@ const CreateUserValidation = (data) => {
     }),
     phone: joi
       .string()
-      .pattern(/^\+380\d{9}$/)
+      .pattern(/^(?:\+?380|\b0)\d{9}$/)
       .required()
       .messages({
         'string.empty': "Номер телефону є обов'язковим",
-        'string.pattern.base':
-          'Номер телефону має відповідати патерну (+38)0xx-xxx-xx-xx)',
+        'string.pattern.base': 'Введіть коректний номер телефону',
       }),
     password: joi
       .string()
@@ -92,10 +91,9 @@ const UpdateUserValidation = (data) => {
     }),
     phone: joi
       .string()
-      .pattern(/^\+380\d{9}$/)
+      .pattern(/^(?:\+?380|\b0)\d{9}$/)
       .messages({
-        'string.pattern.base':
-          'Номер телефону має відповідати патерну (+38)0xx-xxx-xx-xx)',
+        'string.pattern.base': 'Введіть коректний номер телефону',
       }),
     password: joi
       .string()
