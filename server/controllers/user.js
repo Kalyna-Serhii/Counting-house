@@ -209,6 +209,9 @@ class UserController {
       return res.status(400).json({ error: errorMessage });
     }
     const id = req.params.id;
+    if (id < 1) {
+      return res.status(400).json('Id не може бути менше за 1');
+    }
     try {
       let {
         name,
@@ -298,7 +301,6 @@ class UserController {
                 in: 'body',
                 description: 'User object',
                 schema: {
-                    $id: 5,
                     $name: 'John',
                     surname: 'Doe',
                     gender: 'man',
@@ -333,12 +335,17 @@ class UserController {
   async deleteUser(req, res) {
     try {
       const id = req.params.id;
-      await User.destroy({
+      const user = await User.findOne({
         where: {
           id: id,
         },
       });
-      return res.status(200).json('Видалено');
+      if (user) {
+        user.destroy();
+        return res.status(200).json('Видалено');
+      } else {
+        return res.status(400).json('Такого користувача не існує');
+      }
     } catch (error) {
       return res
         .status(500)
