@@ -5,6 +5,7 @@ const User = sequelize.define(
   {
     id: {
       type: DataTypes.INTEGER,
+      allowNull: false,
       primaryKey: true,
       autoIncrement: true,
     },
@@ -18,14 +19,14 @@ const User = sequelize.define(
     surname: {
       type: DataTypes.STRING,
       validate: {
-        len: [2, 15],
+        len: [0, 15],
       },
     },
     gender: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        isIn: ['man', 'woman'],
+        isIn: [['man', 'woman']],
       },
       defaultValue: 'man',
     },
@@ -46,9 +47,8 @@ const User = sequelize.define(
     },
     email: {
       type: DataTypes.STRING,
-      unique: true,
       validate: {
-        len: [50],
+        len: [0, 50],
       },
     },
     floor: {
@@ -69,7 +69,7 @@ const User = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        isIn: ['user', 'moderator', 'admin'],
+        isIn: [['user', 'moderator', 'admin']],
       },
       defaultValue: 'user',
     },
@@ -79,6 +79,7 @@ const User = sequelize.define(
   },
   {
     tableName: 'users',
+    timestamps: false, // отключение генерации полей createdAt и updatedAt
   }
 );
 
