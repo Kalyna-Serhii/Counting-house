@@ -1,4 +1,4 @@
-const User = require('../database/models');
+const User = require('../models/user');
 const { Op } = require('sequelize');
 const [
   CreateUserValidation,
