@@ -1,4 +1,7 @@
-const db = require('../db');
+// const db = require('../db');
+const { User } = require('../database/models');
+const { db } = require('../database/db');
+const { Op } = require('sequelize');
 const userValidation = require('../validations/user');
 const bcrypt = require('bcrypt');
 class UserController {
@@ -214,59 +217,111 @@ class UserController {
         avatar,
       } = req.body;
       password = await bcrypt.hash(password, 3);
-      const phoneAlreadyExists = await db.query(
-        'SELECT * FROM users WHERE phone = $1',
-        [phone]
-      );
-      if (phoneAlreadyExists.rows[0]) {
-        if (phoneAlreadyExists.rows[0].id != id) {
-          return res
-            .status(409)
-            .json('Користувач з таким номером телефону вже існує');
-        }
-      }
-      const emailAlreadyExists = await db.query(
-        'SELECT * FROM users WHERE email = $1',
-        [email]
-      );
-      if (emailAlreadyExists.rows[0]) {
-        if (emailAlreadyExists.rows[0].id != id) {
-          return res.status(409).json('Користувач з таким email вже існує');
-        }
-      }
-      if (!gender) {
-        gender = 'man';
-      }
-      if (!role) {
-        role = 'user';
-      }
-      const user = await db.query(
-        'UPDATE users set name = $2, surname = $3, gender=$4, phone = $5, password = $6,' +
-          'email = $7, floor = $8, room = $9, role = $10, avatar = $11 WHERE id = $1 RETURNING *',
-        [
-          id,
-          name,
-          surname,
-          gender,
-          phone,
-          password,
-          email,
-          floor,
-          room,
-          role,
-          avatar,
-        ]
-      );
-      if (!user.rows[0]) {
+      const user = await User.findOne({
+        where: {
+          id: id,
+        },
+      });
+      if (!user) {
         return res.status(400).json('Такого користувача не існує');
-      } else {
-        res.json(user.rows[0]);
       }
+      const phoneAlreadyExists = await User.findOne({
+        where: {
+          phone: phone,
+          id: {
+            [db.ne]: id,
+          },
+        },
+      });
+      if (phoneAlreadyExists) {
+        return res
+          .status(409)
+          .json('Користувач з таким номером телефону вже існує');
+      }
+      const emailAlreadyExists = await User.findOne({
+        where: {
+          email: email,
+          id: {
+            [Op.ne]: id,
+          },
+        },
+      });
+      if (emailAlreadyExists) {
+        return res.status(409).json('Користувач з таким email вже існує');
+      }
+      const updatedUser = await user.update({
+        name,
+        surname,
+        gender,
+        phone,
+        password,
+        email,
+        floor,
+        room,
+        role,
+        avatar,
+      });
+
+      res.json(updatedUser);
     } catch (error) {
       return res
         .status(500)
         .json('Не вдалось виконати запит, спробуйте пізніше');
     }
+
+    //   const phoneAlreadyExists = await db.query(
+    //     'SELECT * FROM users WHERE phone = $1',
+    //     [phone]
+    //   );
+    //   if (phoneAlreadyExists.rows[0]) {
+    //     if (phoneAlreadyExists.rows[0].id != id) {
+    //       return res
+    //         .status(409)
+    //         .json('Користувач з таким номером телефону вже існує');
+    //     }
+    //   }
+    //   const emailAlreadyExists = await db.query(
+    //     'SELECT * FROM users WHERE email = $1',
+    //     [email]
+    //   );
+    //   if (emailAlreadyExists.rows[0]) {
+    //     if (emailAlreadyExists.rows[0].id != id) {
+    //       return res.status(409).json('Користувач з таким email вже існує');
+    //     }
+    //   }
+    //   if (!gender) {
+    //     gender = 'man';
+    //   }
+    //   if (!role) {
+    //     role = 'user';
+    //   }
+    //   const user = await db.query(
+    //     'UPDATE users set name = $2, surname = $3, gender=$4, phone = $5, password = $6,' +
+    //       'email = $7, floor = $8, room = $9, role = $10, avatar = $11 WHERE id = $1 RETURNING *',
+    //     [
+    //       id,
+    //       name,
+    //       surname,
+    //       gender,
+    //       phone,
+    //       password,
+    //       email,
+    //       floor,
+    //       room,
+    //       role,
+    //       avatar,
+    //     ]
+    //   );
+    //   if (!user.rows[0]) {
+    //     return res.status(400).json('Такого користувача не існує');
+    //   } else {
+    //     res.json(user.rows[0]);
+    //   }
+    // } catch (error) {
+    //   return res
+    //     .status(500)
+    //     .json('Не вдалось виконати запит, спробуйте пізніше');
+    // }
 
     // #swagger.tags = ['Users']
     // #swagger.summary = 'Update a user'
