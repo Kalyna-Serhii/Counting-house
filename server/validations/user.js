@@ -70,6 +70,9 @@ const CreateUserValidation = (data) => {
 
 const UpdateUserValidation = (data) => {
   const schema = joi.object({
+    id: joi.string().messages({
+      'string.empty': "ID є обов'язковим",
+    }),
     name: joi.string().min(2).max(15).required().messages({
       'string.empty': "Ім'я є обов'язковим",
       'string.min': "Ім'я має містити не менше 2 символів",

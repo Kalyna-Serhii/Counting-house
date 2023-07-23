@@ -197,6 +197,9 @@
               }
             }
           },
+          "201": {
+            "description": "Created"
+          },
           "400": {
             "description": "Bad Request"
           },
@@ -289,7 +292,7 @@
           }
         }
       },
-      "put": {
+      "patch": {
         "tags": [
           "Users"
         ],
@@ -309,10 +312,6 @@
             "schema": {
               "type": "object",
               "properties": {
-                "id": {
-                  "type": "number",
-                  "example": 5
-                },
                 "name": {
                   "type": "string",
                   "example": "John"
@@ -359,7 +358,6 @@
                 }
               },
               "required": [
-                "id",
                 "name",
                 "phone",
                 "password",
@@ -455,6 +453,9 @@
         "responses": {
           "200": {
             "description": "Successful response"
+          },
+          "400": {
+            "description": "Bad Request"
           },
           "500": {
             "description": "Internal Server Error"
