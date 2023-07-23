@@ -1,8 +1,10 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
 
+const isProduction = process.env.NODE_ENV === "production";
+console.log(isProduction);
 module.exports = {
-  context: path.join(__dirname, 'src'),
+  context: path.join(__dirname, './src'),
   mode: 'development',
   entry: './index.js',
   output: {
@@ -24,7 +26,7 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.html$/,
+        test:  /\.(html)$/i,
         use: 'html-loader',
       },
       {
@@ -34,6 +36,7 @@ module.exports = {
     ],
   },
   devServer: {
+    open: true,
     static: path.resolve(__dirname, 'src'),
     hot: true,
     host: 'localhost',

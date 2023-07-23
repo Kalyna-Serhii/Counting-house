@@ -13,6 +13,7 @@
     "start:client": "npm run start --workspace=client",
     "start:server": "npm run dev --workspace=server",
     "lint:client": "eslint \"./client/src/**/*.{js,ts}\"",
+    "lint-fix": "eslint \"./client/src/**/*.{js,ts}\" --fix",
     "lint:server": "eslint \"./server/**/*.{js,ts}\"",
     "lint": "eslint \"./client/src/**/*.{js,ts}\" && eslint \"./server/**/*.{js,ts}\"",
     "format:client": "prettier --write \"./client/src/**/*.{js,ts}\"",
@@ -27,7 +28,12 @@
     "npm-run-all": "^4.1.5"
   },
   "devDependencies": {
+    "@babel/cli": "^7.22.9",
+    "@typescript-eslint/eslint-plugin": "^6.1.0",
+    "@typescript-eslint/parser": "^6.1.0",
     "concurrently": "^6.0.0",
+    "eslint": "^8.45.0",
+    "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-prettier": "^5.0.0-alpha.2",
     "husky": "^8.0.3",

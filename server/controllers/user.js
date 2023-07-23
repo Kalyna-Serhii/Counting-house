@@ -75,9 +75,9 @@ class UserController {
         role,
         avatar,
       } = req.body;
-      if (phone.startsWith('0')) {
+      if (phone && phone.startsWith('0')) {
         phone = '+38' + phone;
-      } else if (phone.startsWith('380')) {
+      } else if (phone && phone.startsWith('380')) {
         phone = '+' + phone;
       }
       const phoneAlreadyExists = await db.query(
@@ -123,7 +123,7 @@ class UserController {
     } catch (error) {
       return res
         .status(500)
-        .json('Не вдалось виконати запит, спробуйте пізніше');
+        .json(error.message);
     }
 
     // #swagger.tags = ['Users']
@@ -204,8 +204,10 @@ class UserController {
   async updateUser(req, res) {
     const { error } = UpdateUserValidation(req.body);
     if (error) {
+      console.log('error', error);
       const errorMessage = error.details[0].message;
-      return res.status(400).json({ error: errorMessage });
+      console.log('errorMessage', errorMessage);
+      return res.status(400).json(errorMessage);
     }
     try {
       let {
@@ -221,10 +223,11 @@ class UserController {
         role,
         avatar,
       } = req.body;
-      if (phone.startsWith('380')) {
+      console.log('req.body',req.body);
+      if (phone && phone.startsWith('380')) {
         phone = '+' + phone;
       }
-      if (phone.startsWith('0')) {
+      if (phone && phone.startsWith('0')) {
         phone = '+38' + phone;
       }
       const phoneAlreadyExists = await db.query(
@@ -278,6 +281,7 @@ class UserController {
       if (avatar) {
         updateFields.avatar = avatar;
       }
+      console.log('updateFields', updateFields);
       if (Object.keys(updateFields).length === 0) {
         return res.status(400).json('Не вказано жодного поля для оновлення');
       }
@@ -299,9 +303,10 @@ class UserController {
         res.json(UpdateUser.rows[0]);
       }
     } catch (error) {
+      console.dir(error.message);
       return res
         .status(500)
-        .json('Не вдалось виконати запит, спробуйте пізніше');
+        .json(error.message);
     }
 
     // #swagger.tags = ['Users']
