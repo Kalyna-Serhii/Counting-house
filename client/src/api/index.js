@@ -1,7 +1,11 @@
-import { fetchInstance } from './fetchInstance';
-import { users } from './users';
+import fetchInstance from './fetchInstance';
+import users from './users';
+import {ApiError} from './ApiError';
 
-export const api = {
+const api = {
   fetchInstance,
   users,
+  ApiError,
 };
+
+export default api;

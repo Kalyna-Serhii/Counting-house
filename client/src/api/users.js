@@ -1,6 +1,6 @@
-import { fetchInstance } from './fetchInstance';
-
-export const users = {
+import fetchInstance from './fetchInstance';
+import {ApiError} from './ApiError';
+const users = {
   async get() {
     try {
       return await fetchInstance.get('/users');
@@ -10,9 +10,16 @@ export const users = {
   },
   async patch(userId, body) {
     try {
-      return await fetchInstance.patch(`/user/${userId}`, body);
+      const response = await fetchInstance.patch(`/user/${userId}`, body);
+      return response;
     } catch (error) {
-      throw new Error('Не удалось обновить данные пользователя');
+      const emptyMessage = await error.json();
+      const nameInvalid = emptyMessage.error;
+      const errorMessage = {
+        status: error.status,
+        message: nameInvalid || emptyMessage,
+      }
+      throw new ApiError(errorMessage);
     }
   },
   async delete(userId) {
@@ -23,3 +30,5 @@ export const users = {
     }
   },
 };
+
+export default users;

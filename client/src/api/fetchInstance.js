@@ -1,19 +1,27 @@
-class fetchClient {
+import {ApiError} from './ApiError';
+class FetchClient {
   constructor(baseURL) {
     this.baseURL = baseURL;
   }
 
   async request(url, options = {}) {
-    console.log(options);
     const response = await fetch(`${this.baseURL}${url}`, options);
-    if (!response.ok) {
-      throw new Error(`Request failed with status ${response.status}`);
+    try {
+      if (!response.ok) {
+        throw response;
+      }
+      return await response.json();
+    } catch (error) {
+      throw error;
     }
-    return await response.json();
   }
 
   async get(url, options = {}) {
-    return this.request(url, { method: 'GET', ...options });
+    try {
+      return this.request(url, {method: 'GET', ...options});
+    } catch (error) {
+      throw error;
+    }
   }
 
   async post(url, body, options = {}) {
@@ -25,19 +33,30 @@ class fetchClient {
   }
 
   async patch(url, body, options = {}) {
-    console.log(JSON.stringify(body));
-    return this.request(url, {
-      method: 'PATCH',
-      body: JSON.stringify(body),
-      ...options,
-    });
+    try {
+      const response = await this.request(url, {
+        method: 'PATCH',
+        body: JSON.stringify(body),
+        headers: {
+          'Content-type': 'application/json; charset=UTF-8',
+        },
+        ...options,
+      });
+      return response;
+    } catch (error) {
+      throw error;
+    }
   }
 
   async delete(url, options = {}) {
-    return this.request(url, { method: 'DELETE', ...options });
+    try {
+      return this.request(url, {method: 'DELETE', ...options});
+    }catch (error) {
+      throw error
+    }
   }
 }
 
-const fetchInstance = new fetchClient('http://127.0.0.1:3000/api');
+const fetchInstance = new FetchClient('http://127.0.0.1:3000/api');
 
-export { fetchInstance };
+export default fetchInstance;

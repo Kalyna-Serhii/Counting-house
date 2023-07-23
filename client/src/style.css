@@ -1,11 +1,5 @@
-
-.table tr th:first-child,
-.table tr td:first-child,
-.table tr th:nth-child(4),
-.table tr td:nth-child(4),
-.table tr th:nth-child(7),
-.table tr td:nth-child(7),
-.table tr th:nth-child(8),
-.table tr td:nth-child(8) {
-  max-width: 60px;
+.app {
+  min-height: 100vh;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
 }
