@@ -2,10 +2,6 @@ const joi = require('joi');
 
 const CreateUserValidation = (data) => {
   const schema = joi.object({
-    id: joi.number().min(1).messages({
-      'number.empty': "ID є обов'язковим",
-      'number.min': 'ID не може бути менше за 1',
-    }),
     name: joi.string().min(2).max(15).required().messages({
       'string.empty': "Ім'я є обов'язковим",
       'string.min': "Ім'я має містити не менше 2 символів",
@@ -21,11 +17,12 @@ const CreateUserValidation = (data) => {
     }),
     phone: joi
       .string()
-      .pattern(/^(?:\+?380|\b0)\d{9}$/)
+      .pattern(/^\+380\d{9}$/)
       .required()
       .messages({
         'string.empty': "Номер телефону є обов'язковим",
-        'string.pattern.base': 'Введіть коректний номер телефону',
+        'string.pattern.base':
+          'Номер телефону має відповідати патерну (+38)0xx-xxx-xx-xx)',
       }),
     password: joi
       .string()
@@ -73,27 +70,30 @@ const CreateUserValidation = (data) => {
 
 const UpdateUserValidation = (data) => {
   const schema = joi.object({
-    id: joi.number().min(1).messages({
-      'number.empty': "ID є обов'язковим",
-      'number.min': 'ID не може бути менше за 1',
+    id: joi.string().messages({
+      'string.empty': "ID є обов'язковим",
     }),
-    name: joi.string().min(2).max(15).messages({
+    name: joi.string().min(2).max(15).required().messages({
+      'string.empty': "Ім'я є обов'язковим",
       'string.min': "Ім'я має містити не менше 2 символів",
       'string.max': "Ім'я має містити не більше 15 символів",
     }),
-    surname: joi.string().min(2).max(15).messages({
+    surname: joi.string().min(2).max(15).allow('').messages({
       'string.min': 'Прізвище має містити не менше 2 символів',
       'string.max': 'Прізвище має містити не більше 15 символів',
     }),
-    gender: joi.string().valid('man', 'woman', '').messages({
+    gender: joi.string().valid('man', 'woman', '').required().messages({
       'any.only':
         'Гендер має бути одним із допустимих значень: man, woman, або порожній',
     }),
     phone: joi
       .string()
-      .pattern(/^(?:\+?380|\b0)\d{9}$/)
+      .pattern(/^\+380\d{9}$/)
+      .required()
       .messages({
-        'string.pattern.base': 'Введіть коректний номер телефону',
+        'string.empty': "Номер телефону є обов'язковим",
+        'string.pattern.base':
+          'Номер телефону має відповідати патерну (+38)0xx-xxx-xx-xx)',
       }),
     password: joi
       .string()
@@ -101,6 +101,7 @@ const UpdateUserValidation = (data) => {
       .max(72)
       .pattern(/^(?=.*[a-zA-Z]).{6,72}$/)
       .messages({
+        'string.empty': "Пароль є обов'язковим",
         'string.min': 'Пароль має містити щонайменше 6 символів',
         'string.max': 'Пароль має містити не більше 72 символів',
         'string.pattern.base':

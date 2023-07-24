@@ -1,14 +1,16 @@
-const db = require('../db');
+const User = require('../models/user');
+const { Op } = require('sequelize');
 const [
   CreateUserValidation,
   UpdateUserValidation,
 ] = require('../validations/user');
 const bcrypt = require('bcrypt');
+
 class UserController {
   async getUsers(req, res) {
     try {
-      const users = await db.query('SELECT * FROM users');
-      res.json(users.rows);
+      const users = await User.findAll();
+      res.json(users);
     } catch (error) {
       return res
         .status(500)
@@ -75,51 +77,46 @@ class UserController {
         role,
         avatar,
       } = req.body;
-      if (phone && phone.startsWith('0')) {
-        phone = '+38' + phone;
-      } else if (phone && phone.startsWith('380')) {
-        phone = '+' + phone;
-      }
-      const phoneAlreadyExists = await db.query(
-        'SELECT * FROM users WHERE phone = $1',
-        [phone]
-      );
-      if (phoneAlreadyExists.rows[0]) {
+      password = await bcrypt.hash(password, 3);
+      const phoneAlreadyExists = await User.findOne({
+        where: {
+          phone: phone,
+        },
+      });
+      if (phoneAlreadyExists) {
         return res
           .status(409)
           .json('Користувач з таким номером телефону вже існує');
       }
-      const emailAlreadyExists = await db.query(
-        'SELECT * FROM users WHERE email = $1',
-        [email]
-      );
-      if (emailAlreadyExists.rows[0]) {
-        return res.status(409).json('Користувач з таким email вже існує');
+      if (email) {
+        const emailAlreadyExists = await User.findOne({
+          where: {
+            email: email,
+          },
+        });
+        if (emailAlreadyExists) {
+          return res.status(409).json('Користувач з таким email вже існує');
+        }
       }
-      password = await bcrypt.hash(password, 3);
       if (!gender) {
         gender = 'man';
       }
       if (!role) {
         role = 'user';
       }
-      const newUser = await db.query(
-        `INSERT INTO users
-        (name, surname, gender, phone, password, email, floor, room, role, avatar) values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *`,
-        [
-          name,
-          surname,
-          gender,
-          phone,
-          password,
-          email,
-          floor,
-          room,
-          role,
-          avatar,
-        ]
-      );
-      res.json(newUser.rows[0]);
+      const newUser = await User.create({
+        name,
+        surname,
+        gender,
+        phone,
+        password,
+        email,
+        floor,
+        room,
+        role,
+        avatar,
+      });
+      res.status(201).json(newUser);
     } catch (error) {
       return res
         .status(500)
@@ -167,11 +164,15 @@ class UserController {
   async getUserById(req, res) {
     try {
       const id = req.params.id;
-      const user = await db.query('SELECT * FROM users WHERE id = $1', [id]);
-      if (user.rows[0]) {
-        res.json(user.rows[0]);
-      } else {
+      const user = await User.findOne({
+        where: {
+          id: id,
+        },
+      });
+      if (!user) {
         return res.status(400).json('Такого користувача не існує');
+      } else {
+        res.json(user);
       }
     } catch (error) {
       return res
@@ -204,14 +205,16 @@ class UserController {
   async updateUser(req, res) {
     const { error } = UpdateUserValidation(req.body);
     if (error) {
-      console.log('error', error);
+      console.log(error);
       const errorMessage = error.details[0].message;
-      console.log('errorMessage', errorMessage);
-      return res.status(400).json(errorMessage);
+      return res.status(400).json({ error: errorMessage });
+    }
+    const id = req.params.id;
+    if (id < 1) {
+      return res.status(400).json('Id не може бути менше за 1');
     }
     try {
       let {
-        id,
         name,
         surname,
         gender,
@@ -223,87 +226,70 @@ class UserController {
         role,
         avatar,
       } = req.body;
-      console.log('req.body',req.body);
-      if (phone && phone.startsWith('380')) {
-        phone = '+' + phone;
+      const user = await User.findOne({
+        where: {
+          id: id,
+        },
+      });
+      if (!user) {
+        return res.status(400).json('Такого користувача не існує');
       }
-      if (phone && phone.startsWith('0')) {
-        phone = '+38' + phone;
+      const phoneAlreadyExists = await User.findOne({
+        where: {
+          phone: phone,
+          id: {
+            [Op.ne]: id,
+          },
+        },
+      });
+      if (phoneAlreadyExists) {
+        return res
+          .status(409)
+          .json('Користувач з таким номером телефону вже існує');
       }
-      const phoneAlreadyExists = await db.query(
-        'SELECT * FROM users WHERE phone = $1',
-        [phone]
-      );
-      if (phoneAlreadyExists.rows[0]) {
-        if (phoneAlreadyExists.rows[0].id != id) {
-          return res
-            .status(409)
-            .json('Користувач з таким номером телефону вже існує');
-        }
-      }
-      const emailAlreadyExists = await db.query(
-        'SELECT * FROM users WHERE email = $1',
-        [email]
-      );
-      if (emailAlreadyExists.rows[0]) {
-        if (emailAlreadyExists.rows[0].id != id) {
+      if (email) {
+        const emailAlreadyExists = await User.findOne({
+          where: {
+            email: email,
+            id: {
+              [Op.ne]: id,
+            },
+          },
+        });
+        if (emailAlreadyExists) {
           return res.status(409).json('Користувач з таким email вже існує');
         }
       }
-      let updateFields = {};
+      let updatedFields = {};
       if (name) {
-        updateFields.name = name;
+        updatedFields.name = name;
       }
-      if (surname) {
-        updateFields.surname = surname;
-      }
+      updatedFields.surname = surname;
       if (gender) {
-        updateFields.gender = gender;
+        updatedFields.gender = gender;
       }
       if (phone) {
-        updateFields.phone = phone;
+        updatedFields.phone = phone;
       }
       if (password) {
-        updateFields.password = await bcrypt.hash(password, 3);
+        updatedFields.password = await bcrypt.hash(password, 3);
       }
-      if (email) {
-        updateFields.email = email;
-      }
+      updatedFields.email = email;
       if (floor) {
-        updateFields.floor = floor;
+        updatedFields.floor = floor;
       }
       if (room) {
-        updateFields.room = room;
+        updatedFields.room = room;
       }
       if (role) {
-        updateFields.role = role;
+        updatedFields.role = role;
       }
       if (avatar) {
-        updateFields.avatar = avatar;
+        updatedFields.avatar = avatar;
       }
-      console.log('updateFields', updateFields);
-      if (Object.keys(updateFields).length === 0) {
-        return res.status(400).json('Не вказано жодного поля для оновлення');
-      }
-      const updateUserQuery = {
-        text: `
-        UPDATE users
-        SET ${Object.keys(updateFields)
-          .map((key, index) => `${key} = $${index + 2}`)
-          .join(', ')}
-        WHERE id = $1
-        RETURNING *
-      `,
-        values: [id, ...Object.values(updateFields)],
-      };
-      const UpdateUser = await db.query(updateUserQuery);
-      if (!UpdateUser.rows[0]) {
-        return res.status(400).json('Такого користувача не існує');
-      } else {
-        res.json(UpdateUser.rows[0]);
-      }
+      const updatedUser = await user.update(updatedFields);
+      res.json(updatedUser);
     } catch (error) {
-      console.dir(error.message);
       return res
         .status(500)
         .json(error.message);
@@ -316,7 +302,6 @@ class UserController {
                 in: 'body',
                 description: 'User object',
                 schema: {
-                    $id: 5,
                     $name: 'John',
                     surname: 'Doe',
                     gender: 'man',
@@ -351,9 +336,13 @@ class UserController {
   async deleteUser(req, res) {
     try {
       const id = req.params.id;
-      const user = await db.query('SELECT * FROM users WHERE id = $1', [id]);
-      if (user.rows[0]) {
-        await db.query('DELETE FROM users WHERE id = $1', [id]);
+      const user = await User.findOne({
+        where: {
+          id: id,
+        },
+      });
+      if (user) {
+        user.destroy();
         return res.status(200).json('Видалено');
       } else {
         return res.status(400).json('Такого користувача не існує');
