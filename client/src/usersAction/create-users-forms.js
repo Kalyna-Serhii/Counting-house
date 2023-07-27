@@ -17,12 +17,12 @@ const createUsersForms = async () => {
           const clone = template.content.cloneNode(true);
           const forms = clone.querySelectorAll('.form-user');
 
-          for (const form  of forms) {
-            form.id = user.id
+          for (const form of forms) {
+            form.id = user.id;
             for (const input of form) {
               if (input.type !== 'file' && input.type !== 'button') {
                 input.readOnly = true;
-                input.value = user[input.name]
+                input.value = user[input.name];
               }
             }
           }
@@ -32,7 +32,6 @@ const createUsersForms = async () => {
     };
     createUserItemElement();
   }
-}
+};
 
 export default createUsersForms;
-

@@ -1,5 +1,6 @@
 import fetchInstance from './fetchInstance';
-import {ApiError} from './ApiError';
+import ApiError from './ApiError';
+
 const users = {
   async get() {
     try {
@@ -18,7 +19,7 @@ const users = {
       const errorMessage = {
         status: error.status,
         message: nameInvalid || emptyMessage,
-      }
+      };
       throw new ApiError(errorMessage);
     }
   },

@@ -20,12 +20,12 @@ const buttonEditHandler = () => {
 
     if (formButtonEdit.textContent === 'Готово') {
       formButtonEdit.textContent = 'Редактировать';
-      formButtonEdit.classList.remove('btn-success')
-      formButtonEdit.classList.add('btn-primary')
+      formButtonEdit.classList.remove('btn-success');
+      formButtonEdit.classList.add('btn-primary');
       const inputs = parentForm.querySelectorAll('input');
-      for(const input of inputs) {
+      inputs.forEach((input) => {
         input.readOnly = true;
-      }
+      });
       try {
         formData.id = formId;
         await api.users.patch(formId, formData);
@@ -40,10 +40,10 @@ const buttonEditHandler = () => {
       }
     } else {
       formButtonEdit.textContent = 'Готово';
-      formButtonEdit.classList.remove('btn-primary')
-      formButtonEdit.classList.add('btn-success')
+      formButtonEdit.classList.remove('btn-primary');
+      formButtonEdit.classList.add('btn-success');
       const inputs = parentForm.querySelectorAll('input');
-      for(const input of inputs) {
+      for (const input of inputs) {
         input.readOnly = false;
       }
     }

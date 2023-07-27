@@ -1,6 +1,6 @@
-export class ApiError extends Error {
+export default class ApiError extends Error {
   constructor(payload) {
     super();
-    this.payload = payload
+    this.payload = payload;
   }
 }

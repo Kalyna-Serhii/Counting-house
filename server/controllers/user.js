@@ -118,9 +118,7 @@ class UserController {
       });
       res.status(201).json(newUser);
     } catch (error) {
-      return res
-        .status(500)
-        .json(error.message);
+      return res.status(500).json(error.message);
     }
 
     // #swagger.tags = ['Users']
@@ -290,9 +288,7 @@ class UserController {
       const updatedUser = await user.update(updatedFields);
       res.json(updatedUser);
     } catch (error) {
-      return res
-        .status(500)
-        .json(error.message);
+      return res.status(500).json(error.message);
     }
 
     // #swagger.tags = ['Users']
