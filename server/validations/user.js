@@ -24,26 +24,26 @@ const CreateUserValidation = (data) => {
         'string.pattern.base':
           'Номер телефону має відповідати патерну (+38)0xx-xxx-xx-xx)',
       }),
-    password: joi
-      .string()
-      .min(6)
-      .max(72)
-      .pattern(/^(?=.*[a-zA-Z]).{6,72}$/)
-      .required()
-      .messages({
-        'string.empty': "Пароль є обов'язковим",
-        'string.min': 'Пароль має містити щонайменше 6 символів',
-        'string.max': 'Пароль має містити не більше 72 символів',
-        'string.pattern.base':
-          'Пароль має містити щонайменше одну літеру латинського алфавіту',
-      }),
-    repeatPassword: joi
-      .string()
-      .valid(joi.ref('password'))
-      .required()
-      .messages({
-        'any.only': 'Паролі не співпадають',
-      }),
+    // password: joi
+    //   .string()
+    //   .min(6)
+    //   .max(72)
+    //   .pattern(/^(?=.*[a-zA-Z]).{6,72}$/)
+    //   .required()
+    //   .messages({
+    //     'string.empty': "Пароль є обов'язковим",
+    //     'string.min': 'Пароль має містити щонайменше 6 символів',
+    //     'string.max': 'Пароль має містити не більше 72 символів',
+    //     'string.pattern.base':
+    //       'Пароль має містити щонайменше одну літеру латинського алфавіту',
+    //   }),
+    // repeatPassword: joi
+    //   .string()
+    //   .valid(joi.ref('password'))
+    //   .required()
+    //   .messages({
+    //     'any.only': 'Паролі не співпадають',
+    //   }),
     email: joi.string().min(5).max(50).allow('').email().messages({
       'string.min': 'Електронна пошта має містити не менше 5 символів',
       'string.max': 'Електронна пошта має містити не більше 50 символів',

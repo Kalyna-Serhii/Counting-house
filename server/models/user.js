@@ -40,10 +40,10 @@ const User = sequelize.define(
     },
     password: {
       type: DataTypes.STRING(60),
-      allowNull: false,
-      validate: {
-        len: [60],
-      },
+      // allowNull: false,
+      // validate: {
+      //   len: [60],
+      // },
     },
     email: {
       type: DataTypes.STRING(50),

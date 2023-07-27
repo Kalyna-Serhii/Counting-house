@@ -51,8 +51,8 @@ class FetchClient {
   async delete(url, options = {}) {
     try {
       return this.request(url, {method: 'DELETE', ...options});
-    }catch (error) {
-      throw error
+    } catch (error) {
+      throw error;
     }
   }
 }

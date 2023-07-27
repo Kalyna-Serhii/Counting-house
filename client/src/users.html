@@ -23,10 +23,96 @@
       <main>
         <div class="container">
           <h1>Мешканці</h1>
+          <form class='form-user'>
+            <div class="row border mb-3">
+              <div class="col-auto">
+                <label class="form-label">Ім'я</label>
+                <input type="text" name='name' class="form-control" id="createUserName"/>
+              </div>
+              <div class="col-auto">
+                <label class="form-label">Прізвище</label>
+                <input type="text" name='surname' class="form-control" id="createUserSurname"/>
+              </div>
+              <div class="col-auto">
+                <label for="userGender" class="form-label">Стать</label>
+                <select id="createUserGender" class="form-select" name='gender'>
+                  <option value="man">man</option>
+                  <option value="woman">woman</option>
+                </select>
+              </div>
+              <div class="col-auto">
+                <label for="userPhone" class="form-label">Телефон</label>
+                <input
+                  type="text"
+                  id="createUserPhone"
+                  class="form-control"
+                  name='phone'
+                  inputmode="tel"
+                  required
+                  placeholder="+380123456789"
+                />
+              </div>
+              <div class="col-auto">
+                <label for="userEmail" class="form-label">Пошта</label>
+                <input
+                  type="email"
+                  id="createUserEmail"
+                  name='email'
+                  class="form-control"
+                  inputmode="email"
+                  placeholder="example@mail.com"
+                />
+              </div>
+              <div class="col-auto">
+                <label for="userFloor" class="form-label">Поверх</label>
+                <input
+                  type="number"
+                  id="createUserFloor"
+                  class="form-control"
+                  name='floor'
+                  required
+                  inputmode="numeric"
+                  min="1"
+                  max="9"
+                />
+              </div>
+              <div class="col-auto">
+                <label for="userApartment" class="form-label">Квартира</label>
+                <input
+                  type="number"
+                  id="createUserApartment"
+                  class="form-control"
+                  required
+                  name='room'
+                  inputmode="numeric"
+                  min="1"
+                  max="89"
+                />
+              </div>
+              <div class="col-auto">
+                <label for="userRole" class="form-label">Роль</label>
+                <select id="createUserRole" class="form-select" name='role'>
+                  <option value="user">user</option>
+                  <option value="moderator">moderator</option>
+                  <option value="admin">admin</option>
+                </select>
+              </div>
+              <div class="col-auto d-none">
+                <label for="userAvatar" class="form-label">Аватар</label>
+                <input type="file" id="createUserAvatar" class="form-control" name='avatar' />
+              </div>
+              <div class="col-sm-12 col-md-6 col-lg-8 ms-lg-auto row align-items-md-end">
+                <div class='col-6'>
+                  <button type="button" class="form__button-create w-100 btn btn-success">Створити</button>
+                </div>
+              </div>
+            </div>
+          </form>
           <div class="table" id="users">
             <template id="userRow">
               <form class='form-user'>
                 <div class="row border mb-3">
+
                   <div class="col-auto">
                     <label class="form-label">Ім'я</label>
                     <input type="text" name='name' value='name' class="form-control" placeholder="Ваше Ім'я" />
@@ -36,7 +122,7 @@
                     <input type="text" value='surname' name='surname' class="form-control" placeholder="Ваше прізвище" />
                   </div>
                   <div class="col-auto">
-                    <label for="userGender" class="form-label">Пол:</label>
+                    <label for="userGender" class="form-label">Стать</label>
                     <select id="userGender" class="form-select" name='gender'>
                       <option value="man">man</option>
                       <option value="woman">woman</option>
@@ -51,7 +137,7 @@
                       name='phone'
                       inputmode="tel"
                       required
-                      placeholder="+380123456741"
+                      placeholder="+380123456789"
                     />
                   </div>
                   <div class="col-auto">
@@ -105,10 +191,10 @@
                   </div>
                   <div class="col-sm-12 col-md-6 col-lg-8 ms-lg-auto row align-items-md-end">
                     <div class='col-6'>
-                      <button type="button" class="form__button-edit w-100 btn btn-primary">Редактировать</button>
+                      <button type="button" class="form__button-edit w-100 btn btn-primary">Редагувати</button>
                     </div>
                     <div class='col-6'>
-                      <button type="button" class="table__button-remove w-100 btn btn-danger">Удалить</button>
+                      <button type="button" class="table__button-remove w-100 btn btn-danger">Видалити</button>
                     </div>
                   </div>
                 </div>
