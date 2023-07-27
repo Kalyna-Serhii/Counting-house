@@ -203,7 +203,6 @@ class UserController {
   async updateUser(req, res) {
     const { error } = UpdateUserValidation(req.body);
     if (error) {
-      console.log(error);
       const errorMessage = error.details[0].message;
       return res.status(400).json({ error: errorMessage });
     }
