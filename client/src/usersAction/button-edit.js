@@ -16,16 +16,23 @@ const buttonEditHandler = () => {
           formData[element.name] = element.value;
         }
       });
-      console.log('formData', formData);
       try {
-        console.log(1);
         await api.users.post(formData);
-        console.log(2);
+        // const newUserParent = document.querySelector('#users');
+        // const fields = document.querySelector('#userRow').querySelectorAll('.col-auto');
+        // console.log(fields);
+        // const clone = fields.content.cloneNode(true);
+        // for (let i = 0; i < fields.length; i++) {
+        //   console.log(fields[i]);
+        //   fields[i].value = createFormElements[i];
+        // }
+        // newUserParent.appendChild(clone);
       } catch (error) {
+        console.log(error);
         const createErrorElement = document.createElement('p');
         createErrorElement.className = 'alert alert-danger form-error-message';
         createErrorElement.textContent = await error.payload?.message;
-        parentForm.appendChild(createErrorElement);
+        parentForm.prepend(createErrorElement);
         setTimeout(() => {
           parentForm.querySelector('.form-error-message').remove();
         }, 5000);
@@ -58,7 +65,6 @@ const buttonEditHandler = () => {
         }
         try {
           formData.id = formId;
-          console.log(formData);
           await api.users.patch(formId, formData);
         } catch (error) {
           const createErrorElement = document.createElement('p');

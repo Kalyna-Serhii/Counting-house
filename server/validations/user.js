@@ -50,11 +50,13 @@ const CreateUserValidation = (data) => {
       'string.email': 'Електронна пошта має бути коректною',
     }),
     floor: joi.number().min(1).max(9).required().messages({
+      'number.base': "Поверх є обов'язковим",
       'number.empty': "Поверх є обов'язковим",
       'number.min': 'Поверх не може бути менше за 1',
       'number.max': 'Поверх не може бути більше за 9',
     }),
     room: joi.number().min(1).max(99).required().messages({
+      'number.base': "Квартира є обов'язковою",
       'number.empty': "Квартира є обов'язковою",
       'number.min': 'Квартира не може бути менше за 1',
       'number.max': 'Квартира не може бути більше за 99',

@@ -1,4 +1,5 @@
 import {ApiError} from './ApiError';
+
 class FetchClient {
   constructor(baseURL) {
     this.baseURL = baseURL;
@@ -33,13 +34,13 @@ class FetchClient {
           'Content-type': 'application/json; charset=UTF-8',
         },
         ...options,
-      })
+      });
       if (!response.ok) {
         throw response;
       }
       return response;
     } catch (error) {
-      throw error
+      throw error;
     }
   }
 
