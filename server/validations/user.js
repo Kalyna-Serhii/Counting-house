@@ -17,7 +17,7 @@ const CreateUserValidation = (data) => {
     }),
     phone: joi
       .string()
-      .pattern(/^\+380\d{9}$/)
+      .pattern(/^(?:\+?380|\b0)\d{9}$/)
       .required()
       .messages({
         'string.empty': "Номер телефону є обов'язковим",

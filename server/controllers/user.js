@@ -78,6 +78,12 @@ class UserController {
         avatar,
       } = req.body;
       // password = await bcrypt.hash(password, 3);
+      if (phone.startsWith('0')) {
+        phone = '+38' + phone;
+      } else if (phone.startsWith('380')) {
+        phone = '+' + phone;
+      }
+
       const phoneAlreadyExists = await User.findOne({
         where: {
           phone: phone,
