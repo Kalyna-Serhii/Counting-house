@@ -11,24 +11,82 @@ const buttonEditHandler = () => {
       const formButtonCreate = event.target;
       const parentForm = formButtonCreate.closest('form');
       const createFormElements = Array.from(parentForm.elements);
+      console.log(createFormElements);
       createFormElements.forEach((element) => {
         if (element.name) {
           formData[element.name] = element.value;
         }
       });
       try {
-        await api.users.post(formData);
-        // const newUserParent = document.querySelector('#users');
-        // const fields = document.querySelector('#userRow').querySelectorAll('.col-auto');
-        // console.log(fields);
-        // const clone = fields.content.cloneNode(true);
-        // for (let i = 0; i < fields.length; i++) {
-        //   console.log(fields[i]);
-        //   fields[i].value = createFormElements[i];
-        // }
-        // newUserParent.appendChild(clone);
+        const newUser = await api.users.post(formData);
+        const formId = newUser.id;
+        const newTableDiv = document.createElement('div');
+        newTableDiv.classList.add('table');
+        const newForm = document.createElement('form');
+        newForm.classList.add('form-new-user');
+        newForm.id = formId;
+        const newRowDiv = document.createElement('div');
+        newRowDiv.classList.add('row', 'py-3', 'border', 'mb-3');
+        newRowDiv.id = 'newUser';
+        const template = document.querySelector('#userRow');
+        const {content} = template;
+        const colAutoElements = content.querySelectorAll('.col-auto');
+        colAutoElements.forEach((colAutoElement) => {
+          const clonedElement = colAutoElement.cloneNode(true);
+          const inputElement = clonedElement.querySelector('input, select');
+          if (inputElement) {
+            const originalElement = parentForm.querySelector(`[name="${inputElement.name}"]`);
+            inputElement.value = originalElement.value;
+            if (inputElement.type !== 'file' && inputElement.type !== 'button' && inputElement.type !== 'select-one') {
+              inputElement.readOnly = true;
+            } else if (inputElement.type === 'select-one') {
+              inputElement.disabled = true;
+            }
+          }
+          newRowDiv.appendChild(clonedElement);
+        });
+
+        const buttonsContainerDiv = document.createElement('div');
+        buttonsContainerDiv.classList.add(
+          'col-sm-12',
+          'col-md-6',
+          'col-lg-8',
+          'ms-lg-auto',
+          'row',
+          'align-items-md-end'
+        );
+
+        createFormElements.forEach((element) => {
+          if (element.type !== 'file' && element.type !== 'button' && element.type !== 'select-one') {
+            element.value = '';
+          }
+        });
+
+        // Создаем кнопку "Редагувати"
+        const editButtonDiv = document.createElement('div');
+        editButtonDiv.classList.add('col-6');
+        const editButton = document.createElement('button');
+        editButton.type = 'button';
+        editButton.classList.add('form__button-edit', 'w-100', 'btn', 'btn-primary');
+        editButton.textContent = 'Редагувати';
+        editButtonDiv.appendChild(editButton);
+        buttonsContainerDiv.appendChild(editButtonDiv);
+
+        // Создаем кнопку "Видалити"
+        const removeButtonDiv = document.createElement('div');
+        removeButtonDiv.classList.add('col-6');
+        const removeButton = document.createElement('button');
+        removeButton.type = 'button';
+        removeButton.classList.add('table__button-remove', 'w-100', 'btn', 'btn-danger');
+        removeButton.textContent = 'Видалити';
+        removeButtonDiv.appendChild(removeButton);
+        buttonsContainerDiv.appendChild(removeButtonDiv);
+
+        newRowDiv.appendChild(buttonsContainerDiv);
+        newForm.appendChild(newRowDiv);
+        newTableDiv.appendChild(newForm);
+        parentForm.insertAdjacentElement('afterend', newForm);
       } catch (error) {
-        console.log(error);
         const createErrorElement = document.createElement('p');
         createErrorElement.className = 'alert alert-danger form-error-message';
         createErrorElement.textContent = await error.payload?.message;
@@ -52,20 +110,20 @@ const buttonEditHandler = () => {
         }
       });
       if (formButtonEdit.textContent === 'Готово') {
-        formButtonEdit.textContent = 'Редагувати';
-        formButtonEdit.classList.remove('btn-success');
-        formButtonEdit.classList.add('btn-primary');
-        const inputs = parentForm.querySelectorAll('input');
-        for (const input of inputs) {
-          input.readOnly = true;
-        }
-        const selects = parentForm.querySelectorAll('select');
-        for (const select of selects) {
-          select.disabled = true;
-        }
         try {
           formData.id = formId;
           await api.users.patch(formId, formData);
+          formButtonEdit.textContent = 'Редагувати';
+          formButtonEdit.classList.remove('btn-success');
+          formButtonEdit.classList.add('btn-primary');
+          const inputs = parentForm.querySelectorAll('input');
+          for (const input of inputs) {
+            input.readOnly = true;
+          }
+          const selects = parentForm.querySelectorAll('select');
+          for (const select of selects) {
+            select.disabled = true;
+          }
         } catch (error) {
           const createErrorElement = document.createElement('p');
           createErrorElement.className = 'alert alert-danger form-error-message';
@@ -89,6 +147,7 @@ const buttonEditHandler = () => {
         }
       }
     }
+
     // const isFormButtonCreate = event.target.classList.contains('form__button-create');
   });
 };
