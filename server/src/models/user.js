@@ -80,7 +80,7 @@ const User = sequelize.define(
   {
     tableName: 'users',
     timestamps: false, // отключение генерации полей createdAt и updatedAt
-  }
+  },
 );
 
 module.exports = User;

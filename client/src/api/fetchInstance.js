@@ -1,5 +1,3 @@
-import {ApiError} from './ApiError';
-
 class FetchClient {
   constructor(baseURL) {
     this.baseURL = baseURL;
@@ -7,65 +5,46 @@ class FetchClient {
 
   async request(url, options = {}) {
     const response = await fetch(`${this.baseURL}${url}`, options);
-    try {
-      if (!response.ok) {
-        throw response;
-      }
-      return await response.json();
-    } catch (error) {
-      throw error;
+    if (!response.ok) {
+      throw response;
     }
+    const data = await response.json();
+    return data;
   }
 
   async get(url, options = {}) {
-    try {
-      return this.request(url, {method: 'GET', ...options});
-    } catch (error) {
-      throw error;
-    }
+    return this.request(url, { method: 'GET', ...options });
   }
 
   async post(url, body, options = {}) {
-    try {
-      const response = await this.request(url, {
-        method: 'POST',
-        body: JSON.stringify(body),
-        headers: {
-          'Content-type': 'application/json; charset=UTF-8',
-        },
-        ...options,
-      });
-      // if (!response.ok) {
-      //   throw response;
-      // }
-      return response;
-    } catch (error) {
-      throw error;
-    }
+    const response = await this.request(url, {
+      method: 'POST',
+      body: JSON.stringify(body),
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+      },
+      ...options,
+    });
+    // if (!response.ok) {
+    //   throw response;
+    // }
+    return response;
   }
 
   async patch(url, body, options = {}) {
-    try {
-      const response = await this.request(url, {
-        method: 'PATCH',
-        body: JSON.stringify(body),
-        headers: {
-          'Content-type': 'application/json; charset=UTF-8',
-        },
-        ...options,
-      });
-      return response;
-    } catch (error) {
-      throw error;
-    }
+    const response = await this.request(url, {
+      method: 'PATCH',
+      body: JSON.stringify(body),
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+      },
+      ...options,
+    });
+    return response;
   }
 
   async delete(url, options = {}) {
-    try {
-      return this.request(url, {method: 'DELETE', ...options});
-    } catch (error) {
-      throw error;
-    }
+    return this.request(url, { method: 'DELETE', ...options });
   }
 }
 

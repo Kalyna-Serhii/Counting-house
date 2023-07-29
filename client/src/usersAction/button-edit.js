@@ -29,7 +29,7 @@ const buttonEditHandler = () => {
         newRowDiv.classList.add('row', 'py-3', 'border', 'mb-3');
         newRowDiv.id = 'newUser';
         const template = document.querySelector('#userRow');
-        const {content} = template;
+        const { content } = template;
         const colAutoElements = content.querySelectorAll('.col-auto');
         colAutoElements.forEach((colAutoElement) => {
           const clonedElement = colAutoElement.cloneNode(true);
@@ -53,7 +53,7 @@ const buttonEditHandler = () => {
           'col-lg-8',
           'ms-lg-auto',
           'row',
-          'align-items-md-end'
+          'align-items-md-end',
         );
 
         createFormElements.forEach((element) => {
@@ -63,7 +63,7 @@ const buttonEditHandler = () => {
         });
 
         const buttonsContainer = content.querySelector(
-          '.col-sm-12.col-md-6.col-lg-8.ms-lg-auto.row.align-items-md-end'
+          '.col-sm-12.col-md-6.col-lg-8.ms-lg-auto.row.align-items-md-end',
         );
         const clonedButtonsContainer = buttonsContainer.cloneNode(true);
         newRowDiv.appendChild(clonedButtonsContainer);
@@ -88,9 +88,8 @@ const buttonEditHandler = () => {
     const isFormButtonEdit = event.target.classList.contains('form__button-edit');
     if (isFormButtonEdit) {
       const formButtonEdit = event.target;
-      const parentForm = formButtonEdit.closest('form');
-      const formId = parentForm.id;
-      const editFormElements = Array.from(parentForm.elements);
+      const formId = formButtonEdit.closest('form').id;
+      const editFormElements = Array.from(formButtonEdit.closest('form').elements);
 
       editFormElements.forEach((element) => {
         if (element.name) {

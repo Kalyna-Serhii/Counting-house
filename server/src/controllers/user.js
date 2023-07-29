@@ -1,16 +1,17 @@
-const User = require('../models/user');
+const bcrypt = require('bcrypt');
 const { Op } = require('sequelize');
+const User = require('../models/user');
 const [
   CreateUserValidation,
   UpdateUserValidation,
 ] = require('../validations/user');
-const bcrypt = require('bcrypt');
 
 class UserController {
+  // eslint-disable-next-line class-methods-use-this
   async getUsers(req, res) {
     try {
       const users = await User.findAll();
-      res.json(users);
+      return res.status(200).json(users);
     } catch (error) {
       return res
         .status(500)
@@ -58,35 +59,35 @@ class UserController {
         } */
   }
 
+  // eslint-disable-next-line class-methods-use-this
   async createUser(req, res) {
-    const { error } = CreateUserValidation(req.body);
-    if (error) {
-      const errorMessage = error.details[0].message;
+    const { error: customError } = CreateUserValidation(req.body);
+    if (customError) {
+      const errorMessage = customError.details[0].message;
       return res.status(400).json({ error: errorMessage });
     }
     try {
-      let {
+      const {
         name,
         surname,
-        gender,
-        phone,
         password,
         email,
         floor,
         room,
-        role,
         avatar,
       } = req.body;
+
+      let { phone, gender, role } = req.body;
       // password = await bcrypt.hash(password, 3);
       if (phone.startsWith('0')) {
-        phone = '+38' + phone;
+        phone = `+38${phone}`;
       } else if (phone.startsWith('380')) {
-        phone = '+' + phone;
+        phone = `+${phone}`;
       }
 
       const phoneAlreadyExists = await User.findOne({
         where: {
-          phone: phone,
+          phone,
         },
       });
       if (phoneAlreadyExists) {
@@ -97,7 +98,7 @@ class UserController {
       if (email) {
         const emailAlreadyExists = await User.findOne({
           where: {
-            email: email,
+            email,
           },
         });
         if (emailAlreadyExists) {
@@ -122,7 +123,7 @@ class UserController {
         role,
         avatar,
       });
-      res.status(201).json(newUser);
+      return res.status(201).json(newUser);
     } catch (error) {
       return res.status(500).json(error.message);
     }
@@ -165,19 +166,19 @@ class UserController {
         } */
   }
 
+  // eslint-disable-next-line class-methods-use-this
   async getUserById(req, res) {
     try {
-      const id = req.params.id;
+      const { id } = req.params;
       const user = await User.findOne({
         where: {
-          id: id,
+          id,
         },
       });
       if (!user) {
         return res.status(400).json('Такого користувача не існує');
-      } else {
-        res.json(user);
       }
+      return res.status(200).json(user);
     } catch (error) {
       return res
         .status(500)
@@ -206,18 +207,19 @@ class UserController {
         } */
   }
 
+  // eslint-disable-next-line class-methods-use-this
   async updateUser(req, res) {
-    const { error } = UpdateUserValidation(req.body);
-    if (error) {
-      const errorMessage = error.details[0].message;
-      return res.status(400).json({ error: errorMessage });
+    const { error: customError } = UpdateUserValidation(req.body);
+    if (customError) {
+      const errorMessage = customError.details[0].message;
+      return res.status(400).json({ customError: errorMessage });
     }
-    const id = req.params.id;
+    const { id } = req.params;
     if (id < 1) {
       return res.status(400).json('Id не може бути менше за 1');
     }
     try {
-      let {
+      const {
         name,
         surname,
         gender,
@@ -231,7 +233,7 @@ class UserController {
       } = req.body;
       const user = await User.findOne({
         where: {
-          id: id,
+          id,
         },
       });
       if (!user) {
@@ -239,7 +241,7 @@ class UserController {
       }
       const phoneAlreadyExists = await User.findOne({
         where: {
-          phone: phone,
+          phone,
           id: {
             [Op.ne]: id,
           },
@@ -253,7 +255,7 @@ class UserController {
       if (email) {
         const emailAlreadyExists = await User.findOne({
           where: {
-            email: email,
+            email,
             id: {
               [Op.ne]: id,
             },
@@ -263,7 +265,7 @@ class UserController {
           return res.status(409).json('Користувач з таким email вже існує');
         }
       }
-      let updatedFields = {};
+      const updatedFields = {};
       if (name) {
         updatedFields.name = name;
       }
@@ -291,7 +293,7 @@ class UserController {
         updatedFields.avatar = avatar;
       }
       const updatedUser = await user.update(updatedFields);
-      res.json(updatedUser);
+      return res.status(200).json(updatedUser);
     } catch (error) {
       return res.status(500).json(error.message);
     }
@@ -334,20 +336,20 @@ class UserController {
           } */
   }
 
+  // eslint-disable-next-line class-methods-use-this
   async deleteUser(req, res) {
     try {
-      const id = req.params.id;
+      const { id } = req.params;
       const user = await User.findOne({
         where: {
-          id: id,
+          id,
         },
       });
       if (user) {
-        user.destroy();
+        await user.destroy();
         return res.status(200).json('Видалено');
-      } else {
-        return res.status(400).json('Такого користувача не існує');
       }
+      return res.status(400).json('Такого користувача не існує');
     } catch (error) {
       return res
         .status(500)

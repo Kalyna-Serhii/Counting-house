@@ -1,5 +1,5 @@
 import fetchInstance from './fetchInstance';
-import {ApiError} from './ApiError';
+import ApiError from './ApiError';
 
 const users = {
   async get() {

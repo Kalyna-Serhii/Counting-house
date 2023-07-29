@@ -9,7 +9,7 @@ const createUsersForms = async () => {
   if (usersListElement) {
     ButtonEdit();
     const users = await api.users.get();
-    const sortUsersByRoom = (users) => users.sort((a, b) => a.room - b.room);
+    const sortUsersByRoom = (user) => user.sort((a, b) => a.room - b.room);
 
     const createUserItemElement = () => {
       const sortedUsers = sortUsersByRoom(users);

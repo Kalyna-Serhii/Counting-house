@@ -1,6 +1,6 @@
 import fetchInstance from './fetchInstance';
 import users from './users';
-import {ApiError} from './ApiError';
+import ApiError from './ApiError';
 
 const api = {
   fetchInstance,
