@@ -5,19 +5,19 @@ const buttonEditHandler = () => {
 
   document.addEventListener('click', async (event) => {
     event.preventDefault();
+
     // Обработчик кнопки Створити
-    const isFormButtonCreate = event.target.classList.contains('form__button-create');
-    if (isFormButtonCreate) {
-      const formButtonCreate = event.target;
-      const parentForm = formButtonCreate.closest('form');
-      const createFormElements = Array.from(parentForm.elements);
-      console.log(createFormElements);
-      createFormElements.forEach((element) => {
-        if (element.name) {
-          formData[element.name] = element.value;
-        }
-      });
-      try {
+    const formButtonCreate = event.target;
+    const parentForm = formButtonCreate.closest('form');
+    try {
+      const isFormButtonCreate = event.target.classList.contains('form__button-create');
+      if (isFormButtonCreate) {
+        const createFormElements = Array.from(parentForm.elements);
+        createFormElements.forEach((element) => {
+          if (element.name) {
+            formData[element.name] = element.value;
+          }
+        });
         const newUser = await api.users.post(formData);
         const formId = newUser.id;
         const newTableDiv = document.createElement('div');
@@ -62,41 +62,29 @@ const buttonEditHandler = () => {
           }
         });
 
-        // Создаем кнопку "Редагувати"
-        const editButtonDiv = document.createElement('div');
-        editButtonDiv.classList.add('col-6');
-        const editButton = document.createElement('button');
-        editButton.type = 'button';
-        editButton.classList.add('form__button-edit', 'w-100', 'btn', 'btn-primary');
-        editButton.textContent = 'Редагувати';
-        editButtonDiv.appendChild(editButton);
-        buttonsContainerDiv.appendChild(editButtonDiv);
-
-        // Создаем кнопку "Видалити"
-        const removeButtonDiv = document.createElement('div');
-        removeButtonDiv.classList.add('col-6');
-        const removeButton = document.createElement('button');
-        removeButton.type = 'button';
-        removeButton.classList.add('table__button-remove', 'w-100', 'btn', 'btn-danger');
-        removeButton.textContent = 'Видалити';
-        removeButtonDiv.appendChild(removeButton);
-        buttonsContainerDiv.appendChild(removeButtonDiv);
+        const buttonsContainer = content.querySelector(
+          '.col-sm-12.col-md-6.col-lg-8.ms-lg-auto.row.align-items-md-end'
+        );
+        const clonedButtonsContainer = buttonsContainer.cloneNode(true);
+        newRowDiv.appendChild(clonedButtonsContainer);
 
         newRowDiv.appendChild(buttonsContainerDiv);
         newForm.appendChild(newRowDiv);
         newTableDiv.appendChild(newForm);
         parentForm.insertAdjacentElement('afterend', newForm);
-      } catch (error) {
-        const createErrorElement = document.createElement('p');
-        createErrorElement.className = 'alert alert-danger form-error-message';
-        createErrorElement.textContent = await error.payload?.message;
-        parentForm.prepend(createErrorElement);
-        setTimeout(() => {
-          parentForm.querySelector('.form-error-message').remove();
-        }, 5000);
       }
+    } catch (error) {
+      const createErrorElement = document.createElement('p');
+      createErrorElement.className = 'alert alert-danger form-error-message';
+      createErrorElement.textContent = await error.payload?.message;
+      parentForm.prepend(createErrorElement);
+      setTimeout(() => {
+        parentForm.querySelector('.form-error-message').remove();
+      }, 5000);
     }
+
     // Обработчик кнопки Редагувати
+    event.preventDefault();
     const isFormButtonEdit = event.target.classList.contains('form__button-edit');
     if (isFormButtonEdit) {
       const formButtonEdit = event.target;
@@ -147,8 +135,25 @@ const buttonEditHandler = () => {
         }
       }
     }
-
-    // const isFormButtonCreate = event.target.classList.contains('form__button-create');
+    // Обработчик кнопки Редагувати
+    const isFormButtonDelete = event.target.classList.contains('table__button-remove');
+    if (isFormButtonDelete) {
+      try {
+        const formButtonDelete = event.target;
+        const parent = formButtonDelete.parentNode.parentNode.parentNode.parentNode;
+        const userId = parent.id;
+        await api.users.delete(userId);
+        parent.remove();
+      } catch (error) {
+        const createErrorElement = document.createElement('p');
+        createErrorElement.className = 'alert alert-danger form-error-message';
+        createErrorElement.textContent = await error.payload?.message;
+        parentForm.appendChild(createErrorElement);
+        setTimeout(() => {
+          parentForm.querySelector('.form-error-message').remove();
+        }, 5000);
+      }
+    }
   });
 };
 
