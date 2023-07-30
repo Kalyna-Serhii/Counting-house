@@ -18,7 +18,7 @@
     "swagger-ui-express": "^4.6.3"
   },
   "scripts": {
-    "dev": "nodemon swagger/swagger.js",
+    "dev": "nodemon src/swagger/swagger.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

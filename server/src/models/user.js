@@ -40,10 +40,10 @@ const User = sequelize.define(
     },
     password: {
       type: DataTypes.STRING(60),
-      allowNull: false,
-      validate: {
-        len: [60],
-      },
+      // allowNull: false,
+      // validate: {
+      //   len: [60],
+      // },
     },
     email: {
       type: DataTypes.STRING(50),
@@ -80,7 +80,7 @@ const User = sequelize.define(
   {
     tableName: 'users',
     timestamps: false, // отключение генерации полей createdAt и updatedAt
-  }
+  },
 );
 
 module.exports = User;

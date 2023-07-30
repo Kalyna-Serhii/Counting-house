@@ -4,7 +4,7 @@ const sequelize = new Sequelize('postgres', 'admin', 'root', {
   host: 'localhost',
   dialect: 'postgres',
   port: 5432,
-  logging: false, //отключение вывода SQL запросов в терминал
+  logging: false, // отключение вывода SQL запросов в терминал
 });
 
 (async () => {

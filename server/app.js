@@ -1,11 +1,13 @@
 const express = require('express');
 const cors = require('cors');
 const swaggerUI = require('swagger-ui-express');
-const userRouter = require('./routes/user');
+const userRouter = require('./src/routes/user');
+
 const app = express();
 const host = '127.0.0.1';
 const port = 3000;
-const swaggerDocument = require('./swagger/swagger_autogen.json');
+const swaggerDocument = require('./src/swagger/swagger_autogen.json');
+
 const corsOptions = {
   origin: 'http://localhost:8080',
   optionsSuccessStatus: 200,

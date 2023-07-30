@@ -9,10 +9,22 @@ const users = {
       throw new Error('Не удалось получить пользователей');
     }
   },
+  async post(body) {
+    try {
+      return await fetchInstance.post('/user', body);
+    } catch (error) {
+      const emptyMessage = await error.json();
+      const nameInvalid = emptyMessage.error;
+      const errorMessage = {
+        status: error.status,
+        message: nameInvalid || emptyMessage,
+      };
+      throw new ApiError(errorMessage);
+    }
+  },
   async patch(userId, body) {
     try {
-      const response = await fetchInstance.patch(`/user/${userId}`, body);
-      return response;
+      return await fetchInstance.patch(`/user/${userId}`, body);
     } catch (error) {
       const emptyMessage = await error.json();
       const nameInvalid = emptyMessage.error;

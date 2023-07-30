@@ -9,19 +9,23 @@ const createUsersForms = async () => {
   if (usersListElement) {
     ButtonEdit();
     const users = await api.users.get();
+    const sortUsersByRoom = (user) => user.sort((a, b) => a.room - b.room);
 
     const createUserItemElement = () => {
+      const sortedUsers = sortUsersByRoom(users);
       /* eslint-disable-next-line */
-      for (const user of users) {
+      for (const user of sortedUsers) {
         if ('content' in document.createElement('template')) {
           const clone = template.content.cloneNode(true);
           const forms = clone.querySelectorAll('.form-user');
-
           for (const form of forms) {
             form.id = user.id;
             for (const input of form) {
-              if (input.type !== 'file' && input.type !== 'button') {
+              if (input.type !== 'file' && input.type !== 'button' && input.type !== 'select-one') {
                 input.readOnly = true;
+                input.value = user[input.name];
+              } else if (input.type === 'select-one') {
+                input.disabled = true;
                 input.value = user[input.name];
               }
             }
