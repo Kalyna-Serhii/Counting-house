@@ -8,8 +8,7 @@ class FetchClient {
     if (!response.ok) {
       throw response;
     }
-    const data = await response.json();
-    return data;
+    return response.json();
   }
 
   async get(url, options = {}) {

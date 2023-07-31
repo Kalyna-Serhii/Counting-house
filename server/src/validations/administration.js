@@ -1,17 +1,29 @@
 const joi = require('joi');
 
-const RegistrationUserValidation = (data) => {
+const CreateFakeUserValidation = (data) => {
   const schema = joi.object({
-    name: joi.string().min(2).max(15).required()
+    name: joi
+      .string()
+      .min(2)
+      .max(15)
+      .required()
+      .regex(/^[^\d\s]+$/)
       .messages({
         'string.empty': 'Ім\'я є обов\'язковим',
         'string.min': 'Ім\'я має містити не менше 2 символів',
         'string.max': 'Ім\'я має містити не більше 15 символів',
+        'string.pattern.base': 'Ім\'я не може містити цифр та пробілів',
       }),
-    surname: joi.string().min(2).max(15).allow('')
+    surname: joi
+      .string()
+      .min(2)
+      .max(15)
+      .allow('')
+      .regex(/^[^\d\s]+$/)
       .messages({
         'string.min': 'Прізвище має містити не менше 2 символів',
         'string.max': 'Прізвище має містити не більше 15 символів',
+        'string.pattern.base': 'Прізвище не може містити цифр та пробілів',
       }),
     gender: joi.string().valid('man', 'woman').valid('').messages({
       'any.only': 'Гендер має бути одним із допустимих значень: man, woman, або порожній',
@@ -24,21 +36,6 @@ const RegistrationUserValidation = (data) => {
         'string.empty': 'Номер телефону є обов\'язковим',
         'string.pattern.base': 'Номер телефону має відповідати патерну (+38)0xx-xxx-xx-xx)',
       }),
-    password: joi
-      .string()
-      .min(6)
-      .max(72)
-      .pattern(/^(?=.*[a-zA-Z]).{6,72}$/)
-      .required()
-      .messages({
-        'string.empty': 'Пароль є обов\'язковим',
-        'string.min': 'Пароль має містити щонайменше 6 символів',
-        'string.max': 'Пароль має містити не більше 72 символів',
-        'string.pattern.base': 'Пароль має містити щонайменше одну літеру латинського алфавіту',
-      }),
-    repeatPassword: joi.string().valid(joi.ref('password')).required().messages({
-      'any.only': 'Паролі не співпадають',
-    }),
     email: joi.string().min(5).max(50).allow('')
       .email()
       .messages({
@@ -68,21 +65,33 @@ const RegistrationUserValidation = (data) => {
   return schema.validate(data);
 };
 
-const UpdateUserValidation = (data) => {
+const UpdateFakeUserValidation = (data) => {
   const schema = joi.object({
     id: joi.string().messages({
       'string.empty': 'ID є обов\'язковим',
     }),
-    name: joi.string().min(2).max(15).required()
+    name: joi
+      .string()
+      .min(2)
+      .max(15)
+      .required()
+      .regex(/^[^\d\s]+$/)
       .messages({
         'string.empty': 'Ім\'я є обов\'язковим',
         'string.min': 'Ім\'я має містити не менше 2 символів',
         'string.max': 'Ім\'я має містити не більше 15 символів',
+        'string.pattern.base': 'Ім\'я не може містити цифр та пробілів',
       }),
-    surname: joi.string().min(2).max(15).allow('')
+    surname: joi
+      .string()
+      .min(2)
+      .max(15)
+      .allow('')
+      .regex(/^[^\d\s]+$/)
       .messages({
         'string.min': 'Прізвище має містити не менше 2 символів',
         'string.max': 'Прізвище має містити не більше 15 символів',
+        'string.pattern.base': 'Прізвище не може містити цифр та пробілів',
       }),
     gender: joi.string().valid('man', 'woman', '').required().messages({
       'any.only': 'Гендер має бути одним із допустимих значень: man, woman, або порожній',
@@ -95,20 +104,6 @@ const UpdateUserValidation = (data) => {
         'string.empty': 'Номер телефону є обов\'язковим',
         'string.pattern.base': 'Номер телефону має відповідати патерну (+38)0xx-xxx-xx-xx)',
       }),
-    password: joi
-      .string()
-      .min(6)
-      .max(72)
-      .pattern(/^(?=.*[a-zA-Z]).{6,72}$/)
-      .messages({
-        'string.empty': 'Пароль є обов\'язковим',
-        'string.min': 'Пароль має містити щонайменше 6 символів',
-        'string.max': 'Пароль має містити не більше 72 символів',
-        'string.pattern.base': 'Пароль має містити щонайменше одну літеру латинського алфавіту',
-      }),
-    repeatPassword: joi.string().valid(joi.ref('password')).messages({
-      'any.only': 'Паролі не співпадають',
-    }),
     email: joi.string().min(5).max(50).allow('')
       .email()
       .messages({
@@ -132,4 +127,4 @@ const UpdateUserValidation = (data) => {
   return schema.validate(data);
 };
 
-module.exports = [RegistrationUserValidation, UpdateUserValidation];
+module.exports = [CreateFakeUserValidation, UpdateFakeUserValidation];

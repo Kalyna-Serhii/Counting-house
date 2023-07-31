@@ -1,7 +1,7 @@
 const swaggerAutogen = require('swagger-autogen')();
 
-const outputFile = './swagger_autogen.json';
-const endpointsFiles = ['../routes/user'];
+const outputFile = './swaggerAutogen.json';
+const endpointsFiles = ['../routes/*'];
 
 const doc = {
   info: {

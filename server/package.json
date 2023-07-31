@@ -33,7 +33,7 @@
   "homepage": "https://github.com/Kalyna-Serhii/Counting-house#readme",
   "nodemonConfig": {
     "ignore": [
-      "swagger_autogen.json"
+      "swaggerAutogen.json"
     ]
   }
 }

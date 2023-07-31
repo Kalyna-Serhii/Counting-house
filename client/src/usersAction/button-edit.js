@@ -19,7 +19,7 @@ const handleFormCreate = async (event) => {
   try {
     const formBody = getFormBody(parentForm);
     const createFormElements = Array.from(parentForm.elements);
-    const newUser = await api.users.post(formBody);
+    const newUser = await api.administration.post(formBody);
     const formId = newUser.id;
     const newTableDiv = document.createElement('div');
     newTableDiv.classList.add('table');
@@ -79,7 +79,7 @@ const handleFormEdit = async (event) => {
       const formBody = getFormBody(parentForm);
       if (formButtonEdit.textContent === 'Готово') {
         formBody.id = formId;
-        await api.users.patch(formId, formBody);
+        await api.administration.patch(formId, formBody);
         formButtonEdit.textContent = 'Редагувати';
         formButtonEdit.classList.remove('btn-success');
         formButtonEdit.classList.add('btn-primary');
