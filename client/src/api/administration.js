@@ -10,7 +10,7 @@ const administration = {
       const nameInvalid = emptyMessage.error;
       const errorMessage = {
         status: error.status,
-        message: nameInvalid || emptyMessage.customError,
+        message: nameInvalid || emptyMessage,
       };
       throw new ApiError(errorMessage);
     }
