@@ -1,11 +1,11 @@
 const { Op } = require('sequelize');
 const User = require('../models/user');
-const [CreateFakeUserValidation, UpdateFakeUserValidation] = require('../validations/administration');
+const FakeUserValidation = require('../validations/administration');
 
 class FakeUserController {
   // eslint-disable-next-line class-methods-use-this
   async createFakeUser(req, res) {
-    const { error: customError } = CreateFakeUserValidation(req.body);
+    const { error: customError } = FakeUserValidation(req.body);
     if (customError) {
       const errorMessage = customError.details[0].message;
       return res.status(400).json({ error: errorMessage });
@@ -98,7 +98,7 @@ class FakeUserController {
 
   // eslint-disable-next-line class-methods-use-this
   async updateFakeUser(req, res) {
-    const { error: customError } = UpdateFakeUserValidation(req.body);
+    const { error: customError } = FakeUserValidation(req.body);
     if (customError) {
       const errorMessage = customError.details[0].message;
       return res.status(400).json({ customError: errorMessage });

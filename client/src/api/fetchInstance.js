@@ -24,9 +24,6 @@ class FetchClient {
       },
       ...options,
     });
-    // if (!response.ok) {
-    //   throw response;
-    // }
     return response;
   }
 

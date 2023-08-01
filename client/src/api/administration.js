@@ -10,11 +10,8 @@ const administration = {
       const nameInvalid = emptyMessage.error;
       const errorMessage = {
         status: error.status,
-        message: nameInvalid || emptyMessage,
+        message: nameInvalid || emptyMessage.customError,
       };
-      console.log('nameInvalid', nameInvalid);
-      console.log('emptyMessage', emptyMessage);
-      console.log('errorMessage', errorMessage);
       throw new ApiError(errorMessage);
     }
   },
@@ -26,12 +23,8 @@ const administration = {
       const nameInvalid = emptyMessage.error;
       const errorMessage = {
         status: error.status,
-        message: nameInvalid || emptyMessage,
+        message: nameInvalid || emptyMessage.customError,
       };
-      console.log('nameInvalid', nameInvalid);
-      console.log('emptyMessage', emptyMessage);
-      console.log('errorMessage', errorMessage);
-      console.log(errorMessage.message);
       throw new ApiError(errorMessage);
     }
   },
