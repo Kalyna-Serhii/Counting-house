@@ -20,10 +20,9 @@ const administration = {
       return await fetchInstance.patch(`/administration/user/${userId}`, body);
     } catch (error) {
       const emptyMessage = await error.json();
-      const nameInvalid = emptyMessage.error;
       const errorMessage = {
         status: error.status,
-        message: nameInvalid || emptyMessage.customError,
+        message: emptyMessage.customError || emptyMessage,
       };
       throw new ApiError(errorMessage);
     }

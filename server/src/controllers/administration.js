@@ -2,12 +2,23 @@ const { Op } = require('sequelize');
 const User = require('../models/user');
 const FakeUserValidation = require('../validations/administration');
 
+function phoneByTemplate(phone) {
+  let newPhone = phone;
+  if (phone.startsWith('0')) {
+    newPhone = `+38${phone}`;
+  } else if (phone.startsWith('380')) {
+    newPhone = `+${phone}`;
+  }
+  return newPhone;
+}
+
 class FakeUserController {
   // eslint-disable-next-line class-methods-use-this
   async createFakeUser(req, res) {
     const { error: customError } = FakeUserValidation(req.body);
     if (customError) {
-      const errorMessage = customError.details[0].message;
+      const errorMessages = customError.details.map((detail) => detail.message);
+      const errorMessage = errorMessages.join(', ');
       return res.status(400).json({ error: errorMessage });
     }
     try {
@@ -15,19 +26,15 @@ class FakeUserController {
         name, surname, email, floor, room, avatar,
       } = req.body;
       let { phone, gender, role } = req.body;
-      if (phone.startsWith('0')) {
-        phone = `+38${phone}`;
-      } else if (phone.startsWith('380')) {
-        phone = `+${phone}`;
-      }
-
+      phone = phoneByTemplate(phone);
+      let conflict = '';
       const phoneAlreadyExists = await User.findOne({
         where: {
           phone,
         },
       });
       if (phoneAlreadyExists) {
-        return res.status(409).json('Користувач з таким номером телефону вже існує');
+        conflict += 'Користувач з таким номером телефону вже існує. ';
       }
       if (email) {
         const emailAlreadyExists = await User.findOne({
@@ -36,8 +43,11 @@ class FakeUserController {
           },
         });
         if (emailAlreadyExists) {
-          return res.status(409).json('Користувач з таким email вже існує');
+          conflict += 'Користувач з таким email вже існує';
         }
+      }
+      if (conflict) {
+        return res.status(409).json(conflict);
       }
       if (!gender) {
         gender = 'man';
@@ -120,11 +130,8 @@ class FakeUserController {
         name, surname, gender, email, floor, room, role, avatar,
       } = req.body;
       let { phone } = req.body;
-      if (phone.startsWith('0')) {
-        phone = `+38${phone}`;
-      } else if (phone.startsWith('380')) {
-        phone = `+${phone}`;
-      }
+      phone = phoneByTemplate(phone);
+      let conflict = '';
       const phoneAlreadyExists = await User.findOne({
         where: {
           phone,
@@ -134,7 +141,7 @@ class FakeUserController {
         },
       });
       if (phoneAlreadyExists) {
-        return res.status(409).json('Користувач з таким номером телефону вже існує');
+        conflict += 'Користувач з таким номером телефону вже існує. ';
       }
       if (email) {
         const emailAlreadyExists = await User.findOne({
@@ -146,8 +153,11 @@ class FakeUserController {
           },
         });
         if (emailAlreadyExists) {
-          return res.status(409).json('Користувач з таким email вже існує');
+          conflict += 'Користувач з таким email вже існує';
         }
+      }
+      if (conflict) {
+        return res.status(409).json(conflict);
       }
       const updatedFields = {};
       if (name) {
@@ -160,7 +170,9 @@ class FakeUserController {
       if (phone) {
         updatedFields.phone = phone;
       }
-      updatedFields.email = email;
+      if (email) {
+        updatedFields.email = email;
+      }
       if (floor) {
         updatedFields.floor = floor;
       }

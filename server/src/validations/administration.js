@@ -65,7 +65,10 @@ const FakeUserValidation = (data) => {
     }),
     avatar: joi.string().allow('').max(255),
   });
-  return schema.validate(data);
+  const options = {
+    abortEarly: false, // Включаем вывод всех ошибок
+  };
+  return schema.validate(data, options);
 };
 
 module.exports = FakeUserValidation;

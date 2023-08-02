@@ -16,7 +16,7 @@ class FetchClient {
   }
 
   async post(url, body, options = {}) {
-    const response = await this.request(url, {
+    return this.request(url, {
       method: 'POST',
       body: JSON.stringify(body),
       headers: {
@@ -24,11 +24,10 @@ class FetchClient {
       },
       ...options,
     });
-    return response;
   }
 
   async patch(url, body, options = {}) {
-    const response = await this.request(url, {
+    return this.request(url, {
       method: 'PATCH',
       body: JSON.stringify(body),
       headers: {
@@ -36,7 +35,6 @@ class FetchClient {
       },
       ...options,
     });
-    return response;
   }
 
   async delete(url, options = {}) {
