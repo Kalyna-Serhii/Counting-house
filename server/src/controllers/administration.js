@@ -160,31 +160,15 @@ class FakeUserController {
         return res.status(409).json(conflict);
       }
       const updatedFields = {};
-      if (name) {
-        updatedFields.name = name;
-      }
+      updatedFields.name = name;
       updatedFields.surname = surname;
-      if (gender) {
-        updatedFields.gender = gender;
-      }
-      if (phone) {
-        updatedFields.phone = phone;
-      }
-      if (email) {
-        updatedFields.email = email;
-      }
-      if (floor) {
-        updatedFields.floor = floor;
-      }
-      if (room) {
-        updatedFields.room = room;
-      }
-      if (role) {
-        updatedFields.role = role;
-      }
-      if (avatar) {
-        updatedFields.avatar = avatar;
-      }
+      updatedFields.gender = gender;
+      updatedFields.phone = phone;
+      updatedFields.email = email;
+      updatedFields.floor = floor;
+      updatedFields.room = room;
+      updatedFields.role = role;
+      updatedFields.avatar = avatar;
       const updatedUser = await user.update(updatedFields);
       return res.status(200).json(updatedUser);
     } catch (error) {
