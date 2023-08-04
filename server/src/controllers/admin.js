@@ -1,6 +1,6 @@
 const { Op } = require('sequelize');
 const User = require('../models/user');
-const FakeUserValidation = require('../validations/administration');
+const FakeUserValidation = require('../validations/admin');
 
 function phoneByTemplate(phone) {
   let newPhone = phone;
@@ -71,7 +71,7 @@ class FakeUserController {
       return res.status(500).json(error.message);
     }
 
-    // #swagger.tags = ['Administration']
+    // #swagger.tags = ['Admin']
     // #swagger.summary = 'Create a new fake user'
     // #swagger.description = 'Creates a new fake user with the provided information'
     /*  #swagger.parameters['obj'] = {
@@ -97,6 +97,7 @@ class FakeUserController {
                 surname: 'Doe',
                 gender: 'man',
                 phone: '0123456789',
+                password: null,
                 email: 'john.doe@example.com',
                 floor: 5,
                 room: 34,
@@ -175,7 +176,7 @@ class FakeUserController {
       return res.status(500).json(error.message);
     }
 
-    // #swagger.tags = ['Administration']
+    // #swagger.tags = ['Admin']
     // #swagger.summary = 'Update a fake user'
     // #swagger.description = 'Updates a fake user by user id with the provided information'
     /*  #swagger.parameters['obj'] = {
@@ -201,6 +202,7 @@ class FakeUserController {
                 surname: 'Smith',
                 gender: 'man',
                 phone: '0987654321',
+                password: null,
                 email: 'jane.smith@example.com',
                 floor: 2,
                 room: 10,

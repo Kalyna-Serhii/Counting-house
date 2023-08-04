@@ -1,10 +1,10 @@
 import fetchInstance from './fetchInstance';
 import ApiError from './ApiError';
 
-const administration = {
+const admin = {
   async post(body) {
     try {
-      return await fetchInstance.post('/administration/user', body);
+      return await fetchInstance.post('/admin/user', body);
     } catch (error) {
       const emptyMessage = await error.json();
       const nameInvalid = emptyMessage.error;
@@ -17,7 +17,7 @@ const administration = {
   },
   async patch(userId, body) {
     try {
-      return await fetchInstance.patch(`/administration/user/${userId}`, body);
+      return await fetchInstance.patch(`/admin/user/${userId}`, body);
     } catch (error) {
       const emptyMessage = await error.json();
       const errorMessage = {
@@ -29,4 +29,4 @@ const administration = {
   },
 };
 
-export default administration;
+export default admin;

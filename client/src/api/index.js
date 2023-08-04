@@ -1,12 +1,12 @@
 import fetchInstance from './fetchInstance';
 import users from './users';
-import administration from './administration';
+import admin from './admin';
 import ApiError from './ApiError';
 
 const api = {
   fetchInstance,
   users,
-  administration,
+  admin,
   ApiError,
 };
 
