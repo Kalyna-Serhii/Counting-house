@@ -39,7 +39,6 @@ const User = sequelize.define(
       validate: {
         len: [13],
       },
-      unique: true,
       required: true,
     },
     password: {
@@ -53,7 +52,6 @@ const User = sequelize.define(
       validate: {
         len: [0, 50],
       },
-      unique: true,
     },
     floor: {
       type: DataTypes.INTEGER,

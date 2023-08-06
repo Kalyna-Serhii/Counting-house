@@ -3,9 +3,11 @@ const User = require('./user');
 
 const Token = sequelize.define('Token', {
   refreshToken: {
-    type: DataTypes.STRING(),
+    type: DataTypes.TEXT(),
     required: true,
   },
 });
 
 Token.belongsTo(User);
+
+module.exports = Token;

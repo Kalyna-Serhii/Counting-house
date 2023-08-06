@@ -2,9 +2,6 @@ const joi = require('joi');
 
 const FakeUserValidation = (data) => {
   const schema = joi.object({
-    id: joi.number().min(1).messages({
-      'number.min': 'Id не може бути менше за 1',
-    }),
     name: joi
       .string()
       .min(2)

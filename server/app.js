@@ -1,7 +1,9 @@
 const express = require('express');
 const cors = require('cors');
+const cookieParser = require('cookie-parser');
 const swaggerUI = require('swagger-ui-express');
 const userRouter = require('./src/routes/user');
+const authRouter = require('./src/routes/auth');
 const adminRouter = require('./src/routes/admin');
 
 const app = express();
@@ -14,10 +16,13 @@ const corsOptions = {
   optionsSuccessStatus: 200,
 };
 
-app.use(cors(corsOptions));
 app.use(express.json());
-app.use('/api', userRouter, adminRouter);
+app.use(cors(corsOptions));
+app.use(cookieParser());
+app.use('/api', userRouter, authRouter, adminRouter);
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
+
+require('dotenv').config();
 
 app.listen(port, () => {
   console.log(`Server listens http://${host}:${port}`);

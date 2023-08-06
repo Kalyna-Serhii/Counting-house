@@ -14,7 +14,7 @@ class TokenService {
     const tokenAlreadyExists = await tokenModel.findOne({ user: userId });
     if (tokenAlreadyExists) {
       tokenAlreadyExists.refreshToken = refreshToken;
-      return refreshToken.save();
+      return tokenAlreadyExists.save();
     }
     const token = await tokenModel.create({ user: userId, refreshToken });
     return token;

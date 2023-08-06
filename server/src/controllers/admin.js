@@ -1,4 +1,3 @@
-const { Op } = require('sequelize');
 const User = require('../models/user');
 const FakeUserValidation = require('../validations/admin');
 
@@ -27,28 +26,6 @@ class FakeUserController {
       } = req.body;
       let { phone, gender, role } = req.body;
       phone = phoneByTemplate(phone);
-      let conflict = '';
-      const phoneAlreadyExists = await User.findOne({
-        where: {
-          phone,
-        },
-      });
-      if (phoneAlreadyExists) {
-        conflict += 'Користувач з таким номером телефону вже існує. ';
-      }
-      if (email) {
-        const emailAlreadyExists = await User.findOne({
-          where: {
-            email,
-          },
-        });
-        if (emailAlreadyExists) {
-          conflict += 'Користувач з таким email вже існує';
-        }
-      }
-      if (conflict) {
-        return res.status(409).json(conflict);
-      }
       if (!gender) {
         gender = 'man';
       }
@@ -80,12 +57,12 @@ class FakeUserController {
                schema: {
                     $name: 'John',
                     surname: 'Doe',
-                    gender: 'man',
+                    $gender: 'man',
                     $phone: '0123456789',
                     email: 'john.doe@example.com',
                     $floor: 5,
                     $room: 34,
-                    role: 'admin',
+                    $role: 'admin',
                     avatar: ''
                 }
         } */
@@ -132,34 +109,6 @@ class FakeUserController {
       } = req.body;
       let { phone } = req.body;
       phone = phoneByTemplate(phone);
-      let conflict = '';
-      const phoneAlreadyExists = await User.findOne({
-        where: {
-          phone,
-          id: {
-            [Op.ne]: id,
-          },
-        },
-      });
-      if (phoneAlreadyExists) {
-        conflict += 'Користувач з таким номером телефону вже існує. ';
-      }
-      if (email) {
-        const emailAlreadyExists = await User.findOne({
-          where: {
-            email,
-            id: {
-              [Op.ne]: id,
-            },
-          },
-        });
-        if (emailAlreadyExists) {
-          conflict += 'Користувач з таким email вже існує';
-        }
-      }
-      if (conflict) {
-        return res.status(409).json(conflict);
-      }
       const updatedFields = {};
       updatedFields.name = name;
       updatedFields.surname = surname;
@@ -185,12 +134,12 @@ class FakeUserController {
                 schema: {
                     $name: 'John',
                     surname: 'Doe',
-                    gender: 'man',
+                    $gender: 'man',
                     $phone: '0123456789',
                     email: 'john.doe@example.com',
                     $floor: 5,
                     $room: 34,
-                    role: 'admin',
+                    $role: 'admin',
                     avatar: ''
                 }
         } */
@@ -198,15 +147,15 @@ class FakeUserController {
             description: 'Successful response',
             schema: {
                 id: 5,
-                name: 'Jane',
-                surname: 'Smith',
+                name: 'John',
+                surname: 'Doe',
                 gender: 'man',
-                phone: '0987654321',
+                phone: '0123456789',
                 password: null,
-                email: 'jane.smith@example.com',
-                floor: 2,
-                room: 10,
-                role: 'user',
+                email: 'john.doe@example.com',
+                floor: 5,
+                room: 34,
+                role: 'admin',
                 avatar: ''
             }
           } */

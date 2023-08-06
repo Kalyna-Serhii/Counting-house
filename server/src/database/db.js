@@ -14,7 +14,9 @@ const sequelize = new Sequelize('postgres', 'admin', 'root', {
     console.error('Не удалось подключиться к базе данных:', error);
   }
   try {
-    await sequelize.sync();
+    await sequelize.sync({ alter: true, paranoid: true });
+    // await sequelize.sync({ force: true, paranoid: true });
+    // Принудительно обновляет БД, ФОРМАТИРУЯ ЕЁ!
   } catch (error) {
     console.error('Не удалось выполнить синхронизацию в базе данных:', error);
   }
