@@ -11,12 +11,16 @@ class TokenService {
 
   // eslint-disable-next-line class-methods-use-this
   async saveToken(userId, refreshToken) {
-    const tokenAlreadyExists = await tokenModel.findOne({ user: userId });
-    if (tokenAlreadyExists) {
-      tokenAlreadyExists.refreshToken = refreshToken;
-      return tokenAlreadyExists.save();
+    const tokenData = await tokenModel.findOne({
+      where: {
+        userId,
+      },
+    });
+    if (tokenData) {
+      tokenData.refreshToken = refreshToken;
+      return tokenData.save();
     }
-    const token = await tokenModel.create({ user: userId, refreshToken });
+    const token = await tokenModel.create({ userId, refreshToken });
     return token;
   }
 }
