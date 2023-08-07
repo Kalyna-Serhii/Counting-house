@@ -83,4 +83,37 @@ const UserValidation = (data) => {
   return schema.validate(data, options);
 };
 
-module.exports = UserValidation;
+const UserLoginValidation = (data) => {
+  const schema = joi.object({
+    phoneOrEmail: joi
+      .string()
+      .required()
+      .custom((value, helpers) => {
+        if (!value.includes('@') && !value.match(/^(?:\+?380|\b0)\d{9}$/)) {
+          return helpers.message('Поле має містити коректний номер телефону або email');
+        }
+        return value;
+      })
+      .messages({
+        'string.empty': 'Номер телефону або email є обов\'язковим',
+      }),
+    password: joi
+      .string()
+      .min(6)
+      .max(72)
+      .pattern(/^(?=.*[a-zA-Z]).{6,72}$/)
+      .required()
+      .messages({
+        'string.empty': 'Пароль є обов\'язковим',
+        'string.min': 'Пароль має містити щонайменше 6 символів',
+        'string.max': 'Пароль має містити не більше 72 символів',
+        'string.pattern.base': 'Пароль має містити щонайменше одну літеру латинського алфавіту',
+      }),
+  });
+  const options = {
+    abortEarly: false, // Включаем вывод всех ошибок
+  };
+  return schema.validate(data, options);
+};
+
+module.exports = [UserValidation, UserLoginValidation];
