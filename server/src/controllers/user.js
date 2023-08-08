@@ -229,7 +229,7 @@ class UserController {
       });
       if (user) {
         await user.destroy();
-        return res.status(200).json('Видалено');
+        return res.status(204).send();
       }
       return res.status(400).json('Такого користувача не існує');
     } catch (error) {
@@ -240,7 +240,7 @@ class UserController {
     // #swagger.summary = 'Delete a user'
     // #swagger.description = 'Deletes a user by user id'
     // #swagger.parameters['id'] = { description: 'User id' }
-    // #swagger.responses[200] = { description: 'Successful response' }
+    // #swagger.responses[204] = { description: 'Successful response' }
   }
 }
 

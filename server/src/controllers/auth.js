@@ -31,7 +31,7 @@ class AuthController {
                     avatar: ''
                 }
         } */
-    /* #swagger.responses[200] = {
+    /* #swagger.responses[201] = {
             description: 'Successful response',
             schema: {
                 id: 5,
@@ -86,6 +86,31 @@ class AuthController {
                 avatar: ''
             }
         } */
+  }
+
+  // eslint-disable-next-line class-methods-use-this,consistent-return
+  async logout(req, res) {
+    try {
+      const { refreshToken } = req.cookies;
+      await authService.logout(refreshToken);
+      res.clearCookie('refreshToken');
+      return res.status(204).send();
+    } catch (error) {
+      return res.status(500).json(error);
+    }
+
+    // #swagger.tags = ['Auth']
+    // #swagger.summary = 'Logout'
+    // #swagger.description = 'Log out of account'
+    /*  #swagger.parameters['obj'] = {
+               in: 'body',
+               description: 'User object',
+               schema: {
+                    $phoneOrEmail: '+380123456789',
+                    $password: '123456789qwe'
+                }
+        } */
+    // #swagger.responses[204] = { description: 'Successful response' }
   }
 }
 

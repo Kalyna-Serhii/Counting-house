@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const tokenModel = require('../models/token');
+const Token = require('../models/token');
 
 class TokenService {
   // eslint-disable-next-line class-methods-use-this
@@ -22,6 +23,16 @@ class TokenService {
     }
     const token = await tokenModel.create({ userId, refreshToken });
     return token;
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  async removeToken(refreshToken) {
+    const tokenData = await Token.findOne({
+      where: {
+        refreshToken,
+      },
+    });
+    await tokenData.destroy();
   }
 }
 

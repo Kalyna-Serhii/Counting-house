@@ -98,6 +98,11 @@ class AuthService {
       return res.status(500).json(error.message);
     }
   }
+
+  // eslint-disable-next-line class-methods-use-this
+  async logout(refreshToken) {
+    await tokenService.removeToken(refreshToken);
+  }
 }
 
 module.exports = new AuthService();

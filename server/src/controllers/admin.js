@@ -66,7 +66,7 @@ class FakeUserController {
                     avatar: ''
                 }
         } */
-    /* #swagger.responses[200] = {
+    /* #swagger.responses[201] = {
             description: 'Successful response',
             schema: {
                 id: 5,
