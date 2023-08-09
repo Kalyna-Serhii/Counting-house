@@ -11,6 +11,22 @@ class TokenService {
   }
 
   // eslint-disable-next-line class-methods-use-this
+  validateRefreshToken(token) {
+    try {
+      const userData = jwt.verify(token, process.env.JWT_REFRESH_SECRET);
+      return userData;
+    } catch (error) {
+      return null;
+    }
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  async findToken(refreshToken) {
+    const tokenData = await tokenModel.findOne({ where: { refreshToken } });
+    return tokenData;
+  }
+
+  // eslint-disable-next-line class-methods-use-this
   async saveToken(userId, refreshToken) {
     const tokenData = await tokenModel.findOne({
       where: {

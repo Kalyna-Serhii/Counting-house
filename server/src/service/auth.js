@@ -63,7 +63,6 @@ class AuthService {
       const { phoneOrEmail, password } = req.body;
       let user;
       if (phoneOrEmail.includes('@')) {
-        console.log('email');
         const email = phoneOrEmail;
         user = await User.findOne({
           where: {
@@ -102,6 +101,27 @@ class AuthService {
   // eslint-disable-next-line class-methods-use-this
   async logout(refreshToken) {
     await tokenService.removeToken(refreshToken);
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  async refresh(refreshToken, res) {
+    if (!refreshToken) {
+      return res.status(401).json('Не авторизований');
+    }
+    const userData = tokenService.validateRefreshToken(refreshToken);
+    const tokenFromDb = await tokenService.findToken(refreshToken);
+    if (!userData || !tokenFromDb) {
+      return res.status(401).json('Не авторизований');
+    }
+    const user = await User.findOne({
+      where: {
+        id: userData.id,
+      },
+    });
+    const userDto = new UserDto(user);
+    const tokens = tokenService.generateTokens({ ...userDto });
+    await tokenService.saveToken(userDto.id, tokens.refreshToken);
+    return { ...tokens, user: userDto };
   }
 }
 

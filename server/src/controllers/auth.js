@@ -52,9 +52,9 @@ class AuthController {
   // eslint-disable-next-line class-methods-use-this,consistent-return
   async login(req, res) {
     try {
-      const user = await authService.login(req, res);
-      res.cookie('refreshToken', user.refreshToken, { maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true });
-      return res.status(200).json(user);
+      const userData = await authService.login(req, res);
+      res.cookie('refreshToken', userData.refreshToken, { maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true });
+      return res.status(200).json(userData);
     } catch (error) {
       /* empty */
     }
@@ -111,6 +111,18 @@ class AuthController {
                 }
         } */
     // #swagger.responses[204] = { description: 'Successful response' }
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  async refresh(req, res) {
+    try {
+      const { refreshToken } = req.cookies;
+      const userData = await authService.refresh(refreshToken, res);
+      res.cookie('refreshToken', userData.refreshToken, { maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true });
+      return res.status(200).json(userData);
+    } catch (error) {
+      return res.status(500).json(error);
+    }
   }
 }
 
