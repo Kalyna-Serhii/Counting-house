@@ -1,123 +1,96 @@
 const bcrypt = require('bcrypt');
-const [UserValidation, UserLoginValidation] = require('../validations/user');
 const User = require('../models/user');
-const UserDto = require('../dtos/userDto');
 const tokenService = require('./token');
+const UserDto = require('../dtos/userDto');
+const ApiError = require('../exceptions/api-error');
 
 class AuthService {
   // eslint-disable-next-line class-methods-use-this
-  async registration(req, res) {
-    const { error: customError } = UserValidation(req.body);
-    if (customError) {
-      const errorMessage = customError.details[0].message;
-      return res.status(400).json({ error: errorMessage });
+  async registration(body) {
+    const {
+      name, surname, email, floor, room, avatar,
+    } = body;
+    let {
+      password, phone, gender, role,
+    } = body;
+    password = await bcrypt.hash(password, 3);
+    if (phone.startsWith('0')) {
+      phone = `+38${phone}`;
+    } else if (phone.startsWith('380')) {
+      phone = `+${phone}`;
     }
-    try {
-      const {
-        name, surname, email, floor, room, avatar,
-      } = req.body;
-      let {
-        password, phone, gender, role,
-      } = req.body;
-      password = await bcrypt.hash(password, 3);
+    if (!gender) {
+      gender = 'man';
+    }
+    if (!role) {
+      role = 'user';
+    }
+    const newUser = await User.create({
+      name,
+      surname,
+      gender,
+      phone,
+      password,
+      email,
+      floor,
+      room,
+      role,
+      avatar,
+    });
+    const userDto = new UserDto(newUser);
+    const tokens = tokenService.generateTokens({ ...userDto });
+    await tokenService.saveToken(userDto.id, tokens.refreshToken);
+    return { ...tokens, user: userDto };
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  async login(body) {
+    const { phoneOrEmail, password } = body;
+    let user;
+    if (phoneOrEmail.includes('@')) {
+      const email = phoneOrEmail;
+      user = await User.findOne({ where: { email } });
+    } else {
+      let phone = phoneOrEmail;
       if (phone.startsWith('0')) {
         phone = `+38${phone}`;
       } else if (phone.startsWith('380')) {
         phone = `+${phone}`;
       }
-      if (!gender) {
-        gender = 'man';
-      }
-      if (!role) {
-        role = 'user';
-      }
-      const newUser = await User.create({
-        name,
-        surname,
-        gender,
-        phone,
-        password,
-        email,
-        floor,
-        room,
-        role,
-        avatar,
-      });
-      const userDto = new UserDto(newUser);
-      const tokens = tokenService.generateTokens({ ...userDto });
-      await tokenService.saveToken(userDto.id, tokens.refreshToken);
-      return { ...tokens, user: userDto };
-    } catch (error) {
-      return res.status(500).json(error.message);
+      user = await User.findOne({ where: { phone } });
     }
-  }
-
-  // eslint-disable-next-line class-methods-use-this
-  async login(req, res) {
-    const { error: customError } = UserLoginValidation(req.body);
-    if (customError) {
-      const errorMessage = customError.details[0].message;
-      return res.status(400).json({ error: errorMessage });
+    if (!user) {
+      throw ApiError.BadRequest('Такого користувача не існує');
     }
-    try {
-      const { phoneOrEmail, password } = req.body;
-      let user;
-      if (phoneOrEmail.includes('@')) {
-        const email = phoneOrEmail;
-        user = await User.findOne({
-          where: {
-            email,
-          },
-        });
-      } else {
-        let phone = phoneOrEmail;
-        if (phone.startsWith('0')) {
-          phone = `+38${phone}`;
-        } else if (phone.startsWith('380')) {
-          phone = `+${phone}`;
-        }
-        user = await User.findOne({
-          where: {
-            phone,
-          },
-        });
-      }
-      if (!user) {
-        return res.status(400).json('Такого користувача не існує');
-      }
-      const isPasswordEquals = await bcrypt.compare(password, user.password);
-      if (!isPasswordEquals) {
-        return res.status(400).json('Невірний пароль');
-      }
-      const userDto = new UserDto(user);
-      const tokens = tokenService.generateTokens({ ...userDto });
-      await tokenService.saveToken(userDto.id, tokens.refreshToken);
-      return { ...tokens, user: userDto };
-    } catch (error) {
-      return res.status(500).json(error.message);
+    const isPasswordEquals = await bcrypt.compare(password, user.password);
+    if (!isPasswordEquals) {
+      throw ApiError.BadRequest('Невірний пароль');
     }
+    const userDto = new UserDto(user);
+    const tokens = tokenService.generateTokens({ ...userDto });
+    await tokenService.saveToken(userDto.id, tokens.refreshToken);
+    return { ...tokens, user: userDto };
   }
 
   // eslint-disable-next-line class-methods-use-this
   async logout(refreshToken) {
+    if (!refreshToken) {
+      throw ApiError.UnauthorizedError();
+    }
     await tokenService.removeToken(refreshToken);
   }
 
   // eslint-disable-next-line class-methods-use-this
-  async refresh(refreshToken, res) {
+  async refresh(refreshToken) {
     if (!refreshToken) {
-      return res.status(401).json('Не авторизований');
+      throw ApiError.UnauthorizedError();
     }
     const userData = tokenService.validateRefreshToken(refreshToken);
     const tokenFromDb = await tokenService.findToken(refreshToken);
     if (!userData || !tokenFromDb) {
-      return res.status(401).json('Не авторизований');
+      throw ApiError.UnauthorizedError();
     }
-    const user = await User.findOne({
-      where: {
-        id: userData.id,
-      },
-    });
+    const user = await User.findOne({ where: { id: userData.id } });
     const userDto = new UserDto(user);
     const tokens = tokenService.generateTokens({ ...userDto });
     await tokenService.saveToken(userDto.id, tokens.refreshToken);

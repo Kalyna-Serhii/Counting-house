@@ -1,14 +1,21 @@
 const authService = require('../service/auth');
+const [UserValidation, UserLoginValidation] = require('../validations/user');
+const ApiError = require('../exceptions/api-error');
 
 class AuthController {
   // eslint-disable-next-line class-methods-use-this,consistent-return
-  async registration(req, res) {
+  async registration(req, res, next) {
     try {
-      const newUser = await authService.registration(req, res);
+      const { error: validationError } = UserValidation(req.body);
+      if (validationError) {
+        const errorMessage = validationError.details[0].message;
+        return next(ApiError.BadRequest(errorMessage));
+      }
+      const newUser = await authService.registration(req.body);
       res.cookie('refreshToken', newUser.refreshToken, { maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true });
       return res.status(201).json(newUser.user);
     } catch (error) {
-      /* empty */
+      next(error);
     }
 
     // #swagger.tags = ['Auth']
@@ -32,7 +39,6 @@ class AuthController {
                 }
         } */
     /* #swagger.responses[201] = {
-            description: 'Successful response',
             schema: {
                 id: 5,
                 name: 'John',
@@ -46,17 +52,24 @@ class AuthController {
                 role: 'admin',
                 avatar: ''
             }
-        } */
+    } */
+    // #swagger.responses[400]
+    // #swagger.responses[500]
   }
 
   // eslint-disable-next-line class-methods-use-this,consistent-return
-  async login(req, res) {
+  async login(req, res, next) {
     try {
-      const userData = await authService.login(req, res);
+      const { error: validationError } = UserLoginValidation(req.body);
+      if (validationError) {
+        const errorMessage = validationError.details[0].message;
+        return next(ApiError.BadRequest(errorMessage));
+      }
+      const userData = await authService.login(req.body);
       res.cookie('refreshToken', userData.refreshToken, { maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true });
       return res.status(200).send();
     } catch (error) {
-      /* empty */
+      next(error);
     }
 
     // #swagger.tags = ['Auth']
@@ -70,41 +83,44 @@ class AuthController {
                     $password: '123456789qwe'
                 }
         } */
-    /* #swagger.responses[200] = { description: 'Successful response' } */
+    // #swagger.responses[400]
+    // #swagger.responses[500]
   }
 
   // eslint-disable-next-line class-methods-use-this,consistent-return
-  async logout(req, res) {
+  async logout(req, res, next) {
     try {
       const { refreshToken } = req.cookies;
       await authService.logout(refreshToken);
       res.clearCookie('refreshToken');
       return res.status(204).send();
     } catch (error) {
-      return res.status(500).json(error);
+      next(error);
     }
 
     // #swagger.tags = ['Auth']
     // #swagger.summary = 'Logout'
     // #swagger.description = 'Log out of account'
-    // #swagger.responses[204] = { description: 'Successful response' }
+    // #swagger.responses[401]
+    // #swagger.responses[500]
   }
 
-  // eslint-disable-next-line class-methods-use-this
-  async refresh(req, res) {
+  // eslint-disable-next-line class-methods-use-this,consistent-return
+  async refresh(req, res, next) {
     try {
       const { refreshToken } = req.cookies;
       const userData = await authService.refresh(refreshToken, res);
       res.cookie('refreshToken', userData.refreshToken, { maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true });
       return res.status(200).send();
     } catch (error) {
-      return res.status(500).json(error);
+      next(error);
     }
 
     // #swagger.tags = ['Auth']
     // #swagger.summary = 'Refresh'
     // #swagger.description = 'Refresh access token'
-    // #swagger.responses[200] = { description: 'Successful response' }
+    // #swagger.responses[401]
+    // #swagger.responses[500]
   }
 }
 

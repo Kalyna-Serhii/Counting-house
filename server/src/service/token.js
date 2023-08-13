@@ -29,9 +29,7 @@ class TokenService {
   // eslint-disable-next-line class-methods-use-this
   async saveToken(userId, refreshToken) {
     const tokenData = await tokenModel.findOne({
-      where: {
-        userId,
-      },
+      where: { userId },
     });
     if (tokenData) {
       tokenData.refreshToken = refreshToken;
@@ -44,9 +42,7 @@ class TokenService {
   // eslint-disable-next-line class-methods-use-this
   async removeToken(refreshToken) {
     const tokenData = await Token.findOne({
-      where: {
-        refreshToken,
-      },
+      where: { refreshToken },
     });
     await tokenData.destroy();
   }

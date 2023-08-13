@@ -95,11 +95,7 @@ class FakeUserController {
     if (id < 1) {
       return res.status(400).json('Id не може бути менше за 1');
     }
-    const user = await User.findOne({
-      where: {
-        id,
-      },
-    });
+    const user = await User.findOne({ where: { id } });
     if (!user) {
       return res.status(400).json('Такого користувача не існує');
     }
