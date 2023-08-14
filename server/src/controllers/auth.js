@@ -2,15 +2,21 @@ const authService = require('../service/auth');
 const [UserValidation, UserLoginValidation] = require('../validations/user');
 const ApiError = require('../exceptions/api-error');
 
-class AuthController {
-  // eslint-disable-next-line class-methods-use-this,consistent-return
+// ошибка будет обработана в Error-middleware
+/* eslint-disable consistent-return */
+
+function validation(body, schema, next) {
+  const { error: customError } = schema(body);
+  if (customError) {
+    const errorMessage = customError.details[0].message;
+    throw next(ApiError.BadRequest(errorMessage));
+  }
+}
+
+const AuthController = {
   async registration(req, res, next) {
     try {
-      const { error: validationError } = UserValidation(req.body);
-      if (validationError) {
-        const errorMessage = validationError.details[0].message;
-        return next(ApiError.BadRequest(errorMessage));
-      }
+      validation(req.body, UserValidation, next);
       const newUser = await authService.registration(req.body);
       res.cookie('refreshToken', newUser.refreshToken, { maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true });
       return res.status(201).json(newUser.user);
@@ -55,16 +61,11 @@ class AuthController {
     } */
     // #swagger.responses[400]
     // #swagger.responses[500]
-  }
+  },
 
-  // eslint-disable-next-line class-methods-use-this,consistent-return
   async login(req, res, next) {
     try {
-      const { error: validationError } = UserLoginValidation(req.body);
-      if (validationError) {
-        const errorMessage = validationError.details[0].message;
-        return next(ApiError.BadRequest(errorMessage));
-      }
+      validation(req.body, UserLoginValidation, next);
       const userData = await authService.login(req.body);
       res.cookie('refreshToken', userData.refreshToken, { maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true });
       return res.status(200).send();
@@ -85,12 +86,14 @@ class AuthController {
         } */
     // #swagger.responses[400]
     // #swagger.responses[500]
-  }
+  },
 
-  // eslint-disable-next-line class-methods-use-this,consistent-return
   async logout(req, res, next) {
     try {
       const { refreshToken } = req.cookies;
+      if (!refreshToken) {
+        return next(ApiError.UnauthorizedError());
+      }
       await authService.logout(refreshToken);
       res.clearCookie('refreshToken');
       return res.status(204).send();
@@ -103,12 +106,14 @@ class AuthController {
     // #swagger.description = 'Log out of account'
     // #swagger.responses[401]
     // #swagger.responses[500]
-  }
+  },
 
-  // eslint-disable-next-line class-methods-use-this,consistent-return
   async refresh(req, res, next) {
     try {
       const { refreshToken } = req.cookies;
+      if (!refreshToken) {
+        return next(ApiError.UnauthorizedError());
+      }
       const userData = await authService.refresh(refreshToken, res);
       res.cookie('refreshToken', userData.refreshToken, { maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true });
       return res.status(200).send();
@@ -121,7 +126,7 @@ class AuthController {
     // #swagger.description = 'Refresh access token'
     // #swagger.responses[401]
     // #swagger.responses[500]
-  }
-}
+  },
+};
 
-module.exports = new AuthController();
+module.exports = AuthController;

@@ -4,33 +4,30 @@ const tokenService = require('./token');
 const UserDto = require('../dtos/userDto');
 const ApiError = require('../exceptions/api-error');
 
-class AuthService {
-  // eslint-disable-next-line class-methods-use-this
+function phoneByTemplate(phone) {
+  let newPhone = phone;
+  if (phone.startsWith('0')) {
+    newPhone = `+38${phone}`;
+  } else if (phone.startsWith('380')) {
+    newPhone = `+${phone}`;
+  }
+  return newPhone;
+}
+
+const AuthService = {
   async registration(body) {
     const {
-      name, surname, email, floor, room, avatar,
+      name, surname, gender, email, password, floor, room, role, avatar,
     } = body;
-    let {
-      password, phone, gender, role,
-    } = body;
-    password = await bcrypt.hash(password, 3);
-    if (phone.startsWith('0')) {
-      phone = `+38${phone}`;
-    } else if (phone.startsWith('380')) {
-      phone = `+${phone}`;
-    }
-    if (!gender) {
-      gender = 'man';
-    }
-    if (!role) {
-      role = 'user';
-    }
+    const { phone } = body;
+    const hashedPassword = await bcrypt.hash(password, 3);
+    const templatedPhone = phoneByTemplate(phone);
     const newUser = await User.create({
       name,
       surname,
       gender,
-      phone,
-      password,
+      phone: templatedPhone,
+      password: hashedPassword,
       email,
       floor,
       room,
@@ -41,9 +38,8 @@ class AuthService {
     const tokens = tokenService.generateTokens({ ...userDto });
     await tokenService.saveToken(userDto.id, tokens.refreshToken);
     return { ...tokens, user: userDto };
-  }
+  },
 
-  // eslint-disable-next-line class-methods-use-this
   async login(body) {
     const { phoneOrEmail, password } = body;
     let user;
@@ -70,21 +66,13 @@ class AuthService {
     const tokens = tokenService.generateTokens({ ...userDto });
     await tokenService.saveToken(userDto.id, tokens.refreshToken);
     return { ...tokens, user: userDto };
-  }
+  },
 
-  // eslint-disable-next-line class-methods-use-this
   async logout(refreshToken) {
-    if (!refreshToken) {
-      throw ApiError.UnauthorizedError();
-    }
     await tokenService.removeToken(refreshToken);
-  }
+  },
 
-  // eslint-disable-next-line class-methods-use-this
   async refresh(refreshToken) {
-    if (!refreshToken) {
-      throw ApiError.UnauthorizedError();
-    }
     const userData = tokenService.validateRefreshToken(refreshToken);
     const tokenFromDb = await tokenService.findToken(refreshToken);
     if (!userData || !tokenFromDb) {
@@ -95,7 +83,7 @@ class AuthService {
     const tokens = tokenService.generateTokens({ ...userDto });
     await tokenService.saveToken(userDto.id, tokens.refreshToken);
     return { ...tokens, user: userDto };
-  }
-}
+  },
+};
 
-module.exports = new AuthService();
+module.exports = [AuthService, phoneByTemplate];

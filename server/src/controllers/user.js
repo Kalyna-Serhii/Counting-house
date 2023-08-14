@@ -3,8 +3,7 @@ const { Op } = require('sequelize');
 const User = require('../models/user');
 const UpdateUserValidation = require('../validations/user');
 
-class UserController {
-  // eslint-disable-next-line class-methods-use-this
+const UserController = {
   async getUsers(req, res) {
     try {
       const users = await User.findAll();
@@ -52,9 +51,8 @@ class UserController {
             ]
         }
         } */
-  }
+  },
 
-  // eslint-disable-next-line class-methods-use-this
   async getUserById(req, res) {
     try {
       const { id } = req.params;
@@ -87,9 +85,8 @@ class UserController {
                 avatar: ''
             }
         } */
-  }
+  },
 
-  // eslint-disable-next-line class-methods-use-this
   async updateUser(req, res) {
     const { error: customError } = UpdateUserValidation(req.body);
     if (customError) {
@@ -198,9 +195,8 @@ class UserController {
                 avatar: ''
             }
           } */
-  }
+  },
 
-  // eslint-disable-next-line class-methods-use-this
   async deleteUser(req, res) {
     try {
       const { id } = req.params;
@@ -219,7 +215,7 @@ class UserController {
     // #swagger.description = 'Deletes a user by user id'
     // #swagger.parameters['id'] = { description: 'User id' }
     // #swagger.responses[204] = { description: 'Successful response' }
-  }
-}
+  },
+};
 
-module.exports = new UserController();
+module.exports = UserController;

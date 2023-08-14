@@ -52,8 +52,7 @@ const handleFormCreate = async (event) => {
 
     createFormElements.forEach((element) => {
       if (element.type !== 'file' && element.type !== 'button' && element.type !== 'select-one') {
-        // eslint-disable-next-line no-param-reassign
-        element.value = '';
+        parentForm.reset();
       }
     });
 
