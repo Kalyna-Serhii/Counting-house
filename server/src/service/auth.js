@@ -3,23 +3,13 @@ const User = require('../models/user');
 const tokenService = require('./token');
 const UserDto = require('../dtos/userDto');
 const ApiError = require('../exceptions/api-error');
-
-function phoneByTemplate(phone) {
-  let newPhone = phone;
-  if (phone.startsWith('0')) {
-    newPhone = `+38${phone}`;
-  } else if (phone.startsWith('380')) {
-    newPhone = `+${phone}`;
-  }
-  return newPhone;
-}
+const phoneByTemplate = require('../validations/phoneByTemplate');
 
 const AuthService = {
   async registration(body) {
     const {
-      name, surname, gender, email, password, floor, room, role, avatar,
+      name, surname, gender, phone, email, password, floor, room, role, avatar,
     } = body;
-    const { phone } = body;
     const hashedPassword = await bcrypt.hash(password, 3);
     const templatedPhone = phoneByTemplate(phone);
     const newUser = await User.create({
@@ -47,13 +37,9 @@ const AuthService = {
       const email = phoneOrEmail;
       user = await User.findOne({ where: { email } });
     } else {
-      let phone = phoneOrEmail;
-      if (phone.startsWith('0')) {
-        phone = `+38${phone}`;
-      } else if (phone.startsWith('380')) {
-        phone = `+${phone}`;
-      }
-      user = await User.findOne({ where: { phone } });
+      const phone = phoneOrEmail;
+      const templatedPhone = phoneByTemplate(phone);
+      user = await User.findOne({ where: { phone: templatedPhone } });
     }
     if (!user) {
       throw ApiError.BadRequest('Такого користувача не існує');
@@ -86,4 +72,4 @@ const AuthService = {
   },
 };
 
-module.exports = [AuthService, phoneByTemplate];
+module.exports = AuthService;

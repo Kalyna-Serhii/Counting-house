@@ -1,22 +1,15 @@
 const authService = require('../service/auth');
-const [UserValidation, UserLoginValidation] = require('../validations/user');
+const [UserRegisterValidation, UserLoginValidation] = require('../validations/auth');
 const ApiError = require('../exceptions/api-error');
+const validation = require('../validations/validation');
 
 // ошибка будет обработана в Error-middleware
 /* eslint-disable consistent-return */
 
-function validation(body, schema, next) {
-  const { error: customError } = schema(body);
-  if (customError) {
-    const errorMessage = customError.details[0].message;
-    throw next(ApiError.BadRequest(errorMessage));
-  }
-}
-
 const AuthController = {
   async registration(req, res, next) {
     try {
-      validation(req.body, UserValidation, next);
+      validation(req.body, UserRegisterValidation, next);
       const newUser = await authService.registration(req.body);
       res.cookie('refreshToken', newUser.refreshToken, { maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true });
       return res.status(201).json(newUser.user);
