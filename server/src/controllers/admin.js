@@ -1,51 +1,18 @@
-const User = require('../models/user');
+const adminService = require('../service/admin');
 const FakeUserValidation = require('../validations/admin');
+const validation = require('../validations/validation');
 
-function phoneByTemplate(phone) {
-  let newPhone = phone;
-  if (phone.startsWith('0')) {
-    newPhone = `+38${phone}`;
-  } else if (phone.startsWith('380')) {
-    newPhone = `+${phone}`;
-  }
-  return newPhone;
-}
+// ошибка будет обработана в Error-middleware
+/* eslint-disable consistent-return */
 
-class FakeUserController {
-  // eslint-disable-next-line class-methods-use-this
-  async createFakeUser(req, res) {
-    const { error: customError } = FakeUserValidation(req.body);
-    if (customError) {
-      const errorMessages = customError.details.map((detail) => detail.message);
-      const errorMessage = errorMessages.join(', ');
-      return res.status(400).json({ error: errorMessage });
-    }
+const FakeUserController = {
+  async createFakeUser(req, res, next) {
     try {
-      const {
-        name, surname, email, floor, room, avatar,
-      } = req.body;
-      let { phone, gender, role } = req.body;
-      phone = phoneByTemplate(phone);
-      if (!gender) {
-        gender = 'man';
-      }
-      if (!role) {
-        role = 'user';
-      }
-      const newFakeUser = await User.create({
-        name,
-        surname,
-        gender,
-        phone,
-        email,
-        floor,
-        room,
-        role,
-        avatar,
-      });
+      validation(req.body, FakeUserValidation, next);
+      const newFakeUser = await adminService.createFakeUser(req.body);
       return res.status(201).json(newFakeUser);
     } catch (error) {
-      return res.status(500).json(error.message);
+      next(error);
     }
 
     // #swagger.tags = ['Admin']
@@ -67,7 +34,6 @@ class FakeUserController {
                 }
         } */
     /* #swagger.responses[201] = {
-            description: 'Successful response',
             schema: {
                 id: 5,
                 name: 'John',
@@ -82,43 +48,17 @@ class FakeUserController {
                 avatar: ''
             }
         } */
-  }
+    // #swagger.responses[400]
+    // #swagger.responses[500]
+  },
 
-  // eslint-disable-next-line class-methods-use-this
-  async updateFakeUser(req, res) {
-    const { error: customError } = FakeUserValidation(req.body);
-    if (customError) {
-      const errorMessage = customError.details[0].message;
-      return res.status(400).json({ customError: errorMessage });
-    }
-    const { id } = req.params;
-    if (id < 1) {
-      return res.status(400).json('Id не може бути менше за 1');
-    }
-    const user = await User.findOne({ where: { id } });
-    if (!user) {
-      return res.status(400).json('Такого користувача не існує');
-    }
+  async updateFakeUser(req, res, next) {
     try {
-      const {
-        name, surname, gender, email, floor, room, role, avatar,
-      } = req.body;
-      let { phone } = req.body;
-      phone = phoneByTemplate(phone);
-      const updatedFields = {};
-      updatedFields.name = name;
-      updatedFields.surname = surname;
-      updatedFields.gender = gender;
-      updatedFields.phone = phone;
-      updatedFields.email = email;
-      updatedFields.floor = floor;
-      updatedFields.room = room;
-      updatedFields.role = role;
-      updatedFields.avatar = avatar;
-      const updatedUser = await user.update(updatedFields);
-      return res.status(200).json(updatedUser);
+      validation(req.body, FakeUserValidation, next);
+      const updatedFakeUser = await adminService.updateFakeUser(req.params, req.body);
+      return res.status(200).json(updatedFakeUser);
     } catch (error) {
-      return res.status(500).json(error.message);
+      next(error);
     }
 
     // #swagger.tags = ['Admin']
@@ -140,7 +80,6 @@ class FakeUserController {
                 }
         } */
     /* #swagger.responses[200] = {
-            description: 'Successful response',
             schema: {
                 id: 5,
                 name: 'John',
@@ -155,7 +94,9 @@ class FakeUserController {
                 avatar: ''
             }
           } */
-  }
-}
+    // #swagger.responses[400]
+    // #swagger.responses[500]
+  },
+};
 
-module.exports = new FakeUserController();
+module.exports = FakeUserController;

@@ -9,6 +9,7 @@ const FakeUserValidation = (data) => {
       .required()
       .regex(/^[^\d\s]+$/)
       .messages({
+        'any.required': 'Ім\'я є обов\'язковим',
         'string.empty': 'Ім\'я є обов\'язковим',
         'string.min': 'Ім\'я має містити не менше 2 символів',
         'string.max': 'Ім\'я має містити не більше 15 символів',
@@ -33,6 +34,7 @@ const FakeUserValidation = (data) => {
       .pattern(/^(?:\+?380|\b0)\d{9}$/)
       .required()
       .messages({
+        'any.required': 'Номер телефону є обов\'язковим',
         'string.empty': 'Номер телефону є обов\'язковим',
         'string.pattern.base': 'Номер телефону має відповідати патерну (+38)0xx-xxx-xx-xx)',
       }),
@@ -43,17 +45,21 @@ const FakeUserValidation = (data) => {
         'string.max': 'Електронна пошта має містити не більше 50 символів',
         'string.email': 'Електронна пошта має бути коректною',
       }),
-    floor: joi.number().min(1).max(9).required()
+    floor: joi.number().integer().min(1).max(9)
+      .required()
       .messages({
-        'number.base': 'Поверх є обов\'язковим',
+        'any.required': 'Поверх є обов\'язковим',
         'number.empty': 'Поверх є обов\'язковим',
+        'number.base': 'Поверх має бути цілим числом',
         'number.min': 'Поверх не може бути менше за 1',
         'number.max': 'Поверх не може бути більше за 9',
       }),
-    room: joi.number().min(1).max(99).required()
+    room: joi.number().integer().min(1).max(99)
+      .required()
       .messages({
-        'number.base': 'Квартира є обов\'язковою',
+        'any.required': 'Квартира є обов\'язковою',
         'number.empty': 'Квартира є обов\'язковою',
+        'number.base': 'Квартира має бути цілим числом',
         'number.min': 'Квартира не може бути менше за 1',
         'number.max': 'Квартира не може бути більше за 99',
       }),
