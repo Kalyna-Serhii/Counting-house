@@ -77,7 +77,6 @@ const handleFormEdit = async (event) => {
     if (formButtonEdit.classList.contains('form__button-edit')) {
       const formBody = getFormBody(parentForm);
       if (formButtonEdit.textContent === 'Готово') {
-        formBody.id = formId;
         await api.admin.patch(formId, formBody);
         formButtonEdit.textContent = 'Редагувати';
         formButtonEdit.classList.remove('btn-success');

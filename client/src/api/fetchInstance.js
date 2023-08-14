@@ -3,12 +3,17 @@ class FetchClient {
     this.baseURL = baseURL;
   }
 
+  // Статус коды 200 и 204 могут не содержать body, в таком случае парсить и возвращать нечего
+  // eslint-disable-next-line consistent-return
   async request(url, options = {}) {
     const response = await fetch(`${this.baseURL}${url}`, options);
     if (!response.ok) {
       throw response;
     }
-    return response.json();
+    const contentLength = response.headers.get('Content-Length');
+    if (contentLength) {
+      return response.json();
+    }
   }
 
   async get(url, options = {}) {
@@ -38,7 +43,7 @@ class FetchClient {
   }
 
   async delete(url, options = {}) {
-    return this.request(url, { method: 'DELETE', ...options });
+    await this.request(url, { method: 'DELETE', ...options });
   }
 }
 

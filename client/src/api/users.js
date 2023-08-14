@@ -37,7 +37,7 @@ const users = {
   },
   async delete(userId) {
     try {
-      return await fetchInstance.delete(`/user/${userId}`);
+      await fetchInstance.delete(`/user/${userId}`);
     } catch (error) {
       throw new Error('Не удалось удалить пользователя');
     }
