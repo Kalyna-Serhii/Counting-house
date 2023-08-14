@@ -1,22 +1,23 @@
-const bcrypt = require('bcrypt');
-const { Op } = require('sequelize');
-const User = require('../models/user');
+const userService = require('../service/user');
 const UpdateUserValidation = require('../validations/user');
+const validation = require('../validations/validation');
+
+// ошибка будет обработана в Error-middleware
+/* eslint-disable consistent-return */
 
 const UserController = {
-  async getUsers(req, res) {
+  async getUsers(req, res, next) {
     try {
-      const users = await User.findAll();
+      const users = await userService.getUsers();
       return res.status(200).json(users);
     } catch (error) {
-      return res.status(500).json('Не вдалось виконати запит, спробуйте пізніше');
+      next(error);
     }
 
     // #swagger.tags = ['Users']
     // #swagger.summary = 'Get a list of users'
     // #swagger.description = 'Returns a list of all users'
     /* #swagger.responses[200] = {
-        description: 'Successful response',
         schema: {
             type: 'array'
         },
@@ -51,18 +52,15 @@ const UserController = {
             ]
         }
         } */
+    // #swagger.responses[500]
   },
 
-  async getUserById(req, res) {
+  async getUserById(req, res, next) {
     try {
-      const { id } = req.params;
-      const user = await User.findOne({ where: { id } });
-      if (!user) {
-        return res.status(400).json('Такого користувача не існує');
-      }
+      const user = await userService.getUserById(req.params);
       return res.status(200).json(user);
     } catch (error) {
-      return res.status(500).json('Не вдалось виконати запит, спробуйте пізніше');
+      next(error);
     }
 
     // #swagger.tags = ['Users']
@@ -70,7 +68,6 @@ const UserController = {
     // #swagger.description = 'Returns a user by user id'
     // #swagger.parameters['id'] = { description: 'User id' }
     /* #swagger.responses[200] = {
-            description: 'Successful response',
             schema: {
                 id: 5,
                 name: 'John',
@@ -85,78 +82,17 @@ const UserController = {
                 avatar: ''
             }
         } */
+    // #swagger.responses[400]
+    // #swagger.responses[500]
   },
 
-  async updateUser(req, res) {
-    const { error: customError } = UpdateUserValidation(req.body);
-    if (customError) {
-      const errorMessage = customError.details[0].message;
-      return res.status(400).json({ customError: errorMessage });
-    }
-    const { id } = req.params;
-    if (id < 1) {
-      return res.status(400).json('Id не може бути менше за 1');
-    }
-    const user = await User.findOne({ where: { id } });
-    if (!user) {
-      return res.status(400).json('Такого користувача не існує');
-    }
+  async updateUser(req, res, next) {
     try {
-      const {
-        name, surname, gender, email, floor, room, role, avatar,
-      } = req.body;
-      let { password, phone } = req.body;
-      password = await bcrypt.hash(password, 3);
-      if (phone.startsWith('0')) {
-        phone = `+38${phone}`;
-      } else if (phone.startsWith('380')) {
-        phone = `+${phone}`;
-      }
-      const phoneAlreadyExists = await User.findOne({
-        where: { phone, id: { [Op.ne]: id } },
-      });
-      if (phoneAlreadyExists) {
-        return res.status(409).json('Користувач з таким номером телефону вже існує');
-      }
-      if (email) {
-        const emailAlreadyExists = await User.findOne({
-          where: { email, id: { [Op.ne]: id } },
-        });
-        if (emailAlreadyExists) {
-          return res.status(409).json('Користувач з таким email вже існує');
-        }
-      }
-      const updatedFields = {};
-      if (name) {
-        updatedFields.name = name;
-      }
-      updatedFields.surname = surname;
-      if (gender) {
-        updatedFields.gender = gender;
-      }
-      if (phone) {
-        updatedFields.phone = phone;
-      }
-      if (password) {
-        updatedFields.password = await bcrypt.hash(password, 3);
-      }
-      updatedFields.email = email;
-      if (floor) {
-        updatedFields.floor = floor;
-      }
-      if (room) {
-        updatedFields.room = room;
-      }
-      if (role) {
-        updatedFields.role = role;
-      }
-      if (avatar) {
-        updatedFields.avatar = avatar;
-      }
-      const updatedUser = await user.update(updatedFields);
+      validation(req.body, UpdateUserValidation, next);
+      const updatedUser = await userService.updateUser(req.params, req.body);
       return res.status(200).json(updatedUser);
     } catch (error) {
-      return res.status(500).json(error.message);
+      next(error);
     }
 
     // #swagger.tags = ['Users']
@@ -180,7 +116,6 @@ const UserController = {
                 }
         } */
     /* #swagger.responses[200] = {
-            description: 'Successful response',
             schema: {
                 id: 5,
                 name: 'Jane',
@@ -195,26 +130,24 @@ const UserController = {
                 avatar: ''
             }
           } */
+    // #swagger.responses[400]
+    // #swagger.responses[500]
   },
 
-  async deleteUser(req, res) {
+  async deleteUser(req, res, next) {
     try {
-      const { id } = req.params;
-      const user = await User.findOne({ where: { id } });
-      if (user) {
-        await user.destroy();
-        return res.status(204).send();
-      }
-      return res.status(400).json('Такого користувача не існує');
+      await userService.deleteUser(req.params);
+      return res.status(204).send();
     } catch (error) {
-      return res.status(500).json('Не вдалось виконати запит, спробуйте пізніше');
+      next(error);
     }
 
     // #swagger.tags = ['Users']
     // #swagger.summary = 'Delete a user'
     // #swagger.description = 'Deletes a user by user id'
     // #swagger.parameters['id'] = { description: 'User id' }
-    // #swagger.responses[204] = { description: 'Successful response' }
+    // #swagger.responses[400]
+    // #swagger.responses[500]
   },
 };
 
