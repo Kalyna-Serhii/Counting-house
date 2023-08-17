@@ -8,4 +8,4 @@ function showError(error, parentForm) {
   }, 5000);
 }
 
-module.exports = showError;
+export default showError;

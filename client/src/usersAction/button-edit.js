@@ -1,6 +1,5 @@
 import api from '../api';
-
-const showError = require('./showError');
+import showError from './showError';
 
 const getFormBody = (form) => {
   const formBody = {};
