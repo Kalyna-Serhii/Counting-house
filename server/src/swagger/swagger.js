@@ -1,4 +1,4 @@
-const swaggerAutogen = require('swagger-autogen')();
+import swaggerAutogen from 'swagger-autogen';
 
 const outputFile = './swaggerAutogen.json';
 const endpointsFiles = ['../routes/*'];
@@ -12,5 +12,5 @@ const doc = {
 };
 
 swaggerAutogen(outputFile, endpointsFiles, doc).then(() => {
-  require('../../app');
+  import('../../app');
 });

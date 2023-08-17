@@ -8,4 +8,4 @@ function phoneByTemplate(phone) {
   return templatedPhone;
 }
 
-module.exports = phoneByTemplate;
+export default phoneByTemplate;

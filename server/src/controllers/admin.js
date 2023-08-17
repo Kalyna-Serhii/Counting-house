@@ -1,6 +1,6 @@
-const adminService = require('../service/admin');
-const FakeUserValidation = require('../validations/admin');
-const validation = require('../validations/validation');
+import adminService from '../service/admin';
+import FakeUserValidation from '../validations/admin';
+import validation from '../validations/validation';
 
 // ошибка будет обработана в Error-middleware
 /* eslint-disable consistent-return */
@@ -99,4 +99,4 @@ const FakeUserController = {
   },
 };
 
-module.exports = FakeUserController;
+export default FakeUserController;

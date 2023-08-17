@@ -1,4 +1,4 @@
-const joi = require('joi');
+import joi from 'joi';
 
 const FakeUserValidation = (data) => {
   const schema = joi.object({
@@ -74,4 +74,4 @@ const FakeUserValidation = (data) => {
   return schema.validate(data, options);
 };
 
-module.exports = FakeUserValidation;
+export default FakeUserValidation;

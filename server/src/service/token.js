@@ -1,6 +1,5 @@
-const jwt = require('jsonwebtoken');
-const tokenModel = require('../models/token');
-const Token = require('../models/token');
+import jwt from 'jsonwebtoken';
+import Token from '../models/token';
 
 const TokenService = {
   generateTokens(payload) {
@@ -19,19 +18,19 @@ const TokenService = {
   },
 
   async findToken(refreshToken) {
-    const tokenData = await tokenModel.findOne({ where: { refreshToken } });
+    const tokenData = await Token.findOne({ where: { refreshToken } });
     return tokenData;
   },
 
   async saveToken(userId, refreshToken) {
-    const tokenData = await tokenModel.findOne({
+    const tokenData = await Token.findOne({
       where: { userId },
     });
     if (tokenData) {
       tokenData.refreshToken = refreshToken;
       return tokenData.save();
     }
-    const token = await tokenModel.create({ userId, refreshToken });
+    const token = await Token.create({ userId, refreshToken });
     return token;
   },
 
@@ -43,4 +42,4 @@ const TokenService = {
   },
 };
 
-module.exports = TokenService;
+export default TokenService;

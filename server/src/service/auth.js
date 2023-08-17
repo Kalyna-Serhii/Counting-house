@@ -1,9 +1,9 @@
-const bcrypt = require('bcrypt');
-const User = require('../models/user');
-const tokenService = require('./token');
-const UserDto = require('../dtos/userDto');
-const ApiError = require('../exceptions/api-error');
-const phoneByTemplate = require('../validations/phoneByTemplate');
+import bcrypt from 'bcrypt';
+import User from '../models/user';
+import tokenService from './token';
+import UserDto from '../dtos/userDto';
+import ApiError from '../exceptions/api-error';
+import phoneByTemplate from '../validations/phoneByTemplate';
 
 const AuthService = {
   async registration(body) {
@@ -72,4 +72,4 @@ const AuthService = {
   },
 };
 
-module.exports = AuthService;
+export default AuthService;

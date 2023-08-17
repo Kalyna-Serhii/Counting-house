@@ -1,6 +1,6 @@
-const ApiError = require('../exceptions/api-error');
-const phoneByTemplate = require('../validations/phoneByTemplate');
-const User = require('../models/user');
+import ApiError from '../exceptions/api-error';
+import phoneByTemplate from '../validations/phoneByTemplate';
+import User from '../models/user';
 
 const AdminService = {
   async createFakeUser(body) {
@@ -47,4 +47,4 @@ const AdminService = {
   },
 };
 
-module.exports = AdminService;
+export default AdminService;

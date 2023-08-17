@@ -1,4 +1,4 @@
-const ApiError = require('../exceptions/api-error');
+import ApiError from '../exceptions/api-error';
 
 const errorMiddleware = (err, req, res, next) => {
   if (err instanceof ApiError) {
@@ -8,4 +8,4 @@ const errorMiddleware = (err, req, res, next) => {
   return res.status(500).json({ message: `Виникла непередбачувана помилка, спробуйте пізніше. ${err.message || err}` });
 };
 
-module.exports = errorMiddleware;
+export default errorMiddleware;

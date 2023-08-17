@@ -1,4 +1,4 @@
-const { Sequelize, DataTypes } = require('sequelize');
+import { DataTypes, Sequelize } from 'sequelize';
 
 const sequelize = new Sequelize('postgres', 'admin', 'root', {
   host: 'localhost',
@@ -22,4 +22,4 @@ const sequelize = new Sequelize('postgres', 'admin', 'root', {
   }
 })();
 
-module.exports = { sequelize, DataTypes };
+export { sequelize, DataTypes };

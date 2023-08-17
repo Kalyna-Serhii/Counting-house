@@ -1,4 +1,4 @@
-const joi = require('joi');
+import joi from 'joi';
 
 const UserRegisterValidation = (data) => {
   const schema = joi.object({
@@ -129,4 +129,4 @@ const UserLoginValidation = (data) => {
   return schema.validate(data, options);
 };
 
-module.exports = [UserRegisterValidation, UserLoginValidation];
+export { UserRegisterValidation, UserLoginValidation };

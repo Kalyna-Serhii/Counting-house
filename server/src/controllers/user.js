@@ -1,6 +1,6 @@
-const userService = require('../service/user');
-const UpdateUserValidation = require('../validations/user');
-const validation = require('../validations/validation');
+import userService from '../service/user';
+import UpdateUserValidation from '../validations/user';
+import validation from '../validations/validation';
 
 // ошибка будет обработана в Error-middleware
 /* eslint-disable consistent-return */
@@ -151,4 +151,4 @@ const UserController = {
   },
 };
 
-module.exports = UserController;
+export default UserController;

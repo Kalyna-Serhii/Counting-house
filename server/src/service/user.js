@@ -1,6 +1,6 @@
-const ApiError = require('../exceptions/api-error');
-const User = require('../models/user');
-const phoneByTemplate = require('../validations/phoneByTemplate');
+import ApiError from '../exceptions/api-error';
+import User from '../models/user';
+import phoneByTemplate from '../validations/phoneByTemplate';
 
 const UserService = {
   async getUsers() {
@@ -51,4 +51,4 @@ const UserService = {
   },
 };
 
-module.exports = UserService;
+export default UserService;

@@ -1,7 +1,7 @@
-const authService = require('../service/auth');
-const [UserRegisterValidation, UserLoginValidation] = require('../validations/auth');
-const ApiError = require('../exceptions/api-error');
-const validation = require('../validations/validation');
+import authService from '../service/auth';
+import ApiError from '../exceptions/api-error';
+import { UserLoginValidation, UserRegisterValidation } from '../validations/auth';
+import validation from '../validations/validation';
 
 // ошибка будет обработана в Error-middleware
 /* eslint-disable consistent-return */
@@ -122,4 +122,4 @@ const AuthController = {
   },
 };
 
-module.exports = AuthController;
+export default AuthController;

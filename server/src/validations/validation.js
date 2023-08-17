@@ -1,4 +1,4 @@
-const ApiError = require('../exceptions/api-error');
+import ApiError from '../exceptions/api-error';
 
 function validation(body, schema, next) {
   const { error: customError } = schema(body);
@@ -9,4 +9,4 @@ function validation(body, schema, next) {
   }
 }
 
-module.exports = validation;
+export default validation;

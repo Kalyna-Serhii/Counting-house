@@ -1,4 +1,4 @@
-const joi = require('joi');
+import joi from 'joi';
 
 const UpdateUserValidation = (data) => {
   const schema = joi.object({
@@ -76,4 +76,4 @@ const UpdateUserValidation = (data) => {
   return schema.validate(data, options);
 };
 
-module.exports = UpdateUserValidation;
+export default UpdateUserValidation;

@@ -1,5 +1,5 @@
-const { sequelize, DataTypes } = require('../database/db');
-const User = require('./user');
+import User from './user';
+import { DataTypes, sequelize } from '../database/db';
 
 const Token = sequelize.define(
   'Token',
@@ -23,4 +23,4 @@ const Token = sequelize.define(
 
 Token.belongsTo(User, { foreignKey: 'userId' });
 
-module.exports = Token;
+export default Token;
