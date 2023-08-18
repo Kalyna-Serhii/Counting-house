@@ -55,6 +55,11 @@ const AuthService = {
   },
 
   async logout(refreshToken) {
+    const userData = tokenService.validateRefreshToken(refreshToken);
+    const tokenFromDb = await tokenService.findToken(refreshToken);
+    if (!userData || !tokenFromDb) {
+      throw ApiError.UnauthorizedError();
+    }
     await tokenService.removeToken(refreshToken);
   },
 

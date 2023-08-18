@@ -11,8 +11,7 @@ const AuthController = {
     try {
       validation(req.body, UserRegisterValidation, next);
       const newUser = await authService.registration(req.body);
-      res.cookie('refreshToken', newUser.refreshToken, { maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true });
-      return res.status(201).json(newUser.user);
+      return res.status(201).json(newUser);
     } catch (error) {
       next(error);
     }
@@ -39,18 +38,22 @@ const AuthController = {
         } */
     /* #swagger.responses[201] = {
             schema: {
-                id: 5,
-                name: 'John',
-                surname: 'Doe',
-                gender: 'man',
-                phone: '+380123456789',
-                password: '$2b$04$g4415yNFT4BGk8aoxufQpuNYX5byukyoJjdzJvGuMnSTf4r2p6lga',
-                email: 'john.doe@example.com',
-                floor: 5,
-                room: 34,
-                role: 'admin',
-                avatar: ''
+                "accessToken": "*accessToken*",
+                "refreshToken": "*refreshToken*",
+                "user": {
+                  "id": 2,
+                  "name": "Jane",
+                  "surname": "Do",
+                  "gender": "man",
+                  "phone": "+380123456789",
+                  "password": "$2b$04$vkG7JZ.zBTgdL9cvswWFOunT2N39w.0foE/gISAMIEAjtUrJyrJ2i",
+                  "email": "3o3@exam3le.com",
+                  "floor": 1,
+                  "room": 1,
+                  "role": "user",
+                  "avatar": ""
             }
+        }
     } */
     // #swagger.responses[400]
     // #swagger.responses[500]
@@ -59,9 +62,11 @@ const AuthController = {
   async login(req, res, next) {
     try {
       validation(req.body, UserLoginValidation, next);
-      const userData = await authService.login(req.body);
-      res.cookie('refreshToken', userData.refreshToken, { maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true });
-      return res.status(200).send();
+      const user = await authService.login(req.body);
+      return res.status(200).json({
+        accessToken: user.accessToken,
+        refreshToken: user.refreshToken,
+      });
     } catch (error) {
       next(error);
     }
@@ -76,19 +81,25 @@ const AuthController = {
                     $phoneOrEmail: '+380123456789',
                     $password: '123456789qwe'
                 }
-        } */
+        }
+    */
+    /* #swagger.responses[200] = {
+            schema: {
+                "accessToken": "*accessToken*",
+                "refreshToken": "*refreshToken*"
+            }
+       } */
     // #swagger.responses[400]
     // #swagger.responses[500]
   },
 
   async logout(req, res, next) {
     try {
-      const { refreshToken } = req.cookies;
+      const { refreshToken } = req.body;
       if (!refreshToken) {
         return next(ApiError.UnauthorizedError());
       }
       await authService.logout(refreshToken);
-      res.clearCookie('refreshToken');
       return res.status(204).send();
     } catch (error) {
       next(error);
@@ -97,26 +108,49 @@ const AuthController = {
     // #swagger.tags = ['Auth']
     // #swagger.summary = 'Logout'
     // #swagger.description = 'Log out of account'
+    /*  #swagger.parameters['obj'] = {
+               in: 'body',
+               description: 'Refresh token',
+               schema: {
+                    $refreshToken: "*refreshToken*"
+                }
+     } */
+    // #swagger.responses[204]
     // #swagger.responses[401]
     // #swagger.responses[500]
   },
 
   async refresh(req, res, next) {
     try {
-      const { refreshToken } = req.cookies;
+      const { refreshToken } = req.body;
       if (!refreshToken) {
         return next(ApiError.UnauthorizedError());
       }
-      const userData = await authService.refresh(refreshToken, res);
-      res.cookie('refreshToken', userData.refreshToken, { maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true });
-      return res.status(200).send();
+      const user = await authService.refresh(refreshToken, res);
+      return res.status(200).json({
+        accessToken: user.accessToken,
+        refreshToken: user.refreshToken,
+      });
     } catch (error) {
       next(error);
     }
 
     // #swagger.tags = ['Auth']
     // #swagger.summary = 'Refresh'
-    // #swagger.description = 'Refresh access token'
+    // #swagger.description = 'Refresh tokens'
+    /*  #swagger.parameters['obj'] = {
+               in: 'body',
+               description: 'Refresh token',
+               schema: {
+                    $refreshToken: '*refreshToken*'
+                }
+        } */
+    /* #swagger.responses[200] = {
+            schema: {
+                "accessToken": "*accessToken*",
+                "refreshToken": "*refreshToken*"
+            }
+       } */
     // #swagger.responses[401]
     // #swagger.responses[500]
   },
