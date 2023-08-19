@@ -1,5 +1,5 @@
-import userService from '../service/user';
-import UpdateUserValidation from '../validations/user';
+import userService from '../service/user-service';
+import UpdateUserValidation from '../validations/user-validation';
 import validation from '../validations/validation';
 
 // ошибка будет обработана в Error-middleware
@@ -66,7 +66,7 @@ const UserController = {
     // #swagger.tags = ['Users']
     // #swagger.summary = 'Get a user'
     // #swagger.description = 'Returns a user by user id'
-    // #swagger.parameters['id'] = { description: 'User id' }
+    // #swagger.parameters['id'] = { description: 'UserModel id' }
     /* #swagger.responses[200] = {
             schema: {
                 id: 5,
@@ -100,7 +100,7 @@ const UserController = {
     // #swagger.description = 'Updates a user by user id with the provided information'
     /*  #swagger.parameters['obj'] = {
                 in: 'body',
-                description: 'User object',
+                description: 'UserModel object',
                 schema: {
                     $name: 'John',
                     surname: 'Doe',
@@ -145,7 +145,7 @@ const UserController = {
     // #swagger.tags = ['Users']
     // #swagger.summary = 'Delete a user'
     // #swagger.description = 'Deletes a user by user id'
-    // #swagger.parameters['id'] = { description: 'User id' }
+    // #swagger.parameters['id'] = { description: 'UserModel id' }
     // #swagger.responses[400]
     // #swagger.responses[500]
   },

@@ -1,7 +1,7 @@
-import User from './user';
-import { DataTypes, sequelize } from '../database/db';
+import UserModel from './user-model';
+import { DataTypes, sequelize } from '../database/database.config';
 
-const Token = sequelize.define(
+const TokenModel = sequelize.define(
   'Token',
   {
     userId: {
@@ -21,6 +21,6 @@ const Token = sequelize.define(
   },
 );
 
-Token.belongsTo(User, { foreignKey: 'userId' });
+TokenModel.belongsTo(UserModel, { foreignKey: 'userId' });
 
-export default Token;
+export default TokenModel;

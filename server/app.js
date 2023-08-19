@@ -5,9 +5,7 @@ import cookieParser from 'cookie-parser';
 import swaggerUI from 'swagger-ui-express';
 import corsOptions from './src/cors/cors.config';
 import errorMiddleware from './src/middlewares/error-middleware';
-import userRouter from './src/routes/user';
-import authRouter from './src/routes/auth';
-import adminRouter from './src/routes/admin';
+import { adminRouter, authRouter, userRouter } from './src/routes';
 import swaggerDocument from './src/swagger/swaggerAutogen.json';
 
 const HOST = '127.0.0.1';

@@ -1,5 +1,5 @@
-import adminService from '../service/admin';
-import FakeUserValidation from '../validations/admin';
+import adminService from '../service/admin-service';
+import FakeUserValidation from '../validations/admin-validation';
 import validation from '../validations/validation';
 
 // ошибка будет обработана в Error-middleware
@@ -20,7 +20,7 @@ const FakeUserController = {
     // #swagger.description = 'Creates a new fake user with the provided information'
     /*  #swagger.parameters['obj'] = {
                in: 'body',
-               description: 'User object',
+               description: 'UserModel object',
                schema: {
                     $name: 'John',
                     surname: 'Doe',
@@ -66,7 +66,7 @@ const FakeUserController = {
     // #swagger.description = 'Updates a fake user by user id with the provided information'
     /*  #swagger.parameters['obj'] = {
                 in: 'body',
-                description: 'User object',
+                description: 'UserModel object',
                 schema: {
                     $name: 'John',
                     surname: 'Doe',

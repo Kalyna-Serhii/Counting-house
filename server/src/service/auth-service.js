@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt';
-import User from '../models/user';
-import tokenService from './token';
-import UserDto from '../dtos/userDto';
+import UserModel from '../models/user-model';
+import tokenService from './token-service';
+import UserDto from '../dtos/user-dto';
 import ApiError from '../exceptions/api-error';
 import phoneByTemplate from '../validations/phoneByTemplate';
 
@@ -12,7 +12,7 @@ const AuthService = {
     } = body;
     const hashedPassword = await bcrypt.hash(password, 3);
     const templatedPhone = phoneByTemplate(phone);
-    const newUser = await User.create({
+    const newUser = await UserModel.create({
       name,
       surname,
       gender,
@@ -35,11 +35,11 @@ const AuthService = {
     let user;
     if (phoneOrEmail.includes('@')) {
       const email = phoneOrEmail;
-      user = await User.findOne({ where: { email } });
+      user = await UserModel.findOne({ where: { email } });
     } else {
       const phone = phoneOrEmail;
       const templatedPhone = phoneByTemplate(phone);
-      user = await User.findOne({ where: { phone: templatedPhone } });
+      user = await UserModel.findOne({ where: { phone: templatedPhone } });
     }
     if (!user) {
       throw ApiError.BadRequest('Такого користувача не існує');
@@ -69,7 +69,7 @@ const AuthService = {
     if (!userData || !tokenFromDb) {
       throw ApiError.UnauthorizedError();
     }
-    const user = await User.findOne({ where: { id: userData.id } });
+    const user = await UserModel.findOne({ where: { id: userData.id } });
     const userDto = new UserDto(user);
     const tokens = tokenService.generateTokens({ ...userDto });
     await tokenService.saveToken(userDto.id, tokens.refreshToken);

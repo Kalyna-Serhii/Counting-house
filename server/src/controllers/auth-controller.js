@@ -1,6 +1,6 @@
-import authService from '../service/auth';
+import authService from '../service/auth-service';
 import ApiError from '../exceptions/api-error';
-import { UserLoginValidation, UserRegisterValidation } from '../validations/auth';
+import { UserLoginValidation, UserRegisterValidation } from '../validations/auth-validation';
 import validation from '../validations/validation';
 
 // ошибка будет обработана в Error-middleware
@@ -21,25 +21,25 @@ const AuthController = {
     // #swagger.description = 'New user registration with the provided information'
     /*  #swagger.parameters['obj'] = {
                in: 'body',
-               description: 'User object',
+               description: 'UserModel object',
                schema: {
-                    $name: 'John',
-                    surname: 'Doe',
-                    $gender: 'man',
-                    $phone: '+380123456789',
-                    $password: '123456789f',
-                    $repeatPassword: '123456789',
-                    email: 'john.doe@example.com',
+                    $name: "John",
+                    surname: "Doe",
+                    $gender: "man",
+                    $phone: "+380123456789",
+                    $password: "123456789f",
+                    $repeatPassword: "123456789",
+                    email: "john.doe@example.com",
                     $floor: 5,
                     $room: 34,
-                    $role: 'admin',
-                    avatar: ''
+                    $role: "admin",
+                    avatar: ""
                 }
         } */
     /* #swagger.responses[201] = {
             schema: {
-                "accessToken": "*accessToken*",
-                "refreshToken": "*refreshToken*",
+                "accessToken": "string",
+                "refreshToken": "string",
                 "user": {
                   "id": 2,
                   "name": "Jane",
@@ -76,17 +76,17 @@ const AuthController = {
     // #swagger.description = 'Log in account'
     /*  #swagger.parameters['obj'] = {
                in: 'body',
-               description: 'User object',
+               description: 'UserModel object',
                schema: {
-                    $phoneOrEmail: '+380123456789',
-                    $password: '123456789qwe'
+                    $phoneOrEmail: "+380123456789",
+                    $password: "123456789qwe"
                 }
         }
     */
     /* #swagger.responses[200] = {
             schema: {
-                "accessToken": "*accessToken*",
-                "refreshToken": "*refreshToken*"
+                "accessToken": "string",
+                "refreshToken": "string"
             }
        } */
     // #swagger.responses[400]
@@ -112,7 +112,7 @@ const AuthController = {
                in: 'body',
                description: 'Refresh token',
                schema: {
-                    $refreshToken: "*refreshToken*"
+                    $refreshToken: "string"
                 }
      } */
     // #swagger.responses[204]
@@ -142,13 +142,13 @@ const AuthController = {
                in: 'body',
                description: 'Refresh token',
                schema: {
-                    $refreshToken: '*refreshToken*'
+                    $refreshToken: "string"
                 }
         } */
     /* #swagger.responses[200] = {
             schema: {
-                "accessToken": "*accessToken*",
-                "refreshToken": "*refreshToken*"
+                accessToken: "string",
+                refreshToken: "string"
             }
        } */
     // #swagger.responses[401]

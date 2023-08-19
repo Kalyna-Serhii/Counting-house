@@ -26,7 +26,7 @@
     "swagger-ui-express": "^5.0.0"
   },
   "scripts": {
-    "dev": "nodemon --exec babel-node src/swagger/swagger.js",
+    "dev": "nodemon --exec babel-node src/swagger/swagger.config.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
