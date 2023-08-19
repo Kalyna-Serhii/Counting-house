@@ -1,23 +1,25 @@
-const express = require('express');
-const cors = require('cors');
-const swaggerUI = require('swagger-ui-express');
-const userRouter = require('./src/routes/user');
+import 'dotenv/config';
+import express from 'express';
+import cors from 'cors';
+import cookieParser from 'cookie-parser';
+import swaggerUI from 'swagger-ui-express';
+import corsOptions from './src/cors/cors.config';
+import errorMiddleware from './src/middlewares/error-middleware';
+import { adminRouter, authRouter, userRouter } from './src/routes';
+import swaggerDocument from './src/swagger/swaggerAutogen.json';
+
+const HOST = '127.0.0.1';
+const PORT = 3000;
 
 const app = express();
-const host = '127.0.0.1';
-const port = 3000;
-const swaggerDocument = require('./src/swagger/swagger_autogen.json');
 
-const corsOptions = {
-  origin: 'http://localhost:8080',
-  optionsSuccessStatus: 200,
-};
-
-app.use(cors(corsOptions));
 app.use(express.json());
-app.use('/api', userRouter);
+app.use(cors(corsOptions));
+app.use(cookieParser());
+app.use('/api', userRouter, authRouter, adminRouter);
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
+app.use(errorMiddleware);
 
-app.listen(port, () => {
-  console.log(`Server listens http://${host}:${port}`);
+app.listen(PORT, () => {
+  console.log(`Server listens http://${HOST}:${PORT}`);
 });

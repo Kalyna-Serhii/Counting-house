@@ -1,9 +1,9 @@
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
-const isProduction = process.env.NODE_ENV === "production";
+const isProduction = process.env.NODE_ENV === 'production';
 console.log(isProduction);
-module.exports = {
+const config = {
   context: path.join(__dirname, './src'),
   mode: 'development',
   entry: './index.js',
@@ -26,7 +26,13 @@ module.exports = {
   module: {
     rules: [
       {
-        test:  /\.(html)$/i,
+        test: /\.(js)$/i,
+        use: {
+          loader: 'babel-loader',
+        },
+      },
+      {
+        test: /\.(html)$/i,
         use: 'html-loader',
       },
       {
@@ -43,3 +49,5 @@ module.exports = {
     port: 8080,
   },
 };
+
+module.exports = config;

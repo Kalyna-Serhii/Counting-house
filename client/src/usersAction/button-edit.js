@@ -1,6 +1,5 @@
 import api from '../api';
-
-const showError = require('./showError');
+import showError from './showError';
 
 const getFormBody = (form) => {
   const formBody = {};
@@ -19,7 +18,7 @@ const handleFormCreate = async (event) => {
   try {
     const formBody = getFormBody(parentForm);
     const createFormElements = Array.from(parentForm.elements);
-    const newUser = await api.users.post(formBody);
+    const newUser = await api.admin.post(formBody);
     const formId = newUser.id;
     const newTableDiv = document.createElement('div');
     newTableDiv.classList.add('table');
@@ -52,8 +51,7 @@ const handleFormCreate = async (event) => {
 
     createFormElements.forEach((element) => {
       if (element.type !== 'file' && element.type !== 'button' && element.type !== 'select-one') {
-        // eslint-disable-next-line no-param-reassign
-        element.value = '';
+        parentForm.reset();
       }
     });
 
@@ -78,8 +76,7 @@ const handleFormEdit = async (event) => {
     if (formButtonEdit.classList.contains('form__button-edit')) {
       const formBody = getFormBody(parentForm);
       if (formButtonEdit.textContent === 'Готово') {
-        formBody.id = formId;
-        await api.users.patch(formId, formBody);
+        await api.admin.patch(formId, formBody);
         formButtonEdit.textContent = 'Редагувати';
         formButtonEdit.classList.remove('btn-success');
         formButtonEdit.classList.add('btn-primary');

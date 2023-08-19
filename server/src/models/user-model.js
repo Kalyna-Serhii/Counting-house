@@ -1,6 +1,6 @@
-const { sequelize, DataTypes } = require('../database/db');
+import { DataTypes, sequelize } from '../database/database.config';
 
-const User = sequelize.define(
+const UserModel = sequelize.define(
   'User',
   {
     id: {
@@ -8,6 +8,8 @@ const User = sequelize.define(
       allowNull: false,
       primaryKey: true,
       autoIncrement: true,
+      unique: true,
+      required: true,
     },
     name: {
       type: DataTypes.STRING(15),
@@ -15,6 +17,7 @@ const User = sequelize.define(
       validate: {
         len: [2, 15],
       },
+      required: true,
     },
     surname: {
       type: DataTypes.STRING(15),
@@ -36,14 +39,13 @@ const User = sequelize.define(
       validate: {
         len: [13],
       },
-      unique: true,
+      required: true,
     },
     password: {
       type: DataTypes.STRING(60),
-      // allowNull: false,
-      // validate: {
-      //   len: [60],
-      // },
+      validate: {
+        len: [60],
+      },
     },
     email: {
       type: DataTypes.STRING(50),
@@ -57,6 +59,7 @@ const User = sequelize.define(
       validate: {
         isIn: [[...Array(10).keys()].slice(1)],
       },
+      required: true,
     },
     room: {
       type: DataTypes.INTEGER,
@@ -64,6 +67,7 @@ const User = sequelize.define(
       validate: {
         isIn: [[...Array(100).keys()].slice(1)],
       },
+      required: true,
     },
     role: {
       type: DataTypes.STRING(9),
@@ -83,4 +87,4 @@ const User = sequelize.define(
   },
 );
 
-module.exports = User;
+export default UserModel;

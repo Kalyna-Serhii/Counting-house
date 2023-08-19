@@ -13,7 +13,6 @@ const createUsersForms = async () => {
 
     const createUserItemElement = () => {
       const sortedUsers = sortUsersByRoom(users);
-      /* eslint-disable-next-line */
       for (const user of sortedUsers) {
         if ('content' in document.createElement('template')) {
           const clone = template.content.cloneNode(true);
