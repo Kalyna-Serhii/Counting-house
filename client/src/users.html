@@ -1,218 +1,217 @@
 <!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Мешканці</title>
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
-      crossorigin="anonymous"
-    />
-  </head>
-  <body>
-    <div class="app">
-      <header>
-        <div class='container my-3'>
-          <h2>counting-house</h2>
-          <a href='/index.html'>Головна /</a>
-        </div>
-      </header>
-      <main>
-        <div class="container">
-          <h1>Мешканці</h1>
-          <div class='table'>
-            <form class='form-new-user'>
-              <div class="row py-3 border mb-3" id='newUser'>
-                <div class="col-auto">
-                  <label class="form-label">Ім'я</label>
-                  <input type="text" name='name' class="form-control" id="createUserName"/>
+<html lang='en'>
+<head>
+  <meta charset='UTF-8' />
+  <meta content='width=device-width, initial-scale=1.0' name='viewport' />
+  <title>Мешканці</title>
+  <link
+    crossorigin='anonymous'
+    href='https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css'
+    integrity='sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC'
+    rel='stylesheet'
+  />
+</head>
+<body>
+<div class='app'>
+  <header>
+    <div class='container my-3'>
+      <h2>counting-house</h2>
+      <a href='/index.html'>Головна /</a>
+    </div>
+  </header>
+  <main>
+    <div class='container'>
+      <h1>Мешканці</h1>
+      <div class='table'>
+        <form class='form-new-user'>
+          <div class='row py-3 border mb-3' id='newUser'>
+            <div class='col-auto'>
+              <label class='form-label'>Ім'я</label>
+              <input class='form-control' id='createUserName' name='name' type='text' />
+            </div>
+            <div class='col-auto'>
+              <label class='form-label'>Прізвище</label>
+              <input class='form-control' id='createUserSurname' name='surname' type='text' />
+            </div>
+            <div class='col-auto'>
+              <label class='form-label' for='userGender'>Стать</label>
+              <select class='form-select' id='createUserGender' name='gender'>
+                <option value='man'>man</option>
+                <option value='woman'>woman</option>
+              </select>
+            </div>
+            <div class='col-auto'>
+              <label class='form-label' for='userPhone'>Телефон</label>
+              <input
+                class='form-control'
+                id='createUserPhone'
+                inputmode='tel'
+                name='phone'
+                placeholder='+380123456789'
+                required
+                type='text'
+              />
+            </div>
+            <div class='col-auto'>
+              <label class='form-label' for='userEmail'>Пошта</label>
+              <input
+                class='form-control'
+                id='createUserEmail'
+                inputmode='email'
+                name='email'
+                placeholder='example@mail.com'
+                type='email'
+              />
+            </div>
+            <div class='col-auto'>
+              <label class='form-label' for='userFloor'>Поверх</label>
+              <input
+                class='form-control'
+                id='createUserFloor'
+                inputmode='numeric'
+                max='9'
+                min='1'
+                name='floor'
+                required
+                type='number'
+              />
+            </div>
+            <div class='col-auto'>
+              <label class='form-label' for='userApartment'>Квартира</label>
+              <input
+                class='form-control'
+                id='createUserApartment'
+                inputmode='numeric'
+                max='89'
+                min='1'
+                name='room'
+                required
+                type='number'
+              />
+            </div>
+            <div class='col-auto'>
+              <label class='form-label' for='userRole'>Роль</label>
+              <select class='form-select' id='createUserRole' name='role'>
+                <option value='user'>user</option>
+                <option value='moderator'>moderator</option>
+                <option value='admin'>admin</option>
+              </select>
+            </div>
+            <div class='col-auto d-none'>
+              <label class='form-label' for='userAvatar'>Аватар</label>
+              <input class='form-control' id='createUserAvatar' name='avatar' type='file' />
+            </div>
+            <div class='col-sm-12 col-md-6 col-lg-8 ms-lg-auto row align-items-md-end'>
+              <div class='col-6'>
+                <button class='form__button-create w-100 btn btn-success' type='button'>Створити</button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class='table' id='users'>
+        <template id='userRow'>
+          <form class='form-user'>
+            <div class='row border mb-3'>
+              <div class='col-auto'>
+                <label class='form-label'>Ім'я</label>
+                <input class='form-control' name='name' type='text' />
+              </div>
+              <div class='col-auto'>
+                <label class='form-label'>Прізвище</label>
+                <input class='form-control' name='surname' type='text' />
+              </div>
+              <div class='col-auto'>
+                <label class='form-label' for='userGender'>Стать</label>
+                <select class='form-select' id='userGender' name='gender'>
+                  <option value='man'>man</option>
+                  <option value='woman'>woman</option>
+                </select>
+              </div>
+              <div class='col-auto'>
+                <label class='form-label' for='userPhone'>Телефон</label>
+                <input
+                  class='form-control'
+                  id='userPhone'
+                  inputmode='tel'
+                  name='phone'
+                  placeholder='+380123456789'
+                  required
+                  type='text'
+                />
+              </div>
+              <div class='col-auto'>
+                <label class='form-label' for='userEmail'>Пошта</label>
+                <input
+                  class='form-control'
+                  id='userEmail'
+                  inputmode='email'
+                  name='email'
+                  type='email'
+                />
+              </div>
+              <div class='col-auto'>
+                <label class='form-label' for='userFloor'>Поверх</label>
+                <input
+                  class='form-control'
+                  id='userFloor'
+                  inputmode='numeric'
+                  max='9'
+                  min='1'
+                  name='floor'
+                  required
+                  type='number'
+                />
+              </div>
+              <div class='col-auto'>
+                <label class='form-label' for='userApartment'>Квартира</label>
+                <input
+                  class='form-control'
+                  id='userApartment'
+                  inputmode='numeric'
+                  max='89'
+                  min='1'
+                  name='room'
+                  required
+                  type='number'
+                />
+              </div>
+              <div class='col-auto'>
+                <label class='form-label' for='userRole'>Роль</label>
+                <select class='form-select' id='userRole' name='role'>
+                  <option value='user'>user</option>
+                  <option value='moderator'>moderator</option>
+                  <option value='admin'>admin</option>
+                </select>
+              </div>
+              <div class='col-auto d-none'>
+                <label class='form-label' for='userAvatar'>Аватар</label>
+                <input class='form-control' id='userAvatar' name='avatar' type='file' />
+              </div>
+              <div class='col-sm-12 col-md-6 col-lg-8 ms-lg-auto row align-items-md-end'>
+                <div class='col-6'>
+                  <button class='form__button-edit w-100 btn btn-primary' type='button'>Редагувати</button>
                 </div>
-                <div class="col-auto">
-                  <label class="form-label">Прізвище</label>
-                  <input type="text" name='surname' class="form-control" id="createUserSurname"/>
-                </div>
-                <div class="col-auto">
-                  <label for="userGender" class="form-label">Стать</label>
-                  <select id="createUserGender" class="form-select" name='gender'>
-                    <option value="man">man</option>
-                    <option value="woman">woman</option>
-                  </select>
-                </div>
-                <div class="col-auto">
-                  <label for="userPhone" class="form-label">Телефон</label>
-                  <input
-                    type="text"
-                    id="createUserPhone"
-                    class="form-control"
-                    name='phone'
-                    inputmode="tel"
-                    required
-                    placeholder="+380123456789"
-                  />
-                </div>
-                <div class="col-auto">
-                  <label for="userEmail" class="form-label">Пошта</label>
-                  <input
-                    type="email"
-                    id="createUserEmail"
-                    name='email'
-                    class="form-control"
-                    inputmode="email"
-                    placeholder="example@mail.com"
-                  />
-                </div>
-                <div class="col-auto">
-                  <label for="userFloor" class="form-label">Поверх</label>
-                  <input
-                    type="number"
-                    id="createUserFloor"
-                    class="form-control"
-                    name='floor'
-                    required
-                    inputmode="numeric"
-                    min="1"
-                    max="9"
-                  />
-                </div>
-                <div class="col-auto">
-                  <label for="userApartment" class="form-label">Квартира</label>
-                  <input
-                    type="number"
-                    id="createUserApartment"
-                    class="form-control"
-                    required
-                    name='room'
-                    inputmode="numeric"
-                    min="1"
-                    max="89"
-                  />
-                </div>
-                <div class="col-auto">
-                  <label for="userRole" class="form-label">Роль</label>
-                  <select id="createUserRole" class="form-select" name='role'>
-                    <option value="user">user</option>
-                    <option value="moderator">moderator</option>
-                    <option value="admin">admin</option>
-                  </select>
-                </div>
-                <div class="col-auto d-none">
-                  <label for="userAvatar" class="form-label">Аватар</label>
-                  <input type="file" id="createUserAvatar" class="form-control" name='avatar' />
-                </div>
-                <div class="col-sm-12 col-md-6 col-lg-8 ms-lg-auto row align-items-md-end">
-                  <div class='col-6'>
-                    <button type="button" class="form__button-create w-100 btn btn-success">Створити</button>
-                  </div>
+                <div class='col-6'>
+                  <button class='form__button-delete w-100 btn btn-danger' type='button'>Видалити</button>
                 </div>
               </div>
-            </form>
-          </div>
-          <div class="table" id="users">
-            <template id="userRow">
-              <form class='form-user'>
-                <div class="row border mb-3">
-                  <div class="col-auto">
-                    <label class="form-label">Ім'я</label>
-                    <input type="text" name='name' class="form-control"/>
-                  </div>
-                  <div class="col-auto">
-                    <label class="form-label">Прізвище</label>
-                    <input type="text" name='surname' class="form-control"/>
-                  </div>
-                  <div class="col-auto">
-                    <label for="userGender" class="form-label">Стать</label>
-                    <select id="userGender" class="form-select" name='gender'>
-                      <option value="man">man</option>
-                      <option value="woman">woman</option>
-                    </select>
-                  </div>
-                  <div class="col-auto">
-                    <label for="userPhone" class="form-label">Телефон</label>
-                    <input
-                      type="text"
-                      id="userPhone"
-                      class="form-control"
-                      name='phone'
-                      inputmode="tel"
-                      required
-                      placeholder="+380123456789"
-                    />
-                  </div>
-                  <div class="col-auto">
-                    <label for="userEmail" class="form-label">Пошта</label>
-                    <input
-                      type="email"
-                      id="userEmail"
-                      name='email'
-                      class="form-control"
-                      inputmode="email"
-                    />
-                  </div>
-                  <div class="col-auto">
-                    <label for="userFloor" class="form-label">Поверх</label>
-                    <input
-                      type="number"
-                      id="userFloor"
-                      class="form-control"
-                      name='floor'
-                      required
-                      inputmode="numeric"
-                      min="1"
-                      max="9"
-                    />
-                  </div>
-                  <div class="col-auto">
-                    <label for="userApartment" class="form-label">Квартира</label>
-                    <input
-                      type="number"
-                      id="userApartment"
-                      class="form-control"
-                      required
-                      name='room'
-                      inputmode="numeric"
-                      min="1"
-                      max="89"
-                    />
-                  </div>
-                  <div class="col-auto">
-                    <label for="userRole" class="form-label">Роль</label>
-                    <select id="userRole" class="form-select" name='role'>
-                      <option value="user">user</option>
-                      <option value="moderator">moderator</option>
-                      <option value="admin">admin</option>
-                    </select>
-                  </div>
-                  <div class="col-auto d-none">
-                    <label for="userAvatar" class="form-label">Аватар</label>
-                    <input type="file" id="userAvatar" class="form-control" name='avatar' />
-                  </div>
-                  <div class="col-sm-12 col-md-6 col-lg-8 ms-lg-auto row align-items-md-end">
-                    <div class='col-6'>
-                      <button type="button" class="form__button-edit w-100 btn btn-primary">Редагувати</button>
-                    </div>
-                    <div class='col-6'>
-                      <button type="button" class="form__button-delete w-100 btn btn-danger">Видалити</button>
-                    </div>
-                  </div>
-                </div>
-              </form>
-            </template>
-          </div>
-        </div>
-      </main>
-      <footer>
-        <div class="container">
-          <p>&copy; 2023 Counting-house. All rights reserved.</p>
-        </div>
-      </footer>
+            </div>
+          </form>
+        </template>
+      </div>
     </div>
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-      crossorigin="anonymous"
-    ></script>
-  </body>
+  </main>
+  <footer>
+    <div class='container'>
+      <p>&copy; 2023 Counting-house. All rights reserved.</p>
+    </div>
+  </footer>
+</div>
+<script
+  crossorigin='anonymous'
+  integrity='sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM'
+  src='https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js'
+></script>
+</body>
 </html>

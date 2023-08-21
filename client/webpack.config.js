@@ -22,6 +22,11 @@ const config = {
       filename: 'users.html',
       template: './users.html',
     }),
+    new HtmlWebpackPlugin({
+      title: 'Page login',
+      filename: 'login.html',
+      template: './login.html',
+    }),
   ],
   module: {
     rules: [

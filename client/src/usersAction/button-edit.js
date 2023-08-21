@@ -1,16 +1,6 @@
 import api from '../api';
 import showError from './showError';
-
-const getFormBody = (form) => {
-  const formBody = {};
-  const formElements = Array.from(form.elements);
-  formElements.forEach((element) => {
-    if (element.name) {
-      formBody[element.name] = element.value;
-    }
-  });
-  return formBody;
-};
+import getFormBody from './getFormBody';
 
 const handleFormCreate = async (event) => {
   const formButtonCreate = event.target;
