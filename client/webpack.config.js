@@ -11,6 +11,9 @@ const config = {
     path: path.resolve(__dirname, 'dist'),
     filename: 'bundle.js',
   },
+  resolve: {
+    extensions: ['*', '.js'],
+  },
   plugins: [
     new HtmlWebpackPlugin({
       title: 'Hot Module Replacement',
@@ -32,9 +35,8 @@ const config = {
     rules: [
       {
         test: /\.(js)$/i,
-        use: {
-          loader: 'babel-loader',
-        },
+        exclude: /node_modules/,
+        use: ['babel-loader'],
       },
       {
         test: /\.(html)$/i,
