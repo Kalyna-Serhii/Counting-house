@@ -2,7 +2,7 @@ import fetchInstance from './fetchInstance';
 import ApiError from './ApiError';
 
 const admin = {
-  async post(body) {
+  async createFakeUser(body) {
     try {
       return await fetchInstance.post('/admin/user', body);
     } catch (error) {
@@ -15,7 +15,7 @@ const admin = {
       throw new ApiError(errorMessage);
     }
   },
-  async patch(userId, body) {
+  async updateFakeUser(userId, body) {
     try {
       return await fetchInstance.patch(`/admin/user/${userId}`, body);
     } catch (error) {

@@ -14,7 +14,8 @@ const auth = {
    */
   async login(body) {
     try {
-      return await fetchInstance.post('/login', body);
+      const response = await fetchInstance.post('/login', body);
+      return response;
     } catch (error) {
       throw new Error('Не удалось авторизироваться');
     }

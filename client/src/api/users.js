@@ -2,7 +2,7 @@ import fetchInstance from './fetchInstance';
 import ApiError from './ApiError';
 
 const users = {
-  async get() {
+  async getUsers() {
     try {
       return await fetchInstance.get('/users');
     } catch (error) {
@@ -22,7 +22,7 @@ const users = {
       throw new ApiError(errorMessage);
     }
   },
-  async patch(userId, body) {
+  async updateUser(userId, body) {
     try {
       return await fetchInstance.patch(`/user/${userId}`, body);
     } catch (error) {
@@ -35,7 +35,7 @@ const users = {
       throw new ApiError(errorMessage);
     }
   },
-  async delete(userId) {
+  async deleteUser(userId) {
     try {
       await fetchInstance.delete(`/user/${userId}`);
     } catch (error) {
