@@ -16,6 +16,7 @@ const buttonLoginHandler = () => {
         const { accessToken, refreshToken } = response;
         document.cookie = `accessToken=${accessToken}; path=/;`;
         document.cookie = `refreshToken=${refreshToken}; path=/;`;
+        window.location.href = '../index.html';
       } catch (error) {
         showError(error, parentForm);
       }
