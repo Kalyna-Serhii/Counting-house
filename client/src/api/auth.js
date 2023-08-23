@@ -1,4 +1,6 @@
 import fetchInstance from './fetchInstance';
+import ApiError from './ApiError';
+import getErrorMessage from './error-message';
 
 const auth = {
   /** Асинхронно выполняет процесс авторизации пользователя.
@@ -17,7 +19,8 @@ const auth = {
       const response = await fetchInstance.post('/login', body);
       return response;
     } catch (error) {
-      throw new Error('Не удалось авторизироваться');
+      const errorMessage = await getErrorMessage(error);
+      throw new ApiError(errorMessage);
     }
   },
 };
