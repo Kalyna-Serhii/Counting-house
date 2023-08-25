@@ -1,6 +1,6 @@
 import authService from '../service/auth-service';
 import ApiError from '../exceptions/api-error';
-import { UserLoginValidation, UserRegisterValidation } from '../validations/auth-validation';
+import { UserLoginValidation, UserRegisterValidation } from '../validations/schemes/auth-scheme';
 import validation from '../validations/validation';
 
 // ошибка будет обработана в Error-middleware

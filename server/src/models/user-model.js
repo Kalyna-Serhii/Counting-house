@@ -9,7 +9,6 @@ const UserModel = sequelize.define(
       primaryKey: true,
       autoIncrement: true,
       unique: true,
-      required: true,
     },
     name: {
       type: DataTypes.STRING(15),
@@ -17,7 +16,6 @@ const UserModel = sequelize.define(
       validate: {
         len: [2, 15],
       },
-      required: true,
     },
     surname: {
       type: DataTypes.STRING(15),
@@ -39,7 +37,6 @@ const UserModel = sequelize.define(
       validate: {
         len: [13],
       },
-      required: true,
     },
     password: {
       type: DataTypes.STRING(60),
@@ -59,7 +56,6 @@ const UserModel = sequelize.define(
       validate: {
         isIn: [[...Array(10).keys()].slice(1)],
       },
-      required: true,
     },
     room: {
       type: DataTypes.INTEGER,
@@ -67,7 +63,6 @@ const UserModel = sequelize.define(
       validate: {
         isIn: [[...Array(100).keys()].slice(1)],
       },
-      required: true,
     },
     role: {
       type: DataTypes.STRING(9),

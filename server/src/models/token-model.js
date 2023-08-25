@@ -6,12 +6,10 @@ const TokenModel = sequelize.define(
   {
     userId: {
       type: DataTypes.INTEGER(),
-      required: true,
       allowNull: false,
     },
     refreshToken: {
       type: DataTypes.TEXT(),
-      required: true,
       allowNull: false,
     },
   },

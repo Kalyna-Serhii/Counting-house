@@ -1,5 +1,5 @@
 import adminService from '../service/admin-service';
-import FakeUserValidation from '../validations/admin-validation';
+import FakeUserValidation from '../validations/schemes/admin-scheme';
 import validation from '../validations/validation';
 
 // ошибка будет обработана в Error-middleware

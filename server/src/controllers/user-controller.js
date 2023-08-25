@@ -1,5 +1,5 @@
 import userService from '../service/user-service';
-import UpdateUserValidation from '../validations/user-validation';
+import UpdateUserValidation from '../validations/schemes/user-scheme';
 import validation from '../validations/validation';
 
 // ошибка будет обработана в Error-middleware
