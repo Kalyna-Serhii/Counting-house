@@ -9,7 +9,7 @@ const CostService = {
 
   async createCostItem(body) {
     const {
-      title, comment, date, sum, category,
+      category, title, comment, date, sum,
     } = body;
     const newCostItem = await CostModel.create({
       title,
@@ -28,7 +28,7 @@ const CostService = {
       throw ApiError.BadRequest('Такого пункту не існує');
     }
     const {
-      title, comment, date, sum, category,
+      category, title, comment, date, sum,
     } = body;
     const updatedFields = {};
     updatedFields.title = title;

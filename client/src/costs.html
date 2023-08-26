@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang='en'>
+<head>
+  <meta charset='UTF-8'>
+  <meta content='width=device-width, initial-scale=1.0' name='viewport'>
+  <title>Витрати</title>
+  <link
+    crossorigin='anonymous'
+    href='https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css'
+    integrity='sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC'
+    rel='stylesheet'
+  />
+</head>
+<body>
+<div class='app'>
+  <header>
+    <div class='container my-3'>
+      <h2>counting-house</h2>
+      <a href='/index.html'>Головна /</a>
+    </div>
+  </header>
+  <main>
+    <div class='container'>
+      <h1>Витрати</h1>
+      <div class='table'>
+        <form class='form-new-cost'>
+          <div class='row py-3 border mb-3' id='newCostItem'>
+            <div class='col-auto'>
+              <label class='form-label'>Категорія</label>
+              <input class='form-control' id='createCostCategory' name='category' type='text' />
+            </div>
+            <div class='col-auto'>
+              <label class='form-label'>Назва</label>
+              <input class='form-control' id='createCostTitle' name='title' type='text' />
+            </div>
+            <div class='col-auto'>
+              <label class='form-label'>Коментар</label>
+              <input class='form-control' id='createCostComment' name='comment' type='text' />
+            </div>
+            <div class='col-auto'>
+              <label class='form-label'>Дата</label>
+              <input class='form-control' id='createCostDate' name='date' type='date' />
+            </div>
+            <div class='col-auto'>
+              <label class='form-label'>Сума</label>
+              <input class='form-control' id='createCostSum' name='sum' type='number' />
+            </div>
+            <div class='col-sm-12 col-md-6 col-lg-8 ms-lg-auto row align-items-md-end'>
+              <div class='col-6'>
+                <button class='form__button-create w-100 btn btn-success' id='button-create-cost-item' type='button'>
+                  Створити
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class='table' id='costs'>
+        <template id='costItemRow'>
+          <form class='form-cost-item'>
+            <div class='row py-3 border mb-3' id='costItem'>
+              <div class='col-auto'>
+                <label class='form-label'>Категорія</label>
+                <input class='form-control' id='costCategory' name='category' type='text' />
+              </div>
+              <div class='col-auto'>
+                <label class='form-label'>Назва</label>
+                <input class='form-control' id='costTitle' name='title' type='text' />
+              </div>
+              <div class='col-auto'>
+                <label class='form-label'>Коментар</label>
+                <input class='form-control' id='costComment' name='comment' type='text' />
+              </div>
+              <div class='col-auto'>
+                <label class='form-label'>Дата</label>
+                <input class='form-control' id='costDate' name='date' type='date' />
+              </div>
+              <div class='col-auto'>
+                <label class='form-label'>Сума</label>
+                <input class='form-control' id='costSum' name='sum' type='number' />
+              </div>
+              <div class='col-sm-12 col-md-6 col-lg-8 ms-lg-auto row align-items-md-end'>
+                <div class='col-6'>
+                  <button class='form__button-edit w-100 btn btn-primary' id='button-edit-cost-item' type='button'>
+                    Редагувати
+                  </button>
+                </div>
+                <div class='col-6'>
+                  <button class='form__button-delete w-100 btn btn-danger' id='button-delete-cost-item' type='button'>
+                    Видалити
+                  </button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </template>
+      </div>
+    </div>
+  </main>
+  <footer>
+    <div class='container'>
+      <p>&copy; 2023 Counting-house. All rights reserved.</p>
+    </div>
+  </footer>
+</div>
+<script
+  crossorigin='anonymous'
+  integrity='sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM'
+  src='https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js'
+></script>
+</body>
+</html>

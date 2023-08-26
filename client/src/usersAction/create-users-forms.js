@@ -1,4 +1,4 @@
-import ButtonEdit from './button-edit';
+import ButtonEdit from './users-button-edit';
 import api from '../api';
 
 const createUsersForms = async () => {
@@ -22,11 +22,10 @@ const createUsersForms = async () => {
             for (const input of form) {
               if (input.type !== 'file' && input.type !== 'button' && input.type !== 'select-one') {
                 input.readOnly = true;
-                input.value = user[input.name];
               } else if (input.type === 'select-one') {
                 input.disabled = true;
-                input.value = user[input.name];
               }
+              input.value = user[input.name];
             }
           }
           table.appendChild(clone);

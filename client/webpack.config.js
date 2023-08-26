@@ -22,6 +22,11 @@ const config = {
       filename: 'users.html',
       template: './users.html',
     }),
+    new HtmlWebpackPlugin({
+      title: 'Page costs',
+      filename: 'costs.html',
+      template: './costs.html',
+    }),
   ],
   module: {
     rules: [

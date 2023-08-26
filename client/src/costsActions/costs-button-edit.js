@@ -1,16 +1,6 @@
 import api from '../api';
-import showError from './showError';
-
-const getFormBody = (form) => {
-  const formBody = {};
-  const formElements = Array.from(form.elements);
-  formElements.forEach((element) => {
-    if (element.name) {
-      formBody[element.name] = element.value;
-    }
-  });
-  return formBody;
-};
+import showError from '../showError';
+import getFormBody from '../getFormBody';
 
 const handleFormCreate = async (event) => {
   const formButtonCreate = event.target;
@@ -18,17 +8,18 @@ const handleFormCreate = async (event) => {
   try {
     const formBody = getFormBody(parentForm);
     const createFormElements = Array.from(parentForm.elements);
-    const newUser = await api.admin.post(formBody);
-    const formId = newUser.id;
+    console.log(formBody);
+    const newCostItem = await api.costs.createCostItem(formBody);
+    const formId = newCostItem.id;
     const newTableDiv = document.createElement('div');
     newTableDiv.classList.add('table');
     const newForm = document.createElement('form');
-    newForm.classList.add('form-new-user');
+    newForm.classList.add('form-new-cost-item');
     newForm.id = formId;
     const newRowDiv = document.createElement('div');
     newRowDiv.classList.add('row', 'py-3', 'border', 'mb-3');
-    newRowDiv.id = 'newUser';
-    const template = document.querySelector('#userRow');
+    newRowDiv.id = 'newCostItem';
+    const template = document.querySelector('#costItemRow');
     const { content } = template;
     const colAutoElements = content.querySelectorAll('.col-auto');
     colAutoElements.forEach((colAutoElement) => {
@@ -76,7 +67,7 @@ const handleFormEdit = async (event) => {
     if (formButtonEdit.classList.contains('form__button-edit')) {
       const formBody = getFormBody(parentForm);
       if (formButtonEdit.textContent === 'Готово') {
-        await api.admin.patch(formId, formBody);
+        await api.costs.updateCostItem(formId, formBody);
         formButtonEdit.textContent = 'Редагувати';
         formButtonEdit.classList.remove('btn-success');
         formButtonEdit.classList.add('btn-primary');
@@ -110,9 +101,9 @@ const handleFormEdit = async (event) => {
 const handleFormDelete = async (event) => {
   const formButtonDelete = event.target;
   const parentForm = formButtonDelete.closest('form');
-  const userId = parentForm.id;
+  const costItemId = parentForm.id;
   try {
-    await api.users.delete(userId);
+    await api.costs.deleteCostItem(costItemId);
     parentForm.remove();
   } catch (error) {
     showError(error, parentForm);
@@ -121,18 +112,12 @@ const handleFormDelete = async (event) => {
 
 const buttonEditHandler = () => {
   document.addEventListener('click', async (event) => {
-    event.preventDefault();
-
-    const isFormButtonCreate = event.target.classList.contains('form__button-create');
-    if (isFormButtonCreate) {
+    const targetId = event.target.id;
+    if (targetId === 'button-create-cost-item') {
       await handleFormCreate(event);
-    }
-    const isFormButtonEdit = event.target.classList.contains('form__button-edit');
-    if (isFormButtonEdit) {
+    } else if (targetId === 'button-edit-cost-item') {
       await handleFormEdit(event);
-    }
-    const isFormButtonDelete = event.target.classList.contains('form__button-delete');
-    if (isFormButtonDelete) {
+    } else if (targetId === 'button-delete-cost-item') {
       await handleFormDelete(event);
     }
   });

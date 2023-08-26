@@ -10,6 +10,10 @@ const CostModel = sequelize.define(
       autoIncrement: true,
       unique: true,
     },
+    category: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
     title: {
       type: DataTypes.STRING(),
       allowNull: false,
@@ -26,10 +30,6 @@ const CostModel = sequelize.define(
     },
     sum: {
       type: DataTypes.FLOAT,
-      allowNull: false,
-    },
-    category: {
-      type: DataTypes.STRING,
       allowNull: false,
     },
   },

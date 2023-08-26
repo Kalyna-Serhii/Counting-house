@@ -9,14 +9,16 @@ const CostSchemeValidation = (data) => {
         'string.min': 'Назва має містити не менше 2 символів',
         'string.max': 'Назва має містити не більше 255 символів',
       }),
-    comment: joi.string(),
+    comment: joi.string().allow(''),
     date: joi.date().iso().required().messages({
       'any.required': 'Дата є обов\'язковою',
-      'string.empty': 'Дата є обов\'язковою',
+      'date.empty': 'Дата є обов\'язковою',
+      'date.format': 'Дата повинна бути у форматі xx-xx-20xx',
     }),
     sum: joi.number().required().messages({
       'any.required': 'Сума є обов\'язковою',
-      'string.empty': 'Сума є обов\'язковою',
+      'number.empty': 'Сума є обов\'язковою',
+      'number.base': 'Сума повинна бути числом',
     }),
     category: joi.string().required().messages({
       'any.required': 'Категорія є обов\'язковою',
