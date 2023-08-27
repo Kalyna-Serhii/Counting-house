@@ -1,3 +1,4 @@
+import ApiError from './api-error';
 class FetchClient {
   constructor(baseURL) {
     this.baseURL = baseURL;
@@ -6,14 +7,7 @@ class FetchClient {
   // Статус коды 200 и 204 могут не содержать body, в таком случае парсить и возвращать нечего
   // eslint-disable-next-line consistent-return
   async request(url, options = {}) {
-    const response = await fetch(`${this.baseURL}${url}`, options);
-    if (!response.ok) {
-      throw response;
-    }
-    const contentLength = response.headers.get('Content-Length');
-    if (contentLength) {
-      return response.json();
-    }
+    return await fetch(`${this.baseURL}${url}`, options);
   }
 
   async get(url, options = {}) {

@@ -63,12 +63,14 @@ const AuthController = {
     try {
       validation(req.body, UserLoginValidation, next);
       const user = await authService.login(req.body);
+      console.log('login controller', user);
       return res.status(200).json({
         accessToken: user.accessToken,
         refreshToken: user.refreshToken,
       });
     } catch (error) {
-      next(error);
+      console.dir(error.payload);
+      return res.status(422).json(error.payload);
     }
 
     // #swagger.tags = ['Auth']

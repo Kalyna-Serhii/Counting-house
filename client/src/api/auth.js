@@ -1,5 +1,5 @@
 import fetchInstance from './fetchInstance';
-import ApiError from './ApiError';
+import ApiError from './api-error';
 import getErrorMessage from './error-message';
 
 const auth = {
@@ -17,10 +17,18 @@ const auth = {
   async login(body) {
     try {
       const response = await fetchInstance.post('/login', body);
+      console.log('auth', response);
+      if (!response.ok) {
+        throw new ApiError({
+          ...await response.json(),
+          status: response.status
+        })
+      }
       return response;
     } catch (error) {
-      const errorMessage = await getErrorMessage(error);
-      throw new ApiError(errorMessage);
+      throw error;
+      // const errorMessage = await getErrorMessage(error);
+      // throw new ApiError(errorMessage);
     }
   },
 };

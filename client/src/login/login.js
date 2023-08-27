@@ -13,12 +13,12 @@ const buttonLoginHandler = () => {
       try {
         const formBody = getFormBody(parentForm);
         const response = await api.auth.login(formBody);
-        const { accessToken, refreshToken } = response;
-        document.cookie = `accessToken=${accessToken}; path=/;`;
-        document.cookie = `refreshToken=${refreshToken}; path=/;`;
-        window.location.href = '../index.html';
+        // const { accessToken, refreshToken } = response;
+        // document.cookie = `accessToken=${accessToken}; path=/;`;
+        // document.cookie = `refreshToken=${refreshToken}; path=/;`;
+        // window.location.href = '../index.html';
       } catch (error) {
-        showError(error, parentForm);
+        showError(error.payload.message, parentForm);
       }
     });
   }

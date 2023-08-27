@@ -1,5 +1,5 @@
 import fetchInstance from './fetchInstance';
-import ApiError from './ApiError';
+import ApiError from './api-error';
 import getErrorMessage from './error-message';
 
 const admin = {

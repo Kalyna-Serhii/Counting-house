@@ -42,11 +42,11 @@ const AuthService = {
       user = await UserModel.findOne({ where: { phone: templatedPhone } });
     }
     if (!user) {
-      throw ApiError.BadRequest('Такого користувача не існує');
+      throw new ApiError({message: 'Такого користувача не існує'});
     }
     const isPasswordEquals = await bcrypt.compare(password, user.password);
     if (!isPasswordEquals) {
-      throw ApiError.BadRequest('Невірний пароль');
+      throw new ApiError({message: 'Невірний пароль'});
     }
     const userDto = new UserDto(user);
     const tokens = tokenService.generateTokens({ ...userDto });
