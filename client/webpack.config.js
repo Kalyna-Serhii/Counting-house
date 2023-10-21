@@ -15,12 +15,22 @@ const config = {
     new HtmlWebpackPlugin({
       title: 'Hot Module Replacement',
       filename: 'index.html',
-      template: './index.html',
+      template: './pages/index.html',
+    }),
+    new HtmlWebpackPlugin({
+      title: 'Page registration',
+      filename: 'registration.html',
+      template: './pages/registration.html',
+    }),
+    new HtmlWebpackPlugin({
+      title: 'Page login',
+      filename: 'login.html',
+      template: './pages/login.html',
     }),
     new HtmlWebpackPlugin({
       title: 'Page users',
       filename: 'users.html',
-      template: './users.html',
+      template: './pages/users.html',
     }),
   ],
   module: {
