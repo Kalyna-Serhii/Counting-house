@@ -17,7 +17,7 @@ class FetchClient {
   }
 
   async get(url, options = {}) {
-    return this.request(url, {method: 'GET', ...options});
+    return this.request(url, { method: 'GET', ...options });
   }
 
   async post(url, body, options = {}) {
@@ -43,7 +43,7 @@ class FetchClient {
   }
 
   async delete(url, options = {}) {
-    await this.request(url, {method: 'DELETE', ...options});
+    await this.request(url, { method: 'DELETE', ...options });
   }
 }
 

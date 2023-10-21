@@ -7,7 +7,7 @@ const auth = {
     try {
       return await fetchInstance.post('/auth/registration', data);
     } catch (error) {
-      const {message} = await error.json();
+      const { message } = await error.json();
       console.dir(message);
       throw new Error('Не удалось получить пользователей');
     }
