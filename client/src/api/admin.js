@@ -1,29 +1,21 @@
 import fetchInstance from './fetchInstance';
-import ApiError from './ApiError';
+import ApiError from './api-error';
+import getErrorMessage from './error-message';
 
 const admin = {
-  async post(body) {
+  async createFakeUser(body) {
     try {
       return await fetchInstance.post('/admin/user', body);
     } catch (error) {
-      const emptyMessage = await error.json();
-      const nameInvalid = emptyMessage.error;
-      const errorMessage = {
-        status: error.status,
-        message: nameInvalid || emptyMessage,
-      };
+      const errorMessage = await getErrorMessage(error);
       throw new ApiError(errorMessage);
     }
   },
-  async patch(userId, body) {
+  async updateFakeUser(userId, body) {
     try {
       return await fetchInstance.patch(`/admin/user/${userId}`, body);
     } catch (error) {
-      const emptyMessage = await error.json();
-      const errorMessage = {
-        status: error.status,
-        message: emptyMessage.customError || emptyMessage,
-      };
+      const errorMessage = await getErrorMessage(error);
       throw new ApiError(errorMessage);
     }
   },

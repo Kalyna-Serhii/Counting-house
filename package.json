@@ -1,5 +1,5 @@
 {
-  "name": "counting-house",
+  "name": "budget-tracker",
   "workspaces": [
     "server",
     "client"

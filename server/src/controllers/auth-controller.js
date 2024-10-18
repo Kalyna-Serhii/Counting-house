@@ -1,7 +1,7 @@
 import authService from '../service/auth-service';
 import ApiError from '../exceptions/api-error';
 import { UserLoginValidation, UserRegisterValidation } from '../validations/auth-validation';
-import validation from '../validations/validation';
+import {validation} from '../validations/validation';
 
 // ошибка будет обработана в Error-middleware
 /* eslint-disable consistent-return */
@@ -59,16 +59,20 @@ const AuthController = {
     // #swagger.responses[500]
   },
 
-  async login(req, res, next) {
+  async login(req, res) {
     try {
-      validation(req.body, UserLoginValidation, next);
+      validation(req.body, UserLoginValidation);
       const user = await authService.login(req.body);
+      console.log('login controller', user);
       return res.status(200).json({
         accessToken: user.accessToken,
         refreshToken: user.refreshToken,
       });
     } catch (error) {
-      next(error);
+      if (error.payload) {
+        return res.status(422).json(error.payload);
+      }
+      throw new Error(error.message);
     }
 
     // #swagger.tags = ['Auth']

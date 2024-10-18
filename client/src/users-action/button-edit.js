@@ -1,16 +1,6 @@
 import api from '../api';
 import showError from './showError';
-
-const getFormBody = (form) => {
-  const formBody = {};
-  const formElements = Array.from(form.elements);
-  formElements.forEach((element) => {
-    if (element.name) {
-      formBody[element.name] = element.value;
-    }
-  });
-  return formBody;
-};
+import getFormBody from './getFormBody';
 
 const handleFormCreate = async (event) => {
   const formButtonCreate = event.target;
@@ -18,7 +8,7 @@ const handleFormCreate = async (event) => {
   try {
     const formBody = getFormBody(parentForm);
     const createFormElements = Array.from(parentForm.elements);
-    const newUser = await api.admin.post(formBody);
+    const newUser = await api.admin.createFakeUser(formBody);
     const formId = newUser.id;
     const newTableDiv = document.createElement('div');
     newTableDiv.classList.add('table');
@@ -76,7 +66,7 @@ const handleFormEdit = async (event) => {
     if (formButtonEdit.classList.contains('form__button-edit')) {
       const formBody = getFormBody(parentForm);
       if (formButtonEdit.textContent === 'Готово') {
-        await api.admin.patch(formId, formBody);
+        await api.admin.updateFakeUser(formId, formBody);
         formButtonEdit.textContent = 'Редагувати';
         formButtonEdit.classList.remove('btn-success');
         formButtonEdit.classList.add('btn-primary');
@@ -112,7 +102,7 @@ const handleFormDelete = async (event) => {
   const parentForm = formButtonDelete.closest('form');
   const userId = parentForm.id;
   try {
-    await api.users.delete(userId);
+    await api.users.deleteUser(userId);
     parentForm.remove();
   } catch (error) {
     showError(error, parentForm);

@@ -1,12 +1,22 @@
-import ApiError from '../exceptions/api-error';
-
 function validation(body, schema, next) {
   const { error: customError } = schema(body);
   if (customError) {
     const errorMessages = customError.details.map((detail) => detail.message);
-    const errorMessage = errorMessages.join(', ');
-    throw next(ApiError.BadRequest(errorMessage));
+    return errorMessages.join(', ');
   }
 }
 
-export default validation;
+function isValidUkrainianPhone(phone) {
+  const regex = /^380\d{9}$/;
+  return regex.test(phone);
+}
+
+function isEmail(input) {
+  return input.includes('@');
+}
+
+export {
+  validation,
+  isValidUkrainianPhone,
+  isEmail
+};

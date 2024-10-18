@@ -1,24 +1,14 @@
 class UserDto {
   id;
-
   name;
-
   surname;
-
   gender;
-
   phone;
-
   password;
-
   email;
-
   floor;
-
   room;
-
   role;
-
   avatar;
 
   constructor(model) {
